@@ -1,17 +1,21 @@
 "use client";
+
 import { useState } from "react";
 import { Menu, X } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Sidebar } from "./components/Sidebar";
 import { Button } from "@heroui/button";
+import { ScrollShadow } from "@nextui-org/react";
+
 export default function DashboardLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
   const [open, setOpen] = useState(false);
+
   return (
-    <section className="mx-3 max-w-[480px] sm:max-w-[640px] md:max-w-[768px] lg:max-w-[1024px] xl:max-w-[1280px] 2xl:max-w-[1536px] grid grid-cols-1 lg:grid-cols-[20%_80%] h-screen overflow-hidden">
+    <section className="mx-3 max-w-[1536px] grid grid-cols-1 lg:grid-cols-[20%_80%] h-screen">
       {/* Sidebar (Desktop) */}
       <aside className="hidden lg:block h-full border-r border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-900">
         <Sidebar />
@@ -28,12 +32,9 @@ export default function DashboardLayout({
             className="fixed inset-y-0 left-0 z-50 w-64 bg-white dark:bg-gray-900 shadow-lg border-r border-gray-200 dark:border-gray-800"
           >
             <div className="flex justify-between items-center p-4 border-b border-gray-200 dark:border-gray-800">
-              <h2 className="text-lg font-semibold text-indigo-600 dark:text-indigo-400">
-                Dashboard
-              </h2>
               <button
                 onClick={() => setOpen(false)}
-                className="p-2 rounded-md hover:bg-gray-200 dark:hover:bg-gray-800"
+                className="rounded-md hover:bg-gray-200 dark:hover:bg-gray-800"
               >
                 <X size={20} />
               </button>
@@ -53,14 +54,22 @@ export default function DashboardLayout({
         </button>
       </div>
 
-      {/* Main Content */}
-      <main className="">
-        <div className="border-b-amber-300 flex justify-end w-full">
-          <Button className="bg-green-500 px-2">Login</Button>{" "}
+      {/* Main Content Area */}
+      <main className="flex flex-col h-screen bg-gray-50 dark:bg-gray-950 overflow-hidden">
+        {/* Header */}
+        <div className="border-b border-gray-200 dark:border-gray-800 flex justify-end w-full p-4 bg-white dark:bg-gray-900">
+          <Button className="bg-green-500 px-3 text-white hover:bg-green-600 transition">
+            Login
+          </Button>
         </div>
-        <div className="h-full mx-auto bg-white dark:bg-gray-900  rounded-2xl shadow-md px-6 sm:p-10">
+
+        {/* Scrollable Section */}
+        <ScrollShadow
+          hideScrollBar
+          className="flex-1 overflow-y-auto px-6 sm:px-10 py-6 bg-white dark:bg-gray-900 rounded-t-2xl shadow-inner"
+        >
           {children}
-        </div>
+        </ScrollShadow>
       </main>
     </section>
   );

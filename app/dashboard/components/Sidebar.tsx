@@ -2,6 +2,7 @@
 
 import { usePathname } from "next/navigation";
 import Link from "next/link";
+import { ScrollShadow } from "@nextui-org/react";
 import {
   Home,
   Users,
@@ -82,28 +83,41 @@ export const Sidebar = ({ onLinkClick }: { onLinkClick?: () => void }) => {
   ];
 
   return (
-    <div className="flex flex-col h-full bg-white dark:bg-gray-900">
-      {/* Logo */}
-      <div className="flex justify-center flex-shrink-0 py-4">
-        <span className="grid w-12 h-12 place-content-center rounded-lg bg-gray-100 dark:bg-gray-800 text-sm font-semibold text-gray-700 dark:text-gray-300">
-          L
-        </span>
+    <aside className="flex flex-col h-screen w-64 bg-white dark:bg-gray-900 border-r border-gray-200 dark:border-gray-800">
+      {/* Top Section */}
+      <div className="flex items-center justify-between p-4 border-b border-gray-200 dark:border-gray-800">
+        {/* Left side — Profile Image */}
+        <img
+          src="https://upload.wikimedia.org/wikipedia/commons/thumb/4/48/Outdoors-man-portrait_%28cropped%29.jpg/961px-Outdoors-man-portrait_%28cropped%29.jpg"
+          alt="Profile"
+          className="h-10 w-10 rounded-full border-2 border-green-500 object-cover"
+        />
+
+        {/* Right side — Dashboard Title */}
+        <h2 className="text-xl font-semibold text-gray-800 dark:text-gray-100">
+          Dashboard
+        </h2>
       </div>
 
       {/* Scrollable Menu */}
-      <div className="flex-1 overflow-y-auto px-2 scrollbar-thin scrollbar-thumb-gray-400 scrollbar-track-gray-100 dark:scrollbar-thumb-gray-600 dark:scrollbar-track-gray-800 ">
-        <ul className="space-y-2">
+      <ScrollShadow
+        hideScrollBar
+        className="flex-1 overflow-y-auto px-2 scrollbar-thin 
+                   scrollbar-thumb-gray-400 scrollbar-track-gray-100 
+                   dark:scrollbar-thumb-gray-600 dark:scrollbar-track-gray-800"
+      >
+        <ul className="space-y-2 pt-3 pb-5">
           {links.map((link) => (
             <li key={link.name}>
               <Link
                 href={link.href}
                 onClick={onLinkClick}
-                className={`group flex items-center gap-3 rounded-md px-3 py-2 text-sm font-medium transition hover:text-white
-              ${
-                pathname === link.href
-                  ? "bg-indigo-50 dark:bg-gray-800 text-gree-500"
-                  : "text-gray-500 hover:bg-gray-100 dark:hover:bg-gray-800 hover:text-gray-900"
-              }`}
+                className={`group flex items-center gap-3 rounded-md px-3 py-2 text-sm font-medium transition
+                  ${
+                    pathname === link.href
+                      ? "bg-indigo-100 dark:bg-gray-800 text-green-500"
+                      : "text-gray-500 hover:bg-gray-100 dark:hover:bg-gray-800 hover:text-gray-900 dark:hover:text-gray-100"
+                  }`}
               >
                 {link.icon}
                 <span>{link.name}</span>
@@ -111,19 +125,18 @@ export const Sidebar = ({ onLinkClick }: { onLinkClick?: () => void }) => {
             </li>
           ))}
         </ul>
-      </div>
+      </ScrollShadow>
 
-      {/* Bottom Logout */}
-      <div className="flex-shrink-0 border-t border-gray-200 dark:border-gray-800 py-4 px-2">
-        <Link
-          href="/logout"
-          onClick={onLinkClick}
-          className="group flex items-center gap-3 px-3 py-2 text-sm font-medium text-gray-500 hover:bg-gray-100 dark:hover:bg-gray-800 hover:text-gray-700 rounded-md"
+      {/* Fixed Logout Button */}
+      {/* <div className="p-3 border-t border-gray-200 dark:border-gray-800">
+        <button
+          onClick={onLogout}
+          className="w-full flex items-center justify-center gap-2 rounded-md bg-red-500 text-white py-2 hover:bg-red-600 transition"
         >
           <LogOut size={18} />
           <span>Logout</span>
-        </Link>
-      </div>
-    </div>
+        </button>
+      </div> */}
+    </aside>
   );
 };
