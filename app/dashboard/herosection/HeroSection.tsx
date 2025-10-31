@@ -3,7 +3,7 @@ import { motion } from "framer-motion";
 import { BookOpen, Calendar, MessageCircle } from "lucide-react";
 import { Button } from "@heroui/button";
 import profile from "@/public/images/profile.png";
-export const HeroSection: React.FC = () => {
+export const HeroSectionDashboard: React.FC = () => {
   return (
     <section
       id="hero"

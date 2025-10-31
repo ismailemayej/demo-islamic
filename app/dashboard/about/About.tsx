@@ -2,10 +2,10 @@
 
 import { motion } from "framer-motion";
 import profile from "@/public/images/profile.png";
-import { Heading } from "../Heading";
-import Background from "../background";
+import Background from "@/components/background";
+import { Heading } from "@/components/Heading";
 
-export const AboutSection: React.FC = () => {
+export const AboutSectionDashboard: React.FC = () => {
   return (
     <Background id="about">
       {/* Heading */}

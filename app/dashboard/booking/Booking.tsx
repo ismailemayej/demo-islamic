@@ -2,10 +2,10 @@
 
 import React, { useState } from "react";
 import { motion } from "framer-motion";
-import { Heading } from "../Heading";
-import Background from "../background";
+import Background from "@/components/background";
+import { Heading } from "@/components/Heading";
 
-export const AppointmentSection: React.FC = () => {
+export const AppointmentSectionDashboard: React.FC = () => {
   const [formData, setFormData] = useState({
     programName: "",
     duration: "",
@@ -35,7 +35,7 @@ export const AppointmentSection: React.FC = () => {
 
   return (
     <Background id="booking">
-      <div className="container mx-auto lg:px-8">
+      <div className="container mx-auto lg:px-8 bangla">
         <Heading
           title="অ্যাপয়েন্টমেন্ট"
           subTitle="নিচের ফর্মটি পূরণ করে আমাদের প্রোগ্রাম বুক করুন"

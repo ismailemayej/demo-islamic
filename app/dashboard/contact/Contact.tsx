@@ -2,14 +2,15 @@
 
 import React from "react";
 import { motion } from "framer-motion";
-import { Heading } from "../Heading";
+
 import {
   FaPhoneAlt,
   FaEnvelope,
   FaMapMarkerAlt,
   FaWhatsapp,
 } from "react-icons/fa";
-import Background from "../background";
+import Background from "@/components/background";
+import { Heading } from "@/components/Heading";
 
 interface ContactItem {
   id: string;
@@ -54,7 +55,7 @@ const CONTACT_ITEMS: ContactItem[] = [
   },
 ];
 
-export const ContactSection: React.FC = () => {
+export const ContactSectionDashboard: React.FC = () => {
   return (
     <Background id="contact">
       <div className="container mx-auto">

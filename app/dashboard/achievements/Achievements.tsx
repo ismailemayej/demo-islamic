@@ -1,8 +1,8 @@
 "use client";
 
+import Background from "@/components/background";
+import { Heading } from "@/components/Heading";
 import { motion } from "framer-motion";
-import { Heading } from "../Heading";
-import Background from "../background";
 
 interface Achievement {
   id: string;
@@ -18,7 +18,7 @@ const ACHIEVEMENTS: Achievement[] = [
   { id: "4", title: "Online Videos", count: 120, icon: "🎥" },
 ];
 
-export const AchievementsSection: React.FC = () => {
+export const AchievementsSectionDashboard: React.FC = () => {
   return (
     <Background id="achievenents">
       <div className="container mx-auto">

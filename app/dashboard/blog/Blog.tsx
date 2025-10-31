@@ -1,8 +1,8 @@
 "use client";
 
+import Background from "@/components/background";
+import { Heading } from "@/components/Heading";
 import { motion } from "framer-motion";
-import { Heading } from "../Heading";
-import Background from "../background";
 
 interface Article {
   id: string;
@@ -47,7 +47,7 @@ const MOCK_ARTICLES: Article[] = [
   },
 ];
 
-export const ArticlesSection: React.FC = () => {
+export const BlogSectionDashboard: React.FC = () => {
   return (
     <Background id="blog">
       <div className="container mx-auto">
