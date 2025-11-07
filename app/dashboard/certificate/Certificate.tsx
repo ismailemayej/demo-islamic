@@ -41,7 +41,7 @@ export const CertificateSectionDashboard: React.FC = () => {
   return (
     <section
       id="certificates"
-      className="bangla py-10 px-3 rounded-xl 
+      className="py-10 px-3 rounded-xl 
              bg-gradient-to-b from-amber-50 to-white 
              dark:bg-gradient-to-b dark:from-gray-700 dark:to-gray-900 transition-colors duration-500"
     >

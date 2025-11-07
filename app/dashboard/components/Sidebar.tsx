@@ -18,8 +18,8 @@ import {
   Grid,
   Tv,
   Smile,
-  LogOut,
 } from "lucide-react";
+import { SidebarProfile } from "./DashboardProfile";
 
 export const Sidebar = ({ onLinkClick }: { onLinkClick?: () => void }) => {
   const pathname = usePathname();
@@ -85,19 +85,7 @@ export const Sidebar = ({ onLinkClick }: { onLinkClick?: () => void }) => {
   return (
     <aside className="flex flex-col h-screen w-64 bg-white dark:bg-gray-900 border-r border-gray-200 dark:border-gray-800">
       {/* Top Section */}
-      <div className="flex items-center justify-between p-4 border-b border-gray-200 dark:border-gray-800">
-        {/* Left side — Profile Image */}
-        <img
-          src="https://upload.wikimedia.org/wikipedia/commons/thumb/4/48/Outdoors-man-portrait_%28cropped%29.jpg/961px-Outdoors-man-portrait_%28cropped%29.jpg"
-          alt="Profile"
-          className="h-10 w-10 rounded-full border-2 border-green-500 object-cover"
-        />
-
-        {/* Right side — Dashboard Title */}
-        <h2 className="text-xl font-semibold text-gray-800 dark:text-gray-100">
-          Dashboard
-        </h2>
-      </div>
+      <SidebarProfile />
 
       {/* Scrollable Menu */}
       <ScrollShadow

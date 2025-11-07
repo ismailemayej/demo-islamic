@@ -1,10 +1,8 @@
 "use client";
-
 import { motion } from "framer-motion";
 import profile from "@/public/images/profile.png";
 import Background from "@/components/background";
 import { Heading } from "@/components/Heading";
-
 export const AboutSectionDashboard: React.FC = () => {
   return (
     <Background id="about">

@@ -4,6 +4,7 @@ import React, { useState } from "react";
 import { motion } from "framer-motion";
 import Background from "@/components/background";
 import { Heading } from "@/components/Heading";
+import toast from "react-hot-toast";
 
 export const AppointmentSectionDashboard: React.FC = () => {
   const [formData, setFormData] = useState({
@@ -20,10 +21,21 @@ export const AppointmentSectionDashboard: React.FC = () => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
+  // handleSubmit এর মধ্যে
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
 
-    // Email link using mailto:
+    if (
+      !formData.programName ||
+      !formData.duration ||
+      !formData.date ||
+      !formData.contact ||
+      !formData.details
+    ) {
+      toast.error("সব ফিল্ড পূরণ করুন!");
+      return;
+    }
+
     const mailtoLink = `mailto:ismaile535@gmail.com?subject=Appointment Request: ${encodeURIComponent(
       formData.programName
     )}&body=${encodeURIComponent(
@@ -31,6 +43,15 @@ export const AppointmentSectionDashboard: React.FC = () => {
     )}`;
 
     window.location.href = mailtoLink;
+
+    toast.success("অ্যাপয়েন্টমেন্ট ফর্ম সফলভাবে পাঠানো হয়েছে!");
+    setFormData({
+      programName: "",
+      duration: "",
+      date: "",
+      contact: "",
+      details: "",
+    });
   };
 
   return (

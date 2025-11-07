@@ -1,8 +1,7 @@
 import React from "react";
-import { BlogSectionDashboard } from "./Blog";
-
-const Heropage = () => {
-  return <BlogSectionDashboard />;
+import { ArticlesSectionDashboard } from "./Blog";
+const HeroPage = () => {
+  return <ArticlesSectionDashboard />;
 };
 
-export default Heropage;
+export default HeroPage;

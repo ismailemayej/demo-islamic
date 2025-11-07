@@ -3,8 +3,8 @@
 import { motion } from "framer-motion";
 
 interface HeadingProps {
-  title: string;
-  subTitle?: string;
+  title: React.ReactNode;
+  subTitle?: React.ReactNode;
   center?: boolean;
 }
 

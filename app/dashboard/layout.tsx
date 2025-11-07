@@ -15,7 +15,7 @@ export default function DashboardLayout({
   const [open, setOpen] = useState(false);
 
   return (
-    <section className="mx-3 max-w-[1536px] grid grid-cols-1 lg:grid-cols-[20%_80%] h-screen">
+    <section className="lg:mx-3 max-w-[1536px] grid grid-cols-1 lg:grid-cols-[20%_80%] h-screen">
       {/* Sidebar (Desktop) */}
       <aside className="hidden lg:block h-full border-r border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-900">
         <Sidebar />
@@ -57,16 +57,17 @@ export default function DashboardLayout({
       {/* Main Content Area */}
       <main className="flex flex-col h-screen bg-gray-50 dark:bg-gray-950 overflow-hidden">
         {/* Header */}
-        <div className="border-b border-gray-200 dark:border-gray-800 flex justify-end w-full p-4 bg-white dark:bg-gray-900">
-          <Button className="bg-green-500 px-3 text-white hover:bg-green-600 transition">
+        <div className="border-b border-gray-200 dark:border-gray-800 flex justify-between w-full p-4 bg-white dark:bg-gray-900 ml-3">
+          <span></span>
+          Dahsboard
+          <button className="hover:font-extrabold dark:hover:green-500 transition hover:text-blue-500 mx-4">
             Login
-          </Button>
+          </button>
         </div>
-
         {/* Scrollable Section */}
         <ScrollShadow
           hideScrollBar
-          className="flex-1 overflow-y-auto px-6 sm:px-10 py-6 bg-white dark:bg-gray-900 rounded-t-2xl shadow-inner"
+          className="flex-1 overflow-y-auto lg:px-10 py-6 bg-white dark:bg-gray-900 rounded-t-2xl shadow-inner"
         >
           {children}
         </ScrollShadow>
