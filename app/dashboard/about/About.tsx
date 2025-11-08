@@ -160,7 +160,7 @@ export const AboutSectionDashboard = () => {
 
   return (
     <Background id="about-dashboard">
-      <div className="flex justify-between items-center">
+      <div className="flex justify-between items-center mb-6">
         {isEditing ? (
           <div className="flex gap-2">
             <Button
@@ -187,7 +187,11 @@ export const AboutSectionDashboard = () => {
       </div>
 
       {/* Form + Preview */}
-      <div className="grid grid-cols-1 lg:grid-cols-1">
+      <div
+        className={`grid grid-cols-1 ${
+          isEditing ? "lg:grid-cols-2" : "lg:grid-cols-1"
+        } gap-6`}
+      >
         {/* 🔹 Editable Form */}
         {isEditing && (
           <Card className="border border-gray-300 dark:border-gray-700 shadow-md">
