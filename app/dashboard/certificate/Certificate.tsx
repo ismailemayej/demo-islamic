@@ -1,187 +1,316 @@
 "use client";
 
-import { Heading } from "@/components/Heading";
+import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
-import { Award, Edit2, Loader2 } from "lucide-react";
+import { Award, Edit, Save, Trash2, X } from "lucide-react";
 import { useGetSection } from "../Hook/GetData";
-import { useState } from "react";
-import {
-  Modal,
-  ModalBody,
-  ModalContent,
-  ModalFooter,
-  ModalHeader,
-  Button,
-  Input,
-} from "@heroui/react";
-import toast, { Toaster } from "react-hot-toast";
+import toast from "react-hot-toast";
+import { Button } from "@heroui/button";
+import { Input } from "@heroui/input";
+import { Heading } from "@/components/Heading";
 
-interface Certificate {
-  _id: string;
-  title?: string;
-  institution: string;
+interface EducationItem {
   degree: string;
-  year?: string;
+  institution: string;
   board?: string;
+  year?: string;
   gpa?: string;
 }
 
+interface EducationSection {
+  heading: {
+    title: string;
+    subTitle: string;
+  };
+  data: EducationItem[];
+}
+
 export const CertificateSectionDashboard: React.FC = () => {
-  const { section, loading, error } = useGetSection("educationsection");
-  const [selectedCert, setSelectedCert] = useState<Certificate | null>(null);
-  const [isOpen, setIsOpen] = useState(false);
+  const { section } = useGetSection("educationsection");
+  const [formData, setFormData] = useState<EducationSection>({
+    heading: { title: "", subTitle: "" },
+    data: [],
+  });
+
+  const [editingIndex, setEditingIndex] = useState<number | null>(null);
+  const [editingHeading, setEditingHeading] = useState(false);
   const [saving, setSaving] = useState(false);
 
-  const handleEdit = (cert: Certificate) => {
-    setSelectedCert(cert);
-    setIsOpen(true);
+  // Load section data
+  useEffect(() => {
+    if (section) {
+      setFormData({
+        heading: {
+          title: section.heading?.title || "",
+          subTitle: section.heading?.subTitle || "",
+        },
+        data: section.data || [],
+      });
+    }
+  }, [section]);
+
+  // Handle field changes
+  const handleChange = (
+    sectionType: "heading" | "data",
+    field: string,
+    value: string,
+    index?: number
+  ) => {
+    if (sectionType === "heading") {
+      setFormData((prev) => ({
+        ...prev,
+        heading: { ...prev.heading, [field]: value },
+      }));
+    } else if (sectionType === "data" && index !== undefined) {
+      setFormData((prev) => {
+        const newData = [...prev.data];
+        newData[index] = { ...newData[index], [field]: value };
+        return { ...prev, data: newData };
+      });
+    }
   };
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    if (!selectedCert) return;
-    setSelectedCert({ ...selectedCert, [e.target.name]: e.target.value });
-  };
-
+  // Save handler
   const handleSave = async () => {
-    if (!selectedCert) return;
     setSaving(true);
+    toast.loading("Saving data...", { id: "save" });
+
     try {
       const res = await fetch("/api/all-data/educationsection/update", {
         method: "PATCH",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(selectedCert),
+        body: JSON.stringify(formData),
       });
 
-      if (res.ok) {
-        toast.success("Certificate updated successfully!");
+      const json = await res.json();
+      if (!json.success) throw new Error(json.error || "Save failed");
 
-        setIsOpen(false);
-      } else {
-        toast.error("Failed to update certificate!");
-      }
-    } catch (err) {
-      toast.error("Something went wrong!");
+      toast.dismiss("save");
+      toast.success("✅ Saved successfully!");
+      setEditingIndex(null);
+      setEditingHeading(false);
+    } catch (err: any) {
+      toast.dismiss("save");
+      toast.error(err.message || "Save failed");
     } finally {
       setSaving(false);
     }
   };
 
+  // Delete one item
+  const handleDelete = (index: number) => {
+    setFormData((prev) => ({
+      ...prev,
+      data: prev.data.filter((_, i) => i !== index),
+    }));
+  };
+
+  // Add new item
+  const addNewEducation = () => {
+    setFormData((prev) => ({
+      ...prev,
+      data: [
+        ...prev.data,
+        { degree: "", institution: "", board: "", year: "", gpa: "" },
+      ],
+    }));
+    setEditingIndex(formData.data.length);
+  };
+
   return (
     <section
-      id="certificates"
-      className="py-10 px-3 rounded-xl 
-             bg-gradient-to-b from-amber-50 to-white 
-             dark:bg-gradient-to-b dark:from-gray-700 dark:to-gray-900 transition-colors duration-500"
+      id="education"
+      className="py-10 px-3 rounded-xl bg-gradient-to-b from-amber-50 to-white 
+      dark:bg-gradient-to-b dark:from-gray-800 dark:to-gray-900 transition-colors duration-500"
     >
-      <Toaster />
-      <div className="container mx-auto bangla">
-        <Heading
-          title={section?.heading?.title}
-          subTitle={section?.heading?.subTitle}
-        />
+      <div className="container mx-auto">
+        {/* ======= Section Heading ======= */}
+        <div className="flex items-center justify-between mb-8">
+          {editingHeading ? (
+            <div className="flex flex-col md:flex-row gap-3 items-center w-full md:w-auto">
+              <Input
+                label="Title"
+                variant="bordered"
+                value={formData.heading.title}
+                onChange={(e) =>
+                  handleChange("heading", "title", e.target.value)
+                }
+              />
+              <Input
+                label="Sub Title"
+                variant="bordered"
+                value={formData.heading.subTitle}
+                onChange={(e) =>
+                  handleChange("heading", "subTitle", e.target.value)
+                }
+              />
+              <div className="flex gap-2">
+                <Button
+                  color="success"
+                  variant="solid"
+                  onClick={handleSave}
+                  disabled={saving}
+                >
+                  <Save className="w-4 h-4 mr-1" /> Save
+                </Button>
+                <Button
+                  color="danger"
+                  variant="flat"
+                  onClick={() => setEditingHeading(false)}
+                >
+                  <X className="w-4 h-4 mr-1" /> Cancel
+                </Button>
+              </div>
+            </div>
+          ) : (
+            <>
+              <Heading
+                title={formData.heading.title}
+                subTitle={formData.heading.subTitle}
+              />
+              <div className="flex gap-3">
+                <Button
+                  color="primary"
+                  variant="flat"
+                  onClick={addNewEducation}
+                >
+                  ➕ Add
+                </Button>
+                <Button
+                  color="warning"
+                  variant="flat"
+                  onClick={() => setEditingHeading(true)}
+                >
+                  ✏️ Edit Heading
+                </Button>
+              </div>
+            </>
+          )}
+        </div>
 
-        <div className="grid gap-6 md:grid-cols-3 mt-10">
-          {section?.data?.map((cert: Certificate, index: number) => (
+        {/* ======= Education Cards ======= */}
+        <div className="grid gap-6 md:grid-cols-3">
+          {formData.data.map((edu, index) => (
             <motion.div
               key={index}
-              initial={{ opacity: 0, y: 40 }}
+              initial={{ opacity: 0, y: 30 }}
               whileInView={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.7, delay: index * 0.2 }}
-              className="relative bg-emerald-50 dark:bg-gray-800 rounded-3xl shadow-lg hover:shadow-2xl transition-all duration-300 p-6"
+              transition={{ duration: 0.5 }}
+              className="relative bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 
+              rounded-2xl shadow-md hover:shadow-lg transition-all duration-300 p-5"
             >
-              {/* Edit Button */}
-              <button
-                onClick={() => handleEdit(cert)}
-                className="absolute top-3 right-3 bg-amber-500 hover:bg-amber-600 text-white p-2 rounded-full shadow-md"
-              >
-                <Edit2 size={16} />
-              </button>
+              {editingIndex === index ? (
+                <div className="space-y-3">
+                  <Input
+                    label="Degree"
+                    variant="bordered"
+                    value={edu.degree}
+                    onChange={(e) =>
+                      handleChange("data", "degree", e.target.value, index)
+                    }
+                  />
+                  <Input
+                    label="Institution"
+                    variant="bordered"
+                    value={edu.institution}
+                    onChange={(e) =>
+                      handleChange("data", "institution", e.target.value, index)
+                    }
+                  />
+                  <Input
+                    label="Board"
+                    variant="bordered"
+                    value={edu.board}
+                    onChange={(e) =>
+                      handleChange("data", "board", e.target.value, index)
+                    }
+                  />
+                  <Input
+                    label="Year"
+                    variant="bordered"
+                    value={edu.year}
+                    onChange={(e) =>
+                      handleChange("data", "year", e.target.value, index)
+                    }
+                  />
+                  <Input
+                    label="GPA"
+                    variant="bordered"
+                    value={edu.gpa}
+                    onChange={(e) =>
+                      handleChange("data", "gpa", e.target.value, index)
+                    }
+                  />
 
-              {/* Degree */}
-              <div className="flex items-center gap-2 mb-4">
-                <Award className="text-amber-600 w-6 h-6" />
-                <h3 className="text-xl font-bold text-emerald-700 dark:text-emerald-300">
-                  {cert?.degree}
-                </h3>
-              </div>
-
-              {/* Certificate Info */}
-              <p className="text-gray-700 mb-2">
-                <span className="font-semibold">প্রতিষ্ঠানঃ</span>{" "}
-                {cert?.institution}
-              </p>
-
-              {cert?.board && (
-                <p className="text-gray-700 mb-2">
-                  <span className="font-semibold">বোর্ডঃ</span> {cert.board}
-                </p>
+                  <div className="flex gap-2 mt-3">
+                    <Button
+                      color="success"
+                      variant="solid"
+                      onClick={handleSave}
+                      disabled={saving}
+                    >
+                      <Save className="w-4 h-4 mr-1" /> Save
+                    </Button>
+                    <Button
+                      color="danger"
+                      variant="flat"
+                      onClick={() => setEditingIndex(null)}
+                    >
+                      <X className="w-4 h-4 mr-1" /> Cancel
+                    </Button>
+                  </div>
+                </div>
+              ) : (
+                <div>
+                  <div className="flex items-center justify-between mb-3">
+                    <h3 className="text-lg font-semibold text-emerald-700 dark:text-emerald-300">
+                      {edu.degree}
+                    </h3>
+                    <div className="flex gap-2">
+                      <Button
+                        isIconOnly
+                        color="warning"
+                        variant="flat"
+                        onClick={() => setEditingIndex(index)}
+                      >
+                        <Edit className="w-4 h-4" />
+                      </Button>
+                      <Button
+                        isIconOnly
+                        color="danger"
+                        variant="flat"
+                        onClick={() => handleDelete(index)}
+                      >
+                        <Trash2 className="w-4 h-4" />
+                      </Button>
+                    </div>
+                  </div>
+                  <p className="text-gray-700 dark:text-gray-300 text-sm">
+                    <strong>Institution:</strong> {edu.institution}
+                  </p>
+                  <p className="text-gray-700 dark:text-gray-300 text-sm">
+                    <strong>Board:</strong> {edu.board}
+                  </p>
+                  <p className="text-gray-700 dark:text-gray-300 text-sm">
+                    <strong>Year:</strong> {edu.year}
+                  </p>
+                  <p className="text-gray-700 dark:text-gray-300 text-sm">
+                    <strong>GPA:</strong> {edu.gpa}
+                  </p>
+                  <motion.div
+                    initial={{ scale: 0 }}
+                    whileInView={{ scale: 1 }}
+                    transition={{ delay: 0.3 }}
+                    className="absolute bottom-3 right-3 bg-amber-500 dark:bg-amber-400 text-white w-9 h-9 rounded-full flex items-center justify-center shadow-md"
+                  >
+                    <Award className="w-4 h-4" />
+                  </motion.div>
+                </div>
               )}
-
-              {cert?.gpa && (
-                <p className="text-gray-700 mb-2">
-                  <span className="font-semibold">গ্রেডঃ</span> {cert.gpa}
-                </p>
-              )}
-
-              <p className="text-gray-700 mb-2">
-                <span className="font-semibold">সালঃ</span> {cert.year}
-              </p>
             </motion.div>
           ))}
         </div>
       </div>
-
-      {/* Edit Modal */}
-      <Modal isOpen={isOpen} onClose={() => setIsOpen(false)}>
-        <ModalContent>
-          <ModalHeader>সার্টিফিকেট সম্পাদনা করুন</ModalHeader>
-          <ModalBody>
-            <Input
-              name="degree"
-              label="ডিগ্রি"
-              value={selectedCert?.degree || ""}
-              onChange={handleChange}
-            />
-            <Input
-              name="institution"
-              label="প্রতিষ্ঠান"
-              value={selectedCert?.institution || ""}
-              onChange={handleChange}
-            />
-            <Input
-              name="board"
-              label="বোর্ড"
-              value={selectedCert?.board || ""}
-              onChange={handleChange}
-            />
-            <Input
-              name="gpa"
-              label="গ্রেড"
-              value={selectedCert?.gpa || ""}
-              onChange={handleChange}
-            />
-            <Input
-              name="year"
-              label="সাল"
-              value={selectedCert?.year || ""}
-              onChange={handleChange}
-            />
-          </ModalBody>
-          <ModalFooter>
-            <Button variant="light" onPress={() => setIsOpen(false)}>
-              বাতিল
-            </Button>
-            <Button
-              color="success"
-              onPress={handleSave}
-              disabled={saving}
-              startContent={saving && <Loader2 className="animate-spin" />}
-            >
-              {saving ? "সংরক্ষণ হচ্ছে..." : "সংরক্ষণ করুন"}
-            </Button>
-          </ModalFooter>
-        </ModalContent>
-      </Modal>
     </section>
   );
 };

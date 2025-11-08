@@ -194,7 +194,7 @@ export const AboutSectionDashboard = () => {
       >
         {/* 🔹 Editable Form */}
         {isEditing && (
-          <Card className="border border-gray-300 dark:border-gray-700 shadow-md">
+          <Card className="text-white border border-gray-300 dark:border-gray-700 shadow-md">
             <CardBody className="space-y-2">
               <h3 className="text-lg font-semibold text-gray-700 dark:text-gray-200 border-b pb-2">
                 Heading
