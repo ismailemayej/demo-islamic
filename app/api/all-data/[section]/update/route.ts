@@ -6,8 +6,14 @@ interface Params {
   section: string;
 }
 
-export async function PATCH(req: Request, { params }: { params: Params }) {
+// স্পষ্টভাবে Promise<NextResponse> রিটার্ন টাইপ
+export async function PATCH(
+  req: Request,
+  context: { params: Params }
+): Promise<NextResponse> {
   try {
+    const { params } = context;
+
     if (!params?.section) {
       return NextResponse.json(
         { success: false, error: "Section parameter is required" },
@@ -16,6 +22,7 @@ export async function PATCH(req: Request, { params }: { params: Params }) {
     }
 
     const sectionName = params.section.toLowerCase();
+
     await connectDB();
 
     let body: any;

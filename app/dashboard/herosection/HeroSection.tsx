@@ -149,7 +149,7 @@ export const HeroSectionDashboard: React.FC = () => {
                         <Trash2 className="w-5 h-5" />
                       )}
                     </button>
-                    <label className="p-2 bg-blue-600 hover:bg-blue-700 text-white rounded-full shadow-lg cursor-pointer">
+                    {/* <label className="p-2 bg-blue-600 hover:bg-blue-700 text-white rounded-full shadow-lg cursor-pointer">
                       <UploadCloud className="w-5 h-5" />
                       <input
                         type="file"
@@ -158,7 +158,7 @@ export const HeroSectionDashboard: React.FC = () => {
                         onChange={handleImageUpload}
                         disabled={uploading}
                       />
-                    </label>
+                    </label> */}
                   </div>
                 )}
               </>
