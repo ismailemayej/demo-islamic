@@ -26,7 +26,7 @@ interface EducationSection {
 }
 
 export const CertificateSectionDashboard: React.FC = () => {
-  const { section } = useGetSection("educationsection");
+  const { section } = useGetSection("certificatesection");
   const [formData, setFormData] = useState<EducationSection>({
     heading: { title: "", subTitle: "" },
     data: [],
@@ -76,7 +76,7 @@ export const CertificateSectionDashboard: React.FC = () => {
     toast.loading("Saving data...", { id: "save" });
 
     try {
-      const res = await fetch("/api/all-data/educationsection/update", {
+      const res = await fetch("/api/all-data/certificatesection/update", {
         method: "PATCH",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(formData),
