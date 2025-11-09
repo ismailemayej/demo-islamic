@@ -14,9 +14,16 @@ interface Program {
 }
 
 export const RecentProgramsSection: React.FC = () => {
-  const { section } = useGetSection<any>("programsection");
+  const { section, loading, error } = useGetSection<any>("programsection");
   const today = new Date();
   const MOCK_PROGRAMS = section?.data || [];
+  if (loading) {
+    return (
+      <div className="flex items-center justify-center py-20">
+        <div className="h-10 w-10 border-4 border-emerald-500 border-t-transparent rounded-full animate-spin"></div>
+      </div>
+    );
+  }
 
   const calculateRemainingDays = (programDate: Date) => {
     const diffTime = programDate.getTime() - today.getTime();

@@ -36,8 +36,15 @@ const SOCIAL_OPTIONS = [
 ];
 
 export const SocialMediaSection: React.FC = () => {
-  const { section } = useGetSection<any>("socialmediasection");
+  const { section, loading, error } = useGetSection<any>("socialmediasection");
   const SOCIAL_LINKS = section?.data || [];
+  if (loading) {
+    return (
+      <div className="flex items-center justify-center py-20">
+        <div className="h-10 w-10 border-4 border-emerald-500 border-t-transparent rounded-full animate-spin"></div>
+      </div>
+    );
+  }
 
   // নাম অনুযায়ী icon সেট করা
   const getIcon = (name: string) => {
@@ -76,8 +83,11 @@ export const SocialMediaSection: React.FC = () => {
     >
       <div className="container mx-auto px-0">
         <Heading
-          title="যোগাযোগের মাধ্যম"
-          subTitle="আমাদের সামাজিক যোগাযোগ মাধ্যমে অনুসরণ করুন এবং সর্বশেষ আপডেট পান"
+          title={section?.heading?.title || "সোস্যাল মিডিয়া"}
+          subTitle={
+            section?.heading?.subTitle ||
+            "আমাদের সামাজিক যোগাযোগ মাধ্যমে অনুসরণ করুন এবং সর্বশেষ আপডেট পান"
+          }
         />
 
         <div className="mt-10 grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-6">

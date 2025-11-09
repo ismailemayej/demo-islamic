@@ -3,40 +3,27 @@
 import { motion } from "framer-motion";
 import { Heading } from "../Heading";
 import { Award } from "lucide-react";
+import { useGetSection } from "@/app/dashboard/Hook/GetData";
 
 interface Certificate {
-  id: string;
-  title: string;
-  institution: string;
-  date: string;
-  description?: string;
+  degree?: string;
+  institution?: string;
+  board?: string;
+  year?: string;
+  gpa?: string;
 }
 
-const CERTIFICATES: Certificate[] = [
-  {
-    id: "1",
-    title: "Complete Web Development Course",
-    institution: "Programming Hero",
-    date: "2023",
-    description: "MERN Stack Development with modern technologies",
-  },
-  {
-    id: "2",
-    title: "Next Level Web Development",
-    institution: "Programming Hero",
-    date: "2024",
-    description: "Advanced Next.js, TypeScript & Full-stack Projects",
-  },
-  {
-    id: "3",
-    title: "Typing Speed Enhancement",
-    institution: "Typing.com",
-    date: "2022",
-    description: "Achieved 70+ WPM typing proficiency",
-  },
-];
-
 export const CertificateSection: React.FC = () => {
+  const { section, loading, error } = useGetSection("certificatesection");
+  if (loading) {
+    return (
+      <div className="flex items-center justify-center py-20">
+        <div className="h-10 w-10 border-4 border-emerald-500 border-t-transparent rounded-full animate-spin"></div>
+      </div>
+    );
+  }
+  const CERTIFICATES = section?.data || [];
+
   return (
     <section
       id="certificates"
@@ -46,37 +33,54 @@ export const CertificateSection: React.FC = () => {
     >
       <div className="container mx-auto bangla">
         <Heading
-          title="সার্টিফিকেট "
-          subTitle="আমার অর্জিত সার্টিফিকেট ও কোর্সসমূহ"
+          title={section?.heading?.title || "সার্টিফিকেট "}
+          subTitle={
+            section?.heading?.subTitle || "আমার অর্জিত সার্টিফিকেট ও কোর্সসমূহ"
+          }
         />
 
         <div className="grid gap-6 md:grid-cols-3 mt-10">
-          {CERTIFICATES.map((cert, index) => (
+          {CERTIFICATES.map((cert: Certificate, index: number) => (
             <motion.div
-              key={cert.id}
+              key={index}
               initial={{ opacity: 0, y: 40 }}
               whileInView={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.7, delay: index * 0.2 }}
               className="bg-emerald-50 dark:bg-gray-800 rounded-3xl shadow-lg dark:shadow-gray-700 hover:shadow-2xl dark:hover:shadow-gray-600 transition-all duration-300 p-6 relative overflow-hidden"
             >
-              {/* Top Decorative Icon */}
-              <div className="flex items-center gap-2 mb-4">
-                <Award className="text-amber-600 dark:text-amber-400 w-6 h-6" />
-                <h3 className="text-xl font-bold text-emerald-700 dark:text-emerald-300">
-                  {cert.title}
-                </h3>
-              </div>
+              {/* Degree */}
+              {cert.degree && (
+                <p className="text-gray-700 dark:text-gray-300 mb-1">
+                  <span className="font-semibold">ডিগ্রীঃ</span> {cert.degree}
+                </p>
+              )}
 
-              <p className="text-gray-700 dark:text-gray-300 mb-2">
-                <span className="font-semibold">প্রতিষ্ঠানঃ</span>{" "}
-                {cert.institution}
-              </p>
-              <p className="text-gray-700 dark:text-gray-300 mb-2">
-                <span className="font-semibold">সালঃ</span> {cert.date}
-              </p>
-              {cert.description && (
-                <p className="text-gray-600 dark:text-gray-400 text-sm mt-2">
-                  {cert.description}
+              {/* Institution */}
+              {cert.institution && (
+                <p className="text-gray-700 dark:text-gray-300 mb-1">
+                  <span className="font-semibold">প্রতিষ্ঠানঃ</span>{" "}
+                  {cert.institution}
+                </p>
+              )}
+
+              {/* Board */}
+              {cert.board && (
+                <p className="text-gray-700 dark:text-gray-300 mb-1">
+                  <span className="font-semibold">বোর্ডঃ</span> {cert.board}
+                </p>
+              )}
+
+              {/* Year */}
+              {cert.year && (
+                <p className="text-gray-700 dark:text-gray-300 mb-1">
+                  <span className="font-semibold">সালঃ</span> {cert.year}
+                </p>
+              )}
+
+              {/* GPA */}
+              {cert.gpa && (
+                <p className="text-gray-700 dark:text-gray-300 mb-2">
+                  <span className="font-semibold">GPA / CGPAঃ</span> {cert.gpa}
                 </p>
               )}
 

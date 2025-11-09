@@ -2,50 +2,18 @@
 
 import { motion } from "framer-motion";
 import { Heading } from "../Heading";
-
-// Gallery Data
-const galleryData = {
-  data: [
-    {
-      id: "1",
-      image:
-        "https://img.freepik.com/free-photo/modern-interior-living-room-with-comfortable-furniture_1150-14584.jpg",
-      title: "Main Hall",
-    },
-    {
-      id: "2",
-      image:
-        "https://img.freepik.com/free-photo/modern-library-with-bookshelves_1150-14585.jpg",
-      title: "Library",
-    },
-    {
-      id: "3",
-      image:
-        "https://img.freepik.com/free-photo/spacious-prayer-room-with-mosque-interior_1150-14586.jpg",
-      title: "Prayer Room",
-    },
-    {
-      id: "4",
-      image:
-        "https://img.freepik.com/free-photo/beautiful-courtyard-with-garden_1150-14587.jpg",
-      title: "Courtyard",
-    },
-    {
-      id: "5",
-      image:
-        "https://img.freepik.com/free-photo/modern-classroom-with-desks-and-chairs_1150-14588.jpg",
-      title: "Classroom",
-    },
-    {
-      id: "6",
-      image:
-        "https://img.freepik.com/free-photo/beautiful-garden-area-with-plants_1150-14589.jpg",
-      title: "Garden Area",
-    },
-  ],
-};
+import { useGetSection } from "@/app/dashboard/Hook/GetData";
 
 export const GallerySection: React.FC = () => {
+  const { section, loading, error } = useGetSection("gallerysection");
+  const galleryData = section;
+  if (loading) {
+    return (
+      <div className="flex items-center justify-center py-20">
+        <div className="h-10 w-10 border-4 border-emerald-500 border-t-transparent rounded-full animate-spin"></div>
+      </div>
+    );
+  }
   return (
     <section
       id="gallery"
@@ -55,14 +23,16 @@ export const GallerySection: React.FC = () => {
     >
       <div className="container mx-auto px-0">
         <Heading
-          title=" প্রতিষ্ঠানের গ্যালারি "
-          subTitle=" আমাদের প্রতিষ্ঠানের বিভিন্ন মুহূর্তের ছবি সমূহ "
+          title={section?.heading?.title || " প্রতিষ্ঠানের গ্যালারি "}
+          subTitle={
+            section?.heading?.subTitle ||
+            " আমাদের প্রতিষ্ঠানের বিভিন্ন মুহূর্তের ছবি সমূহ "
+          }
         />
-
         <div className="grid gap-2 mt-6 lg:grid-cols-6 md:grid-cols-3 sm:grid-cols-2 grid-cols-1 auto-rows-[200px] lg:auto-rows-[300px]">
-          {galleryData?.data?.map((item, i) => (
+          {galleryData?.data?.map((item: any, i: number) => (
             <motion.div
-              key={item.id}
+              key={i}
               initial={{ opacity: 0, scale: 0.95 }}
               whileInView={{ opacity: 1, scale: 1 }}
               transition={{ duration: 0.5, delay: i * 0.1 }}

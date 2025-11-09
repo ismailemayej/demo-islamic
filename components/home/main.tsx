@@ -22,17 +22,14 @@ export default function Main() {
       <section className="w-full transition-colors duration-500">
         <HeroSection />
       </section>
-
       {/* About */}
       <section className="w-full transition-colors duration-500">
         <AboutSection />
       </section>
-
       {/* YouTube Videos */}
       <section className="w-full transition-colors duration-500">
         <YouTubeVideosSection />
       </section>
-
       {/* Programs */}
       <section className="w-full  transition-colors duration-500">
         <RecentProgramsSection />

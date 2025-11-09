@@ -3,32 +3,39 @@
 import { motion } from "framer-motion";
 import { Heading } from "../Heading";
 import Background from "../background";
+import { useGetSection } from "@/app/dashboard/Hook/GetData";
 
 interface Achievement {
   id: string;
   title: string;
   count: number;
-  icon: string; // Emoji or icon
+  icon: string;
 }
 
-const ACHIEVEMENTS: Achievement[] = [
-  { id: "1", title: "Published Books", count: 12, icon: "📚" },
-  { id: "2", title: "Islamic Seminars", count: 45, icon: "🕌" },
-  { id: "3", title: "Students Trained", count: 350, icon: "👨‍🎓" },
-  { id: "4", title: "Online Videos", count: 120, icon: "🎥" },
-];
-
 export const AchievementsSection: React.FC = () => {
+  const { section, loading, error } = useGetSection("achievementsection");
+  if (loading) {
+    return (
+      <div className="flex items-center justify-center py-20">
+        <div className="h-10 w-10 border-4 border-emerald-500 border-t-transparent rounded-full animate-spin"></div>
+      </div>
+    );
+  }
+  const ACHIEVEMENTS = section?.data || [];
+  console.log("all Achievements:", ACHIEVEMENTS);
+
   return (
     <Background id="achievenents">
       <div className="container mx-auto">
         <Heading
-          title=" সকল অর্জনসমূহ "
-          subTitle=" আমার উল্লেখযোগ্য অর্জনসমূহ "
+          title={section?.heading?.title || "সকল অর্জনসমূহ"}
+          subTitle={
+            section?.heading?.subTitle || " আমার উল্লেখযোগ্য অর্জনসমূহ "
+          }
         />
 
         <div className="grid gap-4 sm:grid-cols-2 md:grid-cols-4">
-          {ACHIEVEMENTS.map((achievement, index) => (
+          {ACHIEVEMENTS.map((achievement: Achievement, index: number) => (
             <motion.div
               key={achievement.id}
               initial={{ opacity: 0, y: 20 }}
