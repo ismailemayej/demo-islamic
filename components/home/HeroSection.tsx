@@ -3,7 +3,10 @@ import { motion } from "framer-motion";
 import { BookOpen, Calendar, MessageCircle } from "lucide-react";
 import { Button } from "@heroui/button";
 import profile from "@/public/images/profile.png";
+import { useGetSection } from "@/app/dashboard/Hook/GetData";
+import Link from "next/link";
 export const HeroSection: React.FC = () => {
+  const { section } = useGetSection("herosection");
   return (
     <section
       id="hero"
@@ -22,7 +25,7 @@ export const HeroSection: React.FC = () => {
           <div className="relative w-full max-w-md">
             <div className="p-0">
               <img
-                src={profile.src}
+                src={section?.data.image || profile.src}
                 alt="মাওলানা মোঃ ইসমাইল হোসাইন"
                 className="w-full max-w-md sm:max-w-lg md:max-w-xl lg:max-w-2xl h-auto object-cover rounded-3xl shadow-2xl transition-all duration-500"
                 style={{
@@ -44,45 +47,45 @@ export const HeroSection: React.FC = () => {
           className="w-full lg:w-1/2 text-center lg:text-left"
         >
           <h2 className="bangla font-semibold text-3xl lg:text-4xl font-serif text-emerald-700 dark:text-emerald-400">
-            মাওঃ মিজানুর রহমান আল-আযহারী
+            {section?.data?.title || " "}
           </h2>
 
           <h1 className="text-4xl sm:text-5xl font-bold text-gray-800 dark:text-white leading-tight">
-            কুরআন ও সুন্নাহ-এর{" "}
-            <span className="text-emerald-600 dark:text-emerald-400">
-              জ্ঞান ছড়ানো
-            </span>
+            {section?.data.subTitle || ""}
           </h1>
 
           <p className="text-gray-600 dark:text-gray-300 text-lg max-w-lg mx-auto lg:mx-0">
-            ইসলামের আলো দিয়ে মন ও হৃদয় আলোকিত করা — মানুষের জীবনকে বিশ্বাস,
-            উদ্দেশ্য এবং জ্ঞানের সাথে সমৃদ্ধ করা।
+            {section?.data?.description || ""}
           </p>
 
           <div className="flex justify-center lg:justify-start gap-4 flex-wrap mt-4">
-            <Button
-              size="lg"
-              className="bg-emerald-600 hover:bg-emerald-700 text-white dark:bg-emerald-500 dark:hover:bg-emerald-400 rounded-full shadow-lg"
-            >
-              <BookOpen className="w-5 h-5 mr-2" />
-              বক্তৃতা দেখুন
-            </Button>
-
-            <Button
-              size="lg"
-              className="bg-emerald-500 hover:bg-emerald-600 dark:bg-emerald-400 dark:hover:bg-emerald-300 text-white dark:text-gray-900 rounded-full shadow-lg"
-            >
-              <Calendar className="w-5 h-5 mr-2" />
-              আসন্ন ইভেন্ট
-            </Button>
-
-            <Button
-              size="lg"
-              className="border-emerald-500 dark:border-emerald-400 text-emerald-700 dark:text-emerald-300 hover:bg-emerald-50 dark:hover:bg-gray-800 rounded-full"
-            >
-              <MessageCircle className="w-5 h-5 mr-2" />
-              যোগাযোগ করুন
-            </Button>
+            <Link href="#videos">
+              <Button
+                size="lg"
+                className="bg-emerald-600 hover:bg-emerald-700 text-white dark:bg-emerald-500 dark:hover:bg-emerald-400 rounded-full shadow-lg"
+              >
+                <BookOpen className="w-5 h-5 mr-2" />
+                বক্তৃতা দেখুন
+              </Button>
+            </Link>
+            <Link href="#programs">
+              <Button
+                size="lg"
+                className="bg-emerald-500 hover:bg-emerald-600 dark:bg-emerald-400 dark:hover:bg-emerald-300 text-white dark:text-gray-900 rounded-full shadow-lg"
+              >
+                <Calendar className="w-5 h-5 mr-2" />
+                আসন্ন ইভেন্ট
+              </Button>
+            </Link>
+            <Link href="#contact">
+              <Button
+                size="lg"
+                className="border-emerald-500 dark:border-emerald-400 text-emerald-700 dark:text-emerald-300 hover:bg-emerald-50 dark:hover:bg-gray-800 rounded-full"
+              >
+                <MessageCircle className="w-5 h-5 mr-2" />
+                যোগাযোগ করুন
+              </Button>
+            </Link>
           </div>
         </motion.div>
       </div>

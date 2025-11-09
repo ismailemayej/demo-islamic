@@ -9,49 +9,66 @@ import {
   FaInstagram,
   FaYoutube,
   FaLinkedinIn,
+  FaPinterest,
+  FaSnapchatGhost,
+  FaRedditAlien,
+  FaTiktok,
+  FaWhatsapp,
 } from "react-icons/fa";
+import { useGetSection } from "@/app/dashboard/Hook/GetData";
 
-interface SocialLink {
-  id: string;
-  name: string;
-  url: string;
-  icon: ReactNode;
-}
-
-const SOCIAL_LINKS: SocialLink[] = [
-  {
-    id: "1",
-    name: "Facebook",
-    url: "https://www.facebook.com/yourprofile",
-    icon: <FaFacebookF />,
-  },
-  {
-    id: "2",
-    name: "Twitter",
-    url: "https://twitter.com/yourprofile",
-    icon: <FaTwitter />,
-  },
-  {
-    id: "3",
-    name: "Instagram",
-    url: "https://www.instagram.com/yourprofile",
-    icon: <FaInstagram />,
-  },
-  {
-    id: "4",
-    name: "YouTube",
-    url: "https://www.youtube.com/@yourchannel",
-    icon: <FaYoutube />,
-  },
-  {
-    id: "5",
-    name: "LinkedIn",
-    url: "https://www.linkedin.com/in/yourprofile",
-    icon: <FaLinkedinIn />,
-  },
+// ✅ Social options (reference)
+const SOCIAL_OPTIONS = [
+  "Facebook",
+  "Twitter",
+  "Instagram",
+  "YouTube",
+  "LinkedIn",
+  "Pinterest",
+  "Snapchat",
+  "Reddit",
+  "TikTok",
+  "WhatsApp",
 ];
 
+interface SocialItem {
+  name: string;
+  url: string;
+  icon: string; // string name (e.g. "Facebook")
+}
+
 export const SocialMediaSection: React.FC = () => {
+  const { section } = useGetSection<any>("socialmediasection");
+  const SOCIAL_LINKS: SocialItem[] = section?.data || [];
+
+  // 🧠 Return icon based on string name
+  const getSocialIcon = (iconName: string): ReactNode => {
+    switch (iconName.toLowerCase()) {
+      case "facebook":
+        return <FaFacebookF />;
+      case "twitter":
+        return <FaTwitter />;
+      case "instagram":
+        return <FaInstagram />;
+      case "youtube":
+        return <FaYoutube />;
+      case "linkedin":
+        return <FaLinkedinIn />;
+      case "pinterest":
+        return <FaPinterest />;
+      case "snapchat":
+        return <FaSnapchatGhost />;
+      case "reddit":
+        return <FaRedditAlien />;
+      case "tiktok":
+        return <FaTiktok />;
+      case "whatsapp":
+        return <FaWhatsapp />;
+      default:
+        return <FaFacebookF />; // fallback icon
+    }
+  };
+
   return (
     <section
       id="social"
@@ -61,14 +78,17 @@ export const SocialMediaSection: React.FC = () => {
     >
       <div className="container mx-auto px-0">
         <Heading
-          title="যোগাযোগের মাধ্যম"
-          subTitle="আমাদের সামাজিক যোগাযোগ মাধ্যমে অনুসরণ করুন এবং সর্বশেষ আপডেট পান"
+          title={section?.heading?.title || "যোগাযোগের মাধ্যম"}
+          subTitle={
+            section?.heading?.subTitle ||
+            "আমাদের সামাজিক যোগাযোগ মাধ্যমে অনুসরণ করুন এবং সর্বশেষ আপডেট পান"
+          }
         />
 
         <div className="mt-10 grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-6">
           {SOCIAL_LINKS.map((social, index) => (
             <motion.a
-              key={social.id}
+              key={index}
               href={social.url}
               target="_blank"
               rel="noopener noreferrer"
@@ -77,8 +97,8 @@ export const SocialMediaSection: React.FC = () => {
               transition={{ duration: 0.5, delay: index * 0.1 }}
               className="flex flex-col items-center justify-center p-6 bg-white dark:bg-gray-800 rounded-2xl shadow-lg hover:shadow-2xl hover:scale-105 transition-transform duration-300 group"
             >
-              <div className="text-3xl text-emerald-700 dark:text-emerald-400 mb-3 group-hover:text-amber-500 transition-colors">
-                {social.icon}
+              <div className="text-5xl text-emerald-700 dark:text-emerald-400 mb-3 group-hover:text-amber-500 transition-colors">
+                {getSocialIcon(social.icon)}
               </div>
               <span className="font-semibold text-gray-700 dark:text-gray-200 group-hover:text-emerald-700 dark:group-hover:text-amber-400 transition-colors">
                 {social.name}

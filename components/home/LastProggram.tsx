@@ -3,9 +3,9 @@
 import { motion } from "framer-motion";
 import { Heading } from "../Heading";
 import { CheckCircle, Clock } from "lucide-react";
+import { useGetSection } from "@/app/dashboard/Hook/GetData";
 
 interface Program {
-  id: string;
   programName: string;
   name: string;
   location: string;
@@ -13,51 +13,10 @@ interface Program {
   day: string;
 }
 
-const MOCK_PROGRAMS: Program[] = [
-  {
-    id: "1",
-    programName: "ওয়াজ",
-    name: "ড. ওমর আল-ফার্সি",
-    location: "কুরআন একাডেমি, ঢাকা",
-    date: "2025-10-01",
-    day: "শনিবার",
-  },
-  {
-    id: "2",
-    programName: "ইসলামিক সেমিনার",
-    name: "মুহাম্মাদ জসিম",
-    location: "মসজিদ নূর, চট্টগ্রাম",
-    date: "2025-11-03",
-    day: "সোমবার",
-  },
-  {
-    id: "3",
-    programName: "কুরআন শিক্ষা কর্মশালা",
-    name: "ড. সায়েম রহমান",
-    location: "ইসলামিক সেন্টার, সিলেট",
-    date: "2025-11-05",
-    day: "বুধবার",
-  },
-  {
-    id: "4",
-    programName: "ইসলামিক আলোচনা সভা",
-    name: "মুফতি রাশিদুল ইসলাম",
-    location: "মাদ্রাসা হল, কুমিল্লা",
-    date: "2025-11-10",
-    day: "সোমবার",
-  },
-  {
-    id: "5",
-    programName: "কুরআন শিক্ষা কর্মশালা",
-    name: "ড. সায়েম রহমান",
-    location: "ইসলামিক সেন্টার, সিলেট",
-    date: "2025-10-05",
-    day: "বুধবার",
-  },
-];
-
 export const RecentProgramsSection: React.FC = () => {
+  const { section } = useGetSection<any>("programsection");
   const today = new Date();
+  const MOCK_PROGRAMS = section?.data || [];
 
   const calculateRemainingDays = (programDate: Date) => {
     const diffTime = programDate.getTime() - today.getTime();
@@ -78,19 +37,22 @@ export const RecentProgramsSection: React.FC = () => {
     >
       <div className="container mx-auto px-0 bangla">
         <Heading
-          title="প্রোগ্রাম"
-          subTitle="আমাদের সাম্প্রতিক ইসলামিক প্রোগ্রামের তালিকা"
+          title={section?.heading?.title || "প্রোগ্রাম"}
+          subTitle={
+            section?.heading?.subTitle ||
+            "আমাদের সাম্প্রতিক ইসলামিক প্রোগ্রামের তালিকা"
+          }
         />
 
         <div className="grid gap-6 md:grid-cols-5 mt-10">
-          {MOCK_PROGRAMS.map((program, index) => {
+          {MOCK_PROGRAMS.map((program: Program, index: number) => {
             const programDate = new Date(program.date);
             const remainingDays = calculateRemainingDays(programDate);
             const isUpcoming = programDate >= today;
 
             return (
               <motion.div
-                key={program.id}
+                key={index}
                 initial={{ opacity: 0, y: 30 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.6, delay: index * 0.2 }}
