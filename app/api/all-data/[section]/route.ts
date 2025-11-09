@@ -1,26 +1,39 @@
 import AllData from "@/app/dashboard/models/AllData";
-import { connectDB } from "@/lib/mongodb";
+import connectDB from "@/lib/mongodb";
+
 import { NextResponse } from "next/server";
 
-interface Params {
+// ⚡ TypeScript interface (optional, clarity purpose)
+interface SectionParams {
   section: string;
 }
 
-export async function GET(_req: Request, context: { params: Params }) {
+// ✅ GET API handler for dynamic section
+export async function GET(
+  _req: Request,
+  context: { params: Promise<SectionParams> }
+) {
   try {
-    const params = context.params; // ✅ ensure params exists
-    if (!params?.section) {
+    // 🧠 params এখন Promise, তাই await দিয়ে resolve করতে হবে
+    const { section } = await context.params;
+
+    // ❗ Section name না থাকলে error
+    if (!section) {
       return NextResponse.json(
         { success: false, error: "Section parameter is required" },
         { status: 400 }
       );
     }
 
-    const sectionName = params.section.toLowerCase();
+    const sectionName = section.toLowerCase();
 
+    // ✅ MongoDB সংযোগ
     await connectDB();
 
+    // 🔍 নির্দিষ্ট section ডকুমেন্ট বের করা
     const sectionDoc = await AllData.findOne({ section: sectionName });
+
+    // ❌ যদি section না পাওয়া যায়
     if (!sectionDoc) {
       return NextResponse.json(
         { success: false, error: `Section "${sectionName}" not found` },
@@ -28,6 +41,7 @@ export async function GET(_req: Request, context: { params: Params }) {
       );
     }
 
+    // ✅ সফল response
     return NextResponse.json({
       success: true,
       totalSections: 1,

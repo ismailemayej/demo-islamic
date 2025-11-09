@@ -1,41 +1,83 @@
 import Certificate from "@/app/dashboard/models/Certificate";
-import { connectDB } from "@/lib/mongodb";
-import { NextApiRequest, NextApiResponse } from "next";
-export default async function handler(
-  req: NextApiRequest,
-  res: NextApiResponse
-) {
-  await connectDB();
-  const { id } = req.query;
+import connectDB from "@/lib/mongodb";
+import { NextResponse } from "next/server";
 
-  if (req.method === "GET") {
+// Params interface
+interface Params {
+  id: string;
+}
+
+// GET / PUT / DELETE handler
+export async function GET(req: Request, context: { params: Promise<Params> }) {
+  try {
+    const { id } = await context.params;
+
+    await connectDB();
+
     const cert = await Certificate.findById(id);
-    if (!cert) return res.status(404).json({ error: "Certificate not found" });
-    return res.status(200).json(cert);
-  }
-
-  if (req.method === "PUT") {
-    try {
-      const updatedCert = await Certificate.findByIdAndUpdate(id, req.body, {
-        new: true,
-      });
-      return res.status(200).json({ updatedCert });
-    } catch (err) {
-      console.error(err);
-      return res.status(400).json({ error: "Update failed" });
+    if (!cert) {
+      return NextResponse.json(
+        { error: "Certificate not found" },
+        { status: 404 }
+      );
     }
-  }
 
-  if (req.method === "DELETE") {
-    try {
-      await Certificate.findByIdAndDelete(id);
-      return res.status(200).json({ success: true });
-    } catch (err) {
-      console.error(err);
-      return res.status(400).json({ error: "Delete failed" });
+    return NextResponse.json(cert);
+  } catch (error) {
+    console.error("GET certificate error:", error);
+    return NextResponse.json(
+      { error: "Internal server error" },
+      { status: 500 }
+    );
+  }
+}
+
+export async function PUT(req: Request, context: { params: Promise<Params> }) {
+  try {
+    const { id } = await context.params;
+    const body = await req.json();
+
+    await connectDB();
+
+    const updatedCert = await Certificate.findByIdAndUpdate(id, body, {
+      new: true,
+    });
+
+    if (!updatedCert) {
+      return NextResponse.json(
+        { error: "Certificate not found or update failed" },
+        { status: 404 }
+      );
     }
-  }
 
-  res.setHeader("Allow", ["GET", "PUT", "DELETE"]);
-  res.status(405).end(`Method ${req.method} Not Allowed`);
+    return NextResponse.json({ updatedCert });
+  } catch (error) {
+    console.error("PUT certificate error:", error);
+    return NextResponse.json({ error: "Update failed" }, { status: 400 });
+  }
+}
+
+export async function DELETE(
+  req: Request,
+  context: { params: Promise<Params> }
+) {
+  try {
+    const { id } = await context.params;
+
+    await connectDB();
+
+    const deleted = await Certificate.findByIdAndDelete(id);
+
+    if (!deleted) {
+      return NextResponse.json(
+        { error: "Certificate not found or delete failed" },
+        { status: 404 }
+      );
+    }
+
+    return NextResponse.json({ success: true });
+  } catch (error) {
+    console.error("DELETE certificate error:", error);
+    return NextResponse.json({ error: "Delete failed" }, { status: 400 });
+  }
 }

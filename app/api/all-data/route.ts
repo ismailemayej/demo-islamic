@@ -1,5 +1,5 @@
 import AllData from "@/app/dashboard/models/AllData";
-import { connectDB } from "@/lib/mongodb";
+import connectDB from "@/lib/mongodb";
 
 import { WebsiteData } from "@/types/allData";
 

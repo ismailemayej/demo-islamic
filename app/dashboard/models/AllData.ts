@@ -1,7 +1,8 @@
 import { WebsiteData } from "@/types/allData";
 import mongoose, { Schema, Document, Model } from "mongoose";
 
-interface IAllData extends WebsiteData, Document {}
+// Avoid _id clash by omitting it from WebsiteData
+interface IAllData extends Omit<WebsiteData, "_id">, Document {}
 
 const allDataSchema = new Schema<IAllData>(
   {

@@ -12,12 +12,11 @@ export async function POST(request: Request) {
         { status: 400 }
       );
     }
-
     // URL থেকে public_id বের করা
     // উদাহরণ: https://res.cloudinary.com/<cloud_name>/image/upload/v1699999999/dashboard-certificates/filename.jpg
     const urlParts = imageUrl.split("/");
     const filename = urlParts[urlParts.length - 1]; // filename.jpg
-    const publicId = `dashboard-certificates/${filename.split(".")[0]}`; // folder/filename (extension ছাড়াই)
+    const publicId = `dashboard-certificates/${filename.split(".")[0]}`;
 
     const result = await cloudinary.uploader.destroy(publicId);
 

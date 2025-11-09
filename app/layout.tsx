@@ -5,6 +5,7 @@ import { Providers } from "./providers";
 import { siteConfig } from "@/config/site";
 import { fontSans } from "@/config/fonts";
 import { Toaster } from "react-hot-toast";
+import { useGetSection } from "./dashboard/Hook/GetData";
 
 export const metadata: Metadata = {
   title: {

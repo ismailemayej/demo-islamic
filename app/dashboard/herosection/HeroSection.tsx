@@ -5,6 +5,7 @@ import { Save, UploadCloud, Trash2, Edit2 } from "lucide-react";
 import { Button } from "@heroui/button";
 import { useGetSection } from "../Hook/GetData";
 import toast, { Toaster } from "react-hot-toast";
+import profile from "@/public/images/profile.png";
 
 export const HeroSectionDashboard: React.FC = () => {
   const { section, loading, error } = useGetSection<any>("herosection");
@@ -38,6 +39,7 @@ export const HeroSectionDashboard: React.FC = () => {
     type === "success" ? toast.success(msg) : toast.error(msg);
   };
 
+  // 🟢 Upload Image Handler
   const handleImageUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (!file) return;
@@ -53,9 +55,9 @@ export const HeroSectionDashboard: React.FC = () => {
       const data = await res.json();
 
       if (data?.secure_url) {
-        setFormData({ ...formData, image: data.secure_url });
+        setFormData((prev) => ({ ...prev, image: data.secure_url }));
         toast.dismiss("upload");
-        notify("Image uploaded successfully!");
+        notify("✅ Image uploaded successfully!");
       } else {
         throw new Error("Upload failed");
       }
@@ -67,8 +69,12 @@ export const HeroSectionDashboard: React.FC = () => {
     }
   };
 
+  // 🟠 Delete Image Handler
   const handleImageDelete = async () => {
-    if (!formData.image) return;
+    if (!formData.image) {
+      notify("No image to delete!", "error");
+      return;
+    }
 
     setUploading(true);
     toast.loading("Deleting image...", { id: "delete" });
@@ -80,11 +86,12 @@ export const HeroSectionDashboard: React.FC = () => {
         body: JSON.stringify({ imageUrl: formData.image }),
       });
       const json = await res.json();
+
       if (!json.success) throw new Error(json.error || "Delete failed");
 
-      setFormData({ ...formData, image: "" });
+      setFormData((prev) => ({ ...prev, image: "" })); // ✅ reset image
       toast.dismiss("delete");
-      notify("Image deleted successfully!");
+      notify("🗑️ Image deleted successfully!");
     } catch (err: any) {
       toast.dismiss("delete");
       notify(err.message || "Delete failed", "error");
@@ -93,6 +100,7 @@ export const HeroSectionDashboard: React.FC = () => {
     }
   };
 
+  // 🟢 Save Handler
   const handleSave = async () => {
     setUploading(true);
     toast.loading("Saving data...", { id: "save" });
@@ -107,7 +115,7 @@ export const HeroSectionDashboard: React.FC = () => {
       if (!json.success) throw new Error(json.error || "Save failed");
 
       toast.dismiss("save");
-      notify("Saved successfully!");
+      notify("✅ Saved successfully!");
       setIsEditing(false);
     } catch (err: any) {
       toast.dismiss("save");
@@ -129,13 +137,22 @@ export const HeroSectionDashboard: React.FC = () => {
           className="w-full lg:w-1/2 flex flex-col items-center lg:items-start"
         >
           <div className="relative w-full max-w-md">
-            {formData.image ? (
+            {/* ✅ Conditional Image Preview */}
+            {isEditing && (
               <>
-                <img
-                  src={formData.image}
-                  alt="Hero Image"
-                  className="w-full max-w-md sm:max-w-lg md:max-w-xl lg:max-w-2xl h-auto object-cover rounded-3xl shadow-2xl mb-4"
-                />
+                <label className="flex items-center justify-center gap-2 p-3 bg-emerald-500 hover:bg-emerald-600 text-white rounded cursor-pointer transition w-full max-w-md">
+                  <UploadCloud className="w-5 h-5" />
+                  {uploading ? "Processing..." : "Upload Image"}
+                  <input
+                    type="file"
+                    className="hidden"
+                    accept="image/*"
+                    onChange={handleImageUpload}
+                    disabled={uploading}
+                  />
+                </label>
+
+                {/* 🗑️ Delete Button (Only when Editing) */}
                 {isEditing && (
                   <div className="absolute top-2 right-2 flex gap-2">
                     <button
@@ -149,34 +166,19 @@ export const HeroSectionDashboard: React.FC = () => {
                         <Trash2 className="w-5 h-5" />
                       )}
                     </button>
-                    {/* <label className="p-2 bg-blue-600 hover:bg-blue-700 text-white rounded-full shadow-lg cursor-pointer">
-                      <UploadCloud className="w-5 h-5" />
-                      <input
-                        type="file"
-                        className="hidden"
-                        accept="image/*"
-                        onChange={handleImageUpload}
-                        disabled={uploading}
-                      />
-                    </label> */}
                   </div>
                 )}
               </>
-            ) : (
-              isEditing && (
-                <label className="flex items-center justify-center gap-2 p-2 bg-emerald-500 hover:bg-emerald-600 text-white rounded cursor-pointer transition w-full max-w-md">
-                  <UploadCloud className="w-5 h-5" />
-                  {uploading ? "Processing..." : "Upload Image"}
-                  <input
-                    type="file"
-                    className="hidden"
-                    accept="image/*"
-                    onChange={handleImageUpload}
-                    disabled={uploading}
-                  />
-                </label>
-              )
             )}
+            <img
+              src={formData.image || profile.src}
+              alt="Hero Image"
+              className="w-full max-w-md sm:max-w-lg md:max-w-xl lg:max-w-2xl h-auto object-cover rounded-3xl shadow-2xl mb-4"
+              onError={(e) => {
+                (e.target as HTMLImageElement).src = profile.src; // fallback
+                setFormData((prev) => ({ ...prev, image: "" })); // remove broken link
+              }}
+            />
           </div>
         </motion.div>
 
@@ -189,6 +191,7 @@ export const HeroSectionDashboard: React.FC = () => {
         >
           <div className="flex justify-between items-start">
             <div className="space-y-2 w-full">
+              {/* Title */}
               <input
                 value={formData.title}
                 onChange={(e) =>
@@ -202,6 +205,8 @@ export const HeroSectionDashboard: React.FC = () => {
                     : "bg-transparent border-0"
                 }`}
               />
+
+              {/* SubTitle */}
               <input
                 value={formData.subTitle}
                 onChange={(e) =>
@@ -215,6 +220,8 @@ export const HeroSectionDashboard: React.FC = () => {
                     : "bg-transparent border-0"
                 }`}
               />
+
+              {/* Description */}
               <textarea
                 value={formData.description}
                 onChange={(e) =>
@@ -228,6 +235,8 @@ export const HeroSectionDashboard: React.FC = () => {
                     : "bg-transparent border-0"
                 }`}
               />
+
+              {/* Button Text */}
               <input
                 value={formData.buttonText}
                 onChange={(e) =>
@@ -242,6 +251,8 @@ export const HeroSectionDashboard: React.FC = () => {
                 }`}
               />
             </div>
+
+            {/* Edit Button */}
             <Button
               size="sm"
               className="bg-blue-600 text-white flex items-center gap-1"
@@ -251,6 +262,7 @@ export const HeroSectionDashboard: React.FC = () => {
             </Button>
           </div>
 
+          {/* Save Button */}
           {isEditing && (
             <Button
               size="sm"

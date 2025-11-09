@@ -1,11 +1,10 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
-
-import { Video } from "lucide-react";
-import Link from "next/link";
 import { Heading } from "@/components/Heading";
+import toast from "react-hot-toast";
+import { useGetSection } from "../Hook/GetData";
 
 interface VideoItem {
   id: string;
@@ -13,52 +12,71 @@ interface VideoItem {
   url: string;
 }
 
-// Mock data
-const MOCK_VIDEOS: VideoItem[] = [
-  {
-    id: "1",
-    title: "Quran Tafsir - Episode 1",
-    url: "https://www.youtube.com/watch?v=LktmvsFdNSA",
-  },
-  {
-    id: "2",
-    title: "Hadith Explained",
-    url: "https://www.youtube.com/watch?v=08uoMEBwqxw",
-  },
-  {
-    id: "3",
-    title: "Islamic Knowledge Series",
-    url: "https://www.youtube.com/watch?v=tfEeRkrdoh0",
-  },
-  {
-    id: "4",
-    title: "Islamic Knowledge Series",
-    url: "https://www.youtube.com/watch?v=otg9tzJsLTk",
-  },
-  {
-    id: "5",
-    title: "Quran Tafsir - Episode 2",
-    url: "https://www.youtube.com/watch?v=LktmvsFdNSA",
-  },
-  {
-    id: "6",
-    title: "Hadith Explained 2",
-    url: "https://www.youtube.com/watch?v=08uoMEBwqxw",
-  },
-  {
-    id: "7",
-    title: "Islamic Knowledge Series 2",
-    url: "https://www.youtube.com/watch?v=tfEeRkrdoh0",
-  },
-  {
-    id: "8",
-    title: "Islamic Knowledge Series 3",
-    url: "https://www.youtube.com/watch?v=otg9tzJsLTk",
-  },
-];
+interface VideoSectionData {
+  heading: { title: string; subTitle: string };
+  moreVideosUrl: string;
+  data: VideoItem[];
+}
 
 export const YouTubeVideosSectionDashboard: React.FC = () => {
+  const { section } = useGetSection("youtubevideosection");
+
+  const [formData, setFormData] = useState<VideoSectionData>({
+    heading: { title: "", subTitle: "" },
+    moreVideosUrl: "",
+    data: [],
+  });
+  const [editing, setEditing] = useState(false);
+  const [saving, setSaving] = useState(false);
   const [activeVideo, setActiveVideo] = useState<VideoItem | null>(null);
+
+  useEffect(() => {
+    if (section) {
+      setFormData({
+        heading: {
+          title: section.heading?.title || "",
+          subTitle: section.heading?.subTitle || "",
+        },
+        moreVideosUrl: section.moreVideosUrl || "",
+        data: section.data || [],
+      });
+    }
+  }, [section]);
+
+  const handleChange = (
+    sectionType: "heading" | "data" | "moreVideosUrl",
+    field: string,
+    value: string,
+    index?: number
+  ) => {
+    if (sectionType === "heading") {
+      setFormData((prev) => ({
+        ...prev,
+        heading: { ...prev.heading, [field]: value },
+      }));
+    } else if (sectionType === "moreVideosUrl") {
+      setFormData((prev) => ({ ...prev, moreVideosUrl: value }));
+    } else if (sectionType === "data" && index !== undefined) {
+      const updated = [...formData.data];
+      updated[index] = { ...updated[index], [field]: value };
+      setFormData((prev) => ({ ...prev, data: updated }));
+    }
+  };
+
+  const handleAdd = () => {
+    setFormData((prev) => ({
+      ...prev,
+      data: [...prev.data, { id: Date.now().toString(), title: "", url: "" }],
+    }));
+  };
+
+  const handleDelete = (index: number) => {
+    setFormData((prev) => {
+      const newData = [...prev.data];
+      newData.splice(index, 1);
+      return { ...prev, data: newData };
+    });
+  };
 
   const getEmbedUrl = (url: string) => {
     const videoId = url.split("v=")[1];
@@ -71,55 +89,168 @@ export const YouTubeVideosSectionDashboard: React.FC = () => {
     }?autoplay=1`;
   };
 
-  // Responsive video limit
-  const isMobile = typeof window !== "undefined" && window.innerWidth < 640;
-  const isMedium = typeof window !== "undefined" && window.innerWidth < 1024;
-  const displayVideos = isMobile
-    ? MOCK_VIDEOS.slice(0, 5)
-    : MOCK_VIDEOS.slice(0, 8);
+  const handleSave = async () => {
+    setSaving(true);
+    toast.loading("Saving data...", { id: "save" });
+    try {
+      const res = await fetch("/api/all-data/youtubevideosection/update", {
+        method: "PATCH",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(formData),
+      });
+      const json = await res.json();
+      if (!json.success) throw new Error(json.error || "Save failed");
+
+      toast.dismiss("save");
+      toast.success("✅ Saved successfully!");
+      setEditing(false);
+    } catch (err: any) {
+      toast.dismiss("save");
+      toast.error(err.message || "Save failed");
+    } finally {
+      setSaving(false);
+    }
+  };
 
   return (
-    <section
-      id="videos"
-      className="bg-white px-3 rounded-xl 
-             bg-gradient-to-b from-amber-50 to-white 
-             dark:bg-gradient-to-b dark:from-gray-700 dark:to-gray-900 py-10 relative overflow-hidden"
-    >
+    <section className="py-10 px-3 rounded-xl bg-gradient-to-b from-amber-50 to-white dark:bg-gradient-to-b dark:from-gray-700 dark:to-gray-900">
       <div className="container mx-auto">
-        <Heading
-          title="ভিডিও গেলারি"
-          subTitle="আমার ইউটিউব চ্যানেলে প্রকাশিত কিছু ভিডিও।"
-        />
+        {/* Heading */}
+        <div className="flex justify-between items-center mb-6">
+          <Heading
+            title={formData.heading.title}
+            subTitle={formData.heading.subTitle}
+            center
+          />
+          <button
+            onClick={() => setEditing(!editing)}
+            className="px-4 py-2 rounded-lg bg-amber-500 text-white hover:bg-amber-600 transition"
+          >
+            {editing ? "Cancel" : "Edit"}
+          </button>
+        </div>
 
-        {/* Videos Grid */}
+        {/* Edit Panel */}
+        {editing && (
+          <motion.div
+            initial={{ opacity: 0, y: 40 }}
+            animate={{ opacity: 1, y: 0 }}
+            className="mb-10 bg-white dark:bg-gray-800 p-6 rounded-2xl shadow-lg border border-amber-100 dark:border-gray-700"
+          >
+            <h3 className="text-lg font-semibold mb-4 text-amber-700">
+              ✏️ Edit YouTube Videos Section
+            </h3>
+
+            {/* Heading Inputs */}
+            <div className="grid sm:grid-cols-2 gap-4 mb-6">
+              <input
+                type="text"
+                placeholder="Section Title"
+                value={formData.heading.title}
+                onChange={(e) =>
+                  handleChange("heading", "title", e.target.value)
+                }
+                className="border p-2 rounded-lg dark:bg-gray-700"
+              />
+              <input
+                type="text"
+                placeholder="Section Subtitle"
+                value={formData.heading.subTitle}
+                onChange={(e) =>
+                  handleChange("heading", "subTitle", e.target.value)
+                }
+                className="border p-2 rounded-lg dark:bg-gray-700"
+              />
+            </div>
+
+            {/* More Videos URL */}
+            <input
+              type="text"
+              placeholder="More Videos URL"
+              value={formData.moreVideosUrl}
+              onChange={(e) =>
+                handleChange("moreVideosUrl", "", e.target.value)
+              }
+              className="border p-2 rounded-lg dark:bg-gray-700 w-full mb-4"
+            />
+
+            {/* Videos Inputs */}
+            <div className="space-y-4">
+              {formData.data.map((video, index) => (
+                <motion.div
+                  key={video.id}
+                  whileHover={{ scale: 1.01 }}
+                  className="relative bg-gradient-to-r from-amber-50 to-white dark:from-gray-700 dark:to-gray-800 p-5 rounded-xl shadow-sm border border-gray-200 dark:border-gray-700"
+                >
+                  <button
+                    onClick={() => handleDelete(index)}
+                    className="bg-violet-50 z-10 border rounded-2xl p-1 absolute top-3 right-3 text-red-500 hover:text-red-700"
+                  >
+                    Delete
+                  </button>
+                  <div className="grid sm:grid-cols-2 gap-3">
+                    <input
+                      type="text"
+                      placeholder="Video Title"
+                      value={video.title}
+                      onChange={(e) =>
+                        handleChange("data", "title", e.target.value, index)
+                      }
+                      className="border p-2 rounded-md dark:bg-gray-700"
+                    />
+                    <input
+                      type="text"
+                      placeholder="Video URL"
+                      value={video.url}
+                      onChange={(e) =>
+                        handleChange("data", "url", e.target.value, index)
+                      }
+                      className="border p-2 rounded-md dark:bg-gray-700"
+                    />
+                  </div>
+                </motion.div>
+              ))}
+            </div>
+
+            <div className="mt-5 flex justify-between items-center">
+              <button
+                onClick={handleAdd}
+                className="flex items-center gap-2 px-4 py-2 bg-emerald-600 text-white rounded-lg hover:bg-emerald-700"
+              >
+                + Add Video
+              </button>
+              <button
+                onClick={handleSave}
+                disabled={saving}
+                className="flex items-center gap-2 bg-amber-500 text-white px-6 py-2 rounded-lg hover:bg-amber-600"
+              >
+                {saving ? "Saving..." : "Save Changes"}
+              </button>
+            </div>
+          </motion.div>
+        )}
+
+        {/* Display Section */}
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
-          {displayVideos.map((video, index) => {
+          {formData.data.map((video) => {
             const videoId = video.url.split("v=")[1];
             const thumbnail = `https://img.youtube.com/vi/${videoId}/0.jpg`;
-
             return (
               <motion.div
                 key={video.id}
                 initial={{ opacity: 0, y: 20 }}
                 whileInView={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.6, delay: index * 0.15 }}
+                className="hover:scale-105 transition-transform duration-300 shadow-lg rounded-2xl cursor-pointer bg-white dark:bg-gray-800"
+                onClick={() => setActiveVideo(video)}
               >
-                <div
-                  className="hover:scale-105 transition-transform duration-300 shadow-lg rounded-2xl cursor-pointer bg-white dark:bg-gray-800"
-                  onClick={() => setActiveVideo(video)}
-                >
-                  <div className="p-0">
-                    <div className="border relative w-full h-40 rounded-2xl overflow-hidden">
-                      <img
-                        src={thumbnail}
-                        alt={video.title}
-                        className="w-full h-full object-cover"
-                        loading="lazy"
-                      />
-                      <div className="absolute top-0 left-0 w-full h-full bg-black/20 dark:bg-black/30 flex items-center justify-center opacity-0 hover:opacity-100 transition-opacity rounded-2xl">
-                        <Video className="w-12 h-12 text-red-600" />
-                      </div>
-                    </div>
+                <div className="relative w-full h-40 rounded-2xl overflow-hidden border">
+                  <img
+                    src={thumbnail}
+                    alt={video.title}
+                    className="w-full h-full object-cover"
+                  />
+                  <div className="absolute top-0 left-0 w-full h-full bg-black/20 dark:bg-black/30 flex items-center justify-center opacity-0 hover:opacity-100 transition-opacity rounded-2xl">
+                    <span className="text-red-600 text-4xl">▶</span>
                   </div>
                 </div>
               </motion.div>
@@ -127,42 +258,43 @@ export const YouTubeVideosSectionDashboard: React.FC = () => {
           })}
         </div>
 
-        {/* "More Videos" Button */}
-        <div className="mt-2 flex justify-center lg:justify-start">
-          <Link
-            href="https://www.youtube.com/@mizanurrahmanalazhari"
-            target="_blank"
-            className="bg-gray-100  dark:bg-gray-700 dark:hover:bg-amber-600 text-blue-400 dark:text-white font-semibold py-1 px-6 rounded-full shadow-lg transition-colors"
-          >
-            More Videos...
-          </Link>
-        </div>
-      </div>
-
-      {/* Modal for iframe */}
-      {activeVideo && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 dark:bg-black/90 p-4">
-          <div className="relative w-full max-w-4xl bg-black dark:bg-gray-900 rounded-xl shadow-xl">
-            <button
-              className="absolute top-2 right-2 text-white text-3xl font-bold z-50"
-              onClick={() => setActiveVideo(null)}
+        {/* More Videos Button */}
+        {formData.moreVideosUrl && (
+          <div className="mt-4 flex justify-center lg:justify-start">
+            <a
+              href={formData.moreVideosUrl}
+              target="_blank"
+              className="bg-gray-100 dark:bg-gray-700 dark:hover:bg-amber-600 text-blue-400 dark:text-white font-semibold py-1 px-6 rounded-full shadow-lg transition-colors"
             >
-              &times;
-            </button>
+              More Videos...
+            </a>
+          </div>
+        )}
 
-            <div className="w-full aspect-video rounded-xl overflow-hidden">
-              <iframe
-                src={getEmbedUrl(activeVideo.url)}
-                title={activeVideo.title}
-                width="100%"
-                height="100%"
-                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                allowFullScreen
-              ></iframe>
+        {/* Video Modal */}
+        {activeVideo && (
+          <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 dark:bg-black/90 p-4">
+            <div className="relative w-full max-w-4xl bg-black dark:bg-gray-900 rounded-xl shadow-xl">
+              <button
+                className="absolute top-2 right-2 text-white text-3xl font-bold z-50"
+                onClick={() => setActiveVideo(null)}
+              >
+                &times;
+              </button>
+              <div className="w-full aspect-video rounded-xl overflow-hidden">
+                <iframe
+                  src={getEmbedUrl(activeVideo.url)}
+                  title={activeVideo.title}
+                  width="100%"
+                  height="100%"
+                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                  allowFullScreen
+                ></iframe>
+              </div>
             </div>
           </div>
-        </div>
-      )}
+        )}
+      </div>
     </section>
   );
 };
