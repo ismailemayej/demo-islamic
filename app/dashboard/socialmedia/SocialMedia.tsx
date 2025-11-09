@@ -31,6 +31,8 @@ interface SocialMediaSectionData {
   data: SocialLink[];
 }
 
+// ... উপরের import অংশ একই থাকবে
+
 const SOCIAL_OPTIONS = [
   "Facebook",
   "Twitter",
@@ -66,6 +68,7 @@ export const SocialMediaSectionDashboard: React.FC = () => {
     }
   }, [section]);
 
+  // ✅ Update handleChange
   const handleChange = (
     sectionType: "heading" | "data",
     field: string,
@@ -80,6 +83,12 @@ export const SocialMediaSectionDashboard: React.FC = () => {
     } else if (sectionType === "data" && index !== undefined) {
       const updated = [...formData.data];
       (updated[index] as any)[field] = value;
+
+      // 🟢 যদি iconName পরিবর্তন হয়, name field auto update
+      if (field === "iconName") {
+        (updated[index] as any).name = value;
+      }
+
       setFormData((prev) => ({ ...prev, data: updated }));
     }
   };
@@ -89,7 +98,12 @@ export const SocialMediaSectionDashboard: React.FC = () => {
       ...prev,
       data: [
         ...prev.data,
-        { id: Date.now().toString(), name: "", url: "", iconName: "Facebook" },
+        {
+          id: Date.now().toString(),
+          iconName: "Facebook",
+          name: "Facebook", // iconName অনুযায়ী name auto set
+          url: "",
+        },
       ],
     }));
   };
@@ -124,7 +138,6 @@ export const SocialMediaSectionDashboard: React.FC = () => {
     }
   };
 
-  // ICON MAP
   const getIcon = (name: string) => {
     switch (name) {
       case "Facebook":
@@ -152,19 +165,7 @@ export const SocialMediaSectionDashboard: React.FC = () => {
     }
   };
 
-  if (loading)
-    return (
-      <div className="flex justify-center items-center py-20">
-        <p>Loading...</p>
-      </div>
-    );
-
-  if (error)
-    return (
-      <p className="text-red-500 text-center py-10">
-        {error || "Something went wrong!"}
-      </p>
-    );
+  // ... Loading/Error UI একই থাকবে
 
   return (
     <section
@@ -172,6 +173,7 @@ export const SocialMediaSectionDashboard: React.FC = () => {
       className="py-10 px-3 rounded-xl bg-gradient-to-b from-amber-50 to-white dark:from-gray-700 dark:to-gray-900 transition-colors duration-500"
     >
       <div className="container mx-auto px-0">
+        {/* Heading + Edit Button */}
         <div className="flex justify-between items-center mb-6">
           <Heading
             title={formData.heading.title}
@@ -185,6 +187,7 @@ export const SocialMediaSectionDashboard: React.FC = () => {
           </button>
         </div>
 
+        {/* Edit Form */}
         {editing && (
           <div className="bg-white dark:bg-gray-800 p-6 rounded-2xl shadow-lg border border-amber-100 dark:border-gray-700 mb-10 space-y-4">
             <h3 className="text-lg font-semibold text-amber-700">
@@ -230,10 +233,8 @@ export const SocialMediaSectionDashboard: React.FC = () => {
                     type="text"
                     placeholder="Name"
                     value={social.name}
-                    onChange={(e) =>
-                      handleChange("data", "name", e.target.value, i)
-                    }
-                    className="border p-2 rounded-lg dark:bg-gray-700 flex-1"
+                    disabled
+                    className="border p-2 rounded-lg dark:bg-gray-700 flex-1 cursor-not-allowed"
                   />
                   <input
                     type="text"
@@ -279,6 +280,7 @@ export const SocialMediaSectionDashboard: React.FC = () => {
           </div>
         )}
 
+        {/* Display Social Links */}
         <div className="mt-10 grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-6">
           {formData.data.map((social, index) => (
             <motion.a

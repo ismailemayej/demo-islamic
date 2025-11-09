@@ -1,6 +1,6 @@
 "use client";
 
-import React, { ReactNode } from "react";
+import React from "react";
 import { motion } from "framer-motion";
 import { Heading } from "../Heading";
 import {
@@ -9,15 +9,19 @@ import {
   FaInstagram,
   FaYoutube,
   FaLinkedinIn,
-  FaPinterest,
   FaSnapchatGhost,
+  FaPinterestP,
   FaRedditAlien,
   FaTiktok,
   FaWhatsapp,
 } from "react-icons/fa";
 import { useGetSection } from "@/app/dashboard/Hook/GetData";
 
-// ✅ Social options (reference)
+interface SocialLink {
+  name: string;
+  url: string;
+}
+
 const SOCIAL_OPTIONS = [
   "Facebook",
   "Twitter",
@@ -31,41 +35,35 @@ const SOCIAL_OPTIONS = [
   "WhatsApp",
 ];
 
-interface SocialItem {
-  name: string;
-  url: string;
-  icon: string; // string name (e.g. "Facebook")
-}
-
 export const SocialMediaSection: React.FC = () => {
   const { section } = useGetSection<any>("socialmediasection");
-  const SOCIAL_LINKS: SocialItem[] = section?.data || [];
+  const SOCIAL_LINKS = section?.data || [];
 
-  // 🧠 Return icon based on string name
-  const getSocialIcon = (iconName: string): ReactNode => {
-    switch (iconName.toLowerCase()) {
-      case "facebook":
+  // নাম অনুযায়ী icon সেট করা
+  const getIcon = (name: string) => {
+    switch (name) {
+      case "Facebook":
         return <FaFacebookF />;
-      case "twitter":
+      case "Twitter":
         return <FaTwitter />;
-      case "instagram":
+      case "Instagram":
         return <FaInstagram />;
-      case "youtube":
+      case "YouTube":
         return <FaYoutube />;
-      case "linkedin":
+      case "LinkedIn":
         return <FaLinkedinIn />;
-      case "pinterest":
-        return <FaPinterest />;
-      case "snapchat":
+      case "Pinterest":
+        return <FaPinterestP />;
+      case "Snapchat":
         return <FaSnapchatGhost />;
-      case "reddit":
+      case "Reddit":
         return <FaRedditAlien />;
-      case "tiktok":
+      case "TikTok":
         return <FaTiktok />;
-      case "whatsapp":
+      case "WhatsApp":
         return <FaWhatsapp />;
       default:
-        return <FaFacebookF />; // fallback icon
+        return <FaFacebookF />; // default icon
     }
   };
 
@@ -78,33 +76,39 @@ export const SocialMediaSection: React.FC = () => {
     >
       <div className="container mx-auto px-0">
         <Heading
-          title={section?.heading?.title || "যোগাযোগের মাধ্যম"}
-          subTitle={
-            section?.heading?.subTitle ||
-            "আমাদের সামাজিক যোগাযোগ মাধ্যমে অনুসরণ করুন এবং সর্বশেষ আপডেট পান"
-          }
+          title="যোগাযোগের মাধ্যম"
+          subTitle="আমাদের সামাজিক যোগাযোগ মাধ্যমে অনুসরণ করুন এবং সর্বশেষ আপডেট পান"
         />
 
         <div className="mt-10 grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-6">
-          {SOCIAL_LINKS.map((social, index) => (
-            <motion.a
-              key={index}
-              href={social.url}
-              target="_blank"
-              rel="noopener noreferrer"
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5, delay: index * 0.1 }}
-              className="flex flex-col items-center justify-center p-6 bg-white dark:bg-gray-800 rounded-2xl shadow-lg hover:shadow-2xl hover:scale-105 transition-transform duration-300 group"
-            >
-              <div className="text-5xl text-emerald-700 dark:text-emerald-400 mb-3 group-hover:text-amber-500 transition-colors">
-                {getSocialIcon(social.icon)}
-              </div>
-              <span className="font-semibold text-gray-700 dark:text-gray-200 group-hover:text-emerald-700 dark:group-hover:text-amber-400 transition-colors">
-                {social.name}
-              </span>
-            </motion.a>
-          ))}
+          {SOCIAL_LINKS?.map((social: SocialLink, index: number) => {
+            // নাম যদি SOCIAL_OPTIONS এ না থাকে, default icon দেখাবে
+            const icon = SOCIAL_OPTIONS.includes(social.name) ? (
+              getIcon(social.name)
+            ) : (
+              <FaFacebookF />
+            );
+
+            return (
+              <motion.a
+                key={index}
+                href={social.url}
+                target="_blank"
+                rel="noopener noreferrer"
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.5, delay: index * 0.1 }}
+                className="flex flex-col items-center justify-center p-6 bg-white dark:bg-gray-800 rounded-2xl shadow-lg hover:shadow-2xl hover:scale-105 transition-transform duration-300 group"
+              >
+                <div className="text-5xl text-emerald-700 dark:text-emerald-400 mb-3 group-hover:text-amber-500 transition-colors">
+                  {icon}
+                </div>
+                <span className="font-semibold text-gray-700 dark:text-gray-200 group-hover:text-emerald-700 dark:group-hover:text-amber-400 transition-colors">
+                  {social.name}
+                </span>
+              </motion.a>
+            );
+          })}
         </div>
       </div>
     </section>
