@@ -35,6 +35,14 @@ export const ArticlesSectionDashboard: React.FC = () => {
   const [isEditing, setIsEditing] = useState(false);
   const [isHeadingEditing, setIsHeadingEditing] = useState(false);
   const [saving, setSaving] = useState(false);
+  const [showEditor, setShowEditor] = useState(false);
+  const [newArticle, setNewArticle] = useState<Article>({
+    id: "",
+    blogtitle: "",
+    blogdescription: "",
+    blogwriter: "",
+    date: "",
+  });
 
   useEffect(() => {
     if (section) {
@@ -69,21 +77,32 @@ export const ArticlesSectionDashboard: React.FC = () => {
     }
   };
 
-  // ✅ Add new Article
+  // ✅ Open modal for new article
   const handleAdd = () => {
+    setNewArticle({
+      id: Date.now().toString(),
+      blogtitle: "",
+      blogdescription: "",
+      blogwriter: "",
+      date: new Date().toISOString().split("T")[0],
+    });
+    setShowEditor(true);
+  };
+
+  // ✅ Save new article from modal
+  const handleSaveNewArticle = () => {
+    if (!newArticle.blogtitle || !newArticle.blogdescription) {
+      toast.error("Title and description are required!");
+      return;
+    }
+
     setFormData((prev) => ({
       ...prev,
-      data: [
-        ...prev.data,
-        {
-          id: Date.now().toString(),
-          blogtitle: "New Article Title",
-          blogdescription: "Write your article content here...",
-          blogwriter: "Anonymous",
-          date: new Date().toISOString().split("T")[0],
-        },
-      ],
+      data: [...prev.data, newArticle],
     }));
+
+    setShowEditor(false);
+    toast.success("✅ New article added!");
   };
 
   // ✅ Delete Article
@@ -208,7 +227,7 @@ export const ArticlesSectionDashboard: React.FC = () => {
                         index
                       )
                     }
-                    rows={12} // ✅ বড় textarea
+                    rows={12}
                     className="w-full p-4 text-base rounded-md border dark:bg-gray-900 dark:text-white leading-relaxed"
                     placeholder="Write the full article here..."
                   />
@@ -224,11 +243,7 @@ export const ArticlesSectionDashboard: React.FC = () => {
                   <p className="text-gray-500 dark:text-gray-400 text-sm">
                     {article.date}
                   </p>
-                  <Button
-                    // variant="destructive"
-                    onClick={() => handleDelete(index)}
-                    className="mt-2"
-                  >
+                  <Button onClick={() => handleDelete(index)} className="mt-2">
                     Delete
                   </Button>
                 </div>
@@ -249,6 +264,52 @@ export const ArticlesSectionDashboard: React.FC = () => {
           ))}
         </div>
       </div>
+
+      {/* ✅ Full-Screen Modal Editor */}
+      {showEditor && (
+        <div className="fixed inset-0 bg-black bg-opacity-60 z-50 flex justify-center items-center">
+          <div className="bg-white dark:bg-gray-900 w-4/10 h-[90vh] rounded-xl p-6 shadow-2xl overflow-y-auto relative">
+            <h2 className="text-2xl font-bold mb-4 dark:text-white">
+              ✍️ Create New Article
+            </h2>
+            <input
+              type="text"
+              value={newArticle.blogtitle}
+              onChange={(e) =>
+                setNewArticle({ ...newArticle, blogtitle: e.target.value })
+              }
+              placeholder="Article Title"
+              className="w-full p-3 text-lg rounded-md border mb-4 dark:bg-gray-800 dark:text-white"
+            />
+            <textarea
+              value={newArticle.blogdescription}
+              onChange={(e) =>
+                setNewArticle({
+                  ...newArticle,
+                  blogdescription: e.target.value,
+                })
+              }
+              rows={20}
+              className="w-full p-4 text-base rounded-md border dark:bg-gray-800 dark:text-white leading-relaxed mb-4"
+              placeholder="Write your full article content here..."
+            />
+            <input
+              type="text"
+              value={newArticle.blogwriter}
+              onChange={(e) =>
+                setNewArticle({ ...newArticle, blogwriter: e.target.value })
+              }
+              placeholder="Writer Name"
+              className="w-full p-3 rounded-md border dark:bg-gray-800 dark:text-white mb-4"
+            />
+
+            <div className="flex justify-between mt-6">
+              <Button onClick={() => setShowEditor(false)}>Cancel</Button>
+              <Button onClick={handleSaveNewArticle}>Save Article</Button>
+            </div>
+          </div>
+        </div>
+      )}
     </Background>
   );
 };
