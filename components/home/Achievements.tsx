@@ -21,6 +21,7 @@ export const AchievementsSection: React.FC = () => {
       </div>
     );
   }
+  // console.log("Achievement section:", section);
   const ACHIEVEMENTS = section?.data || [];
   console.log("all Achievements:", ACHIEVEMENTS);
 

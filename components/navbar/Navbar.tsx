@@ -19,7 +19,7 @@ export const Navbar: React.FC = () => {
       <nav className="container mx-auto px-4 py-3 flex justify-between items-center">
         {/* Logo */}
         <motion.div
-          className="text-2xl sm:text-3xl font-[Quicksand] font-extrabold 
+          className="text-2xl sm:text-2xl font-[Quicksand] font-extrabold 
                      text-transparent bg-clip-text 
                      bg-gradient-to-r from-yellow-400 via-amber-500 to-yellow-600 
                      dark:from-yellow-300 dark:via-amber-400 dark:to-yellow-400 

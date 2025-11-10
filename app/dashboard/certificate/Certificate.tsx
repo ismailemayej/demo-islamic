@@ -1,5 +1,4 @@
 "use client";
-
 import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import { Award, Edit, Save, Trash2, X } from "lucide-react";
@@ -8,8 +7,10 @@ import toast from "react-hot-toast";
 import { Button } from "@heroui/button";
 import { Input } from "@heroui/input";
 import { Heading } from "@/components/Heading";
+import { DraggableList } from "../Hook/DraggableList";
 
 interface EducationItem {
+  id: string;
   degree: string;
   institution: string;
   board?: string;
@@ -111,7 +112,14 @@ export const CertificateSectionDashboard: React.FC = () => {
       ...prev,
       data: [
         ...prev.data,
-        { degree: "", institution: "", board: "", year: "", gpa: "" },
+        {
+          id: Date.now().toString(),
+          degree: "",
+          institution: "",
+          board: "",
+          year: "",
+          gpa: "",
+        },
       ],
     }));
     setEditingIndex(formData.data.length);
@@ -189,15 +197,21 @@ export const CertificateSectionDashboard: React.FC = () => {
         </div>
 
         {/* ======= Education Cards ======= */}
-        <div className="grid gap-6 md:grid-cols-3">
-          {formData.data.map((edu, index) => (
+        <DraggableList<EducationItem>
+          items={formData.data}
+          getId={(item) => item.id}
+          onChange={(newItems) =>
+            setFormData((prev) => ({ ...prev, data: newItems }))
+          }
+          className="grid gap-6 md:grid-cols-3"
+          renderItem={(edu, index) => (
             <motion.div
-              key={index}
+              key={edu.id}
               initial={{ opacity: 0, y: 30 }}
               whileInView={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.5 }}
               className="relative bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 
-              rounded-2xl shadow-md hover:shadow-lg transition-all duration-300 p-5"
+        rounded-2xl shadow-md hover:shadow-lg transition-all duration-300 p-5 cursor-grab active:cursor-grabbing"
             >
               {editingIndex === index ? (
                 <div className="space-y-3">
@@ -308,8 +322,8 @@ export const CertificateSectionDashboard: React.FC = () => {
                 </div>
               )}
             </motion.div>
-          ))}
-        </div>
+          )}
+        />
       </div>
     </section>
   );

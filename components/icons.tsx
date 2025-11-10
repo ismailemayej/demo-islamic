@@ -121,10 +121,16 @@ export const SunFilledIcon = ({
     aria-hidden="true"
     focusable="false"
     height={size || height}
-    role="presentation"
-    viewBox="0 0 24 24"
     width={size || width}
+    viewBox="0 0 24 24"
+    role="presentation"
     {...props}
+    className={`select-none outline-none focus:outline-none active:outline-none ${props.className || ""}`}
+    style={{
+      background: "transparent",
+      outline: "none",
+      boxShadow: "none",
+    }}
   >
     <g fill="currentColor">
       <path d="M19 12a7 7 0 11-7-7 7 7 0 017 7z" />

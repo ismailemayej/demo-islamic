@@ -2,21 +2,40 @@ import "@/styles/globals.css";
 import { Metadata } from "next";
 import clsx from "clsx";
 import { Providers } from "./providers";
-import { siteConfig } from "@/config/site";
 import { fontSans } from "@/config/fonts";
 import { Toaster } from "react-hot-toast";
-import { useGetSection } from "./dashboard/Hook/GetData";
 
-export const metadata: Metadata = {
-  title: {
-    default: siteConfig.name,
-    template: `%s - ${siteConfig.name}`,
-  },
-  description: siteConfig.description,
-  icons: {
-    icon: "/favicon.ico",
-  },
-};
+export async function generateMetadata(): Promise<Metadata> {
+  try {
+    const res = await fetch(
+      `${process.env.NEXT_PUBLIC_SITE_URL}/api/all-data/websitesection`,
+      {
+        cache: "no-store",
+      }
+    );
+    const sectiondata = await res.json();
+    const section = sectiondata?.groupedData?.websitesection;
+    return {
+      title: {
+        default: section?.data?.sitetitle || "Default Site Title",
+        template: `%s - ${section?.data?.sitetitle || "Default Site Title"}`,
+      },
+      description: section?.data?.description || "Default site description",
+      icons: {
+        icon: section?.data.profileImage || "/favicon.ico",
+      },
+    };
+  } catch (err) {
+    console.error("Failed to fetch site data", err);
+    return {
+      title: "Default Site Title",
+      description: "Default site description",
+      icons: {
+        icon: "/favicon.ico",
+      },
+    };
+  }
+}
 
 export default function RootLayout({
   children,

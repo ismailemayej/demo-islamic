@@ -7,6 +7,7 @@ import { Button, Input, Card, CardBody, Spinner } from "@heroui/react";
 import { toast } from "sonner";
 import { Edit3, Check, X, Plus, Trash2 } from "lucide-react";
 import { useGetSection } from "../Hook/GetData";
+import { DraggableList } from "../Hook/DraggableList";
 
 interface Achievement {
   id: string;
@@ -240,15 +241,20 @@ export const AchievementsDashboard: React.FC = () => {
                 subTitle={formData.heading.subTitle || "Achievement Section"}
               />
 
-              <div className="grid gap-4 sm:grid-cols-2 md:grid-cols-4 mt-6">
-                {formData.data.map(
-                  (achievement: Achievement, index: number) => (
+              <div className="mt-6">
+                <DraggableList
+                  items={formData.data}
+                  getId={(item) => item.id}
+                  onChange={(newItems) =>
+                    setFormData((prev) => ({ ...prev, data: newItems }))
+                  }
+                  renderItem={(achievement, index) => (
                     <motion.div
                       key={achievement.id}
                       initial={{ opacity: 0, y: 20 }}
                       whileInView={{ opacity: 1, y: 0 }}
                       transition={{ duration: 0.6, delay: index * 0.2 }}
-                      className="bg-white dark:bg-gray-800 rounded-3xl shadow-xl p-6 flex flex-col items-center justify-center hover:shadow-2xl transition-shadow duration-300"
+                      className="bg-white dark:bg-gray-800 rounded-3xl shadow-xl p-6 flex flex-col items-center justify-center hover:shadow-2xl transition-shadow duration-300 cursor-grab active:cursor-grabbing"
                     >
                       <div className="text-5xl mb-4">{achievement.icon}</div>
                       <h3 className="text-3xl font-bold text-emerald-700 dark:text-emerald-400 mb-2">
@@ -258,8 +264,9 @@ export const AchievementsDashboard: React.FC = () => {
                         {achievement.title}
                       </p>
                     </motion.div>
-                  )
-                )}
+                  )}
+                  className="grid gap-4 sm:grid-cols-2 md:grid-cols-4"
+                />
               </div>
             </Background>
           </CardBody>

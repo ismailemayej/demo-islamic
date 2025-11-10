@@ -75,7 +75,7 @@ export const HeroSection: React.FC = () => {
                 বক্তৃতা দেখুন
               </Button>
             </Link>
-            <Link href="#programs">
+            {/* <Link href="#programs">
               <Button
                 size="lg"
                 className="bg-emerald-500 hover:bg-emerald-600 dark:bg-emerald-400 dark:hover:bg-emerald-300 text-white dark:text-gray-900 rounded-full shadow-lg"
@@ -83,7 +83,7 @@ export const HeroSection: React.FC = () => {
                 <Calendar className="w-5 h-5 mr-2" />
                 আসন্ন ইভেন্ট
               </Button>
-            </Link>
+            </Link> */}
             <Link href="#contact">
               <Button
                 size="lg"

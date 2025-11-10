@@ -25,7 +25,6 @@ export function useGetSection<T = any>(sectionName: string) {
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
-    // 🛑 যদি sectionName ফাঁকা হয়, কিছু না করি
     if (!sectionName) return;
 
     let isMounted = true; // ✅ unmount হলে state update রোধ করবে
@@ -36,7 +35,7 @@ export function useGetSection<T = any>(sectionName: string) {
         setError(null);
 
         const res = await fetch(`/api/all-data/${sectionName}`, {
-          cache: "no-store", // ✅ সর্বশেষ ডেটা আনবে
+          cache: "no-store",
         });
 
         if (!res.ok) {
