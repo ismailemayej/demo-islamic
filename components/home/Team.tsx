@@ -1,62 +1,22 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { Card, CardHeader, CardBody, CardFooter } from "@heroui/card";
+import { Card, CardHeader, CardFooter } from "@heroui/card";
 import { Avatar } from "@heroui/avatar";
 import { Button } from "@heroui/button";
 import { Tooltip } from "@heroui/tooltip";
 import { MessageCircle, PhoneCall } from "lucide-react";
 import { Heading } from "../Heading";
-
-const teamMembers = [
-  {
-    id: 1,
-    name: "মোঃ ইসমাইল হোসেন",
-    role: "প্রতিষ্ঠাতা ও ডেভেলপার",
-    img: "https://img.freepik.com/free-photo/portrait-handsome-man_273609-23090.jpg",
-
-    whatsapp: "https://wa.me/8801858226967",
-    imo: "https://imo.im/",
-  },
-  {
-    id: 2,
-    name: "আবদুল্লাহ আল মামুন",
-    role: "UI/UX ডিজাইনার",
-    img: "https://img.freepik.com/free-photo/creative-young-woman-working_23-2148423615.jpg",
-
-    whatsapp: "#",
-    imo: "#",
-  },
-  {
-    id: 3,
-    name: "ড. মিজানুর রহমান",
-    role: "ইসলামিক পরামর্শক",
-    img: "https://img.freepik.com/free-photo/portrait-middle-aged-man_23-2148886214.jpg",
-
-    whatsapp: "#",
-    imo: "#",
-  },
-  {
-    id: 4,
-    name: "রফিকুল ইসলাম",
-    role: "ব্যাকএন্ড ডেভেলপার",
-    img: "https://img.freepik.com/free-photo/smiling-young-man_23-2148886215.jpg",
-
-    whatsapp: "#",
-    imo: "#",
-  },
-  {
-    id: 5,
-    name: "মাহমুদুল হাসান",
-    role: "ফ্রন্টএন্ড ডেভেলপার",
-    img: "https://img.freepik.com/free-photo/happy-young-businessman_23-2148886216.jpg",
-    desc: "রেসপন্সিভ এবং ডাইনামিক ইন্টারফেস তৈরি করেন।",
-    whatsapp: "#",
-    imo: "#",
-  },
-];
+import { useGetSection } from "@/app/dashboard/Hook/GetData";
 
 export const TeamSection = () => {
+  const { section, loading, error } = useGetSection("teamsection");
+
+  if (loading) return <p>Loading team members...</p>;
+  if (error || !section) return <p>Error loading team members</p>;
+
+  const teamMembers = section.data || [];
+
   return (
     <section
       id="team"
@@ -67,13 +27,16 @@ export const TeamSection = () => {
     >
       <div className="w-full text-center sm:px-6 lg:px-8">
         <Heading
-          title="আমার টিম সদস্যগণ"
-          subTitle="যারা এই প্ল্যাটফর্মটিকে সফল করতে কাজ করে যাচ্ছেন"
+          title={section.heading?.title || "আমার টিম সদস্যগণ"}
+          subTitle={
+            section.heading?.subTitle ||
+            "যারা এই প্ল্যাটফর্মটিকে সফল করতে কাজ করে যাচ্ছেন"
+          }
         />
 
         {/* Team Grid */}
         <div className="grid gap-6 grid-cols-2 md:grid-cols-3 lg:grid-cols-5 w-full mt-8">
-          {teamMembers.map((member, index) => (
+          {teamMembers.map((member: any, index: number) => (
             <motion.div
               key={member.id}
               initial={{ opacity: 0, y: 30 }}
@@ -90,7 +53,7 @@ export const TeamSection = () => {
               >
                 <CardHeader className="flex flex-col items-center gap-2 w-full">
                   <Avatar
-                    src={member.img}
+                    src={member.imageurl}
                     alt={member.name}
                     className="w-24 h-24 ring-4 ring-amber-400 dark:ring-amber-500 shadow-md"
                   />
@@ -98,7 +61,7 @@ export const TeamSection = () => {
                     {member.name}
                   </h3>
                   <p className="text-amber-600 dark:text-amber-400 text-sm font-medium">
-                    {member.role}
+                    {member.position}
                   </p>
                 </CardHeader>
 
@@ -116,8 +79,8 @@ export const TeamSection = () => {
                       </Button>
                     </Tooltip>
                   )}
-                  {member.imo && (
-                    <Tooltip content="Imo">
+                  {member && (
+                    <Tooltip content="Mobile">
                       <Button
                         isIconOnly
                         as="a"

@@ -10,85 +10,94 @@ import {
   FaWhatsapp,
 } from "react-icons/fa";
 import Background from "../background";
+import { useGetSection } from "@/app/dashboard/Hook/GetData";
 
-interface ContactItem {
-  id: string;
-  title: string;
-  value: string;
-  url?: string;
+interface ContactItemProps {
   icon: React.ReactNode;
-  color?: string;
+  title: string;
+  value: React.ReactNode;
 }
 
-const CONTACT_ITEMS: ContactItem[] = [
-  {
-    id: "1",
-    title: "মোবাইল",
-    value: "+8801858226967",
-    url: "tel:+8801858226967",
-    icon: <FaPhoneAlt />,
-    color: "text-green-600 dark:text-green-400",
-  },
-  {
-    id: "2",
-    title: "ইমেইল",
-    value: "ismaile535@gmail.com",
-    url: "mailto:ismaile535@gmail.com",
-    icon: <FaEnvelope />,
-    color: "text-red-500 dark:text-red-400",
-  },
-  {
-    id: "3",
-    title: "ঠিকানা",
-    value: "East Hansa, Faridgonj, Chandpur, Bangladesh",
-    icon: <FaMapMarkerAlt />,
-    color: "text-amber-500 dark:text-amber-400",
-  },
-  {
-    id: "4",
-    title: "WhatsApp",
-    value: "+8801858226967",
-    url: "https://wa.me/8801858226967",
-    icon: <FaWhatsapp />,
-    color: "text-green-500 dark:text-green-400",
-  },
-];
+const ContactCard: React.FC<ContactItemProps> = ({ icon, title, value }) => (
+  <div className="flex flex-col items-center text-center bg-white dark:bg-gray-800 p-6 rounded-2xl shadow-lg border border-gray-200 dark:border-gray-700">
+    <div className="text-3xl text-emerald-600 dark:text-emerald-400 mb-3">
+      {icon}
+    </div>
+    <h3 className="text-lg font-semibold mb-1 text-gray-800 dark:text-gray-200">
+      {title}
+    </h3>
+    <div className="text-gray-600 dark:text-gray-300">{value}</div>
+  </div>
+);
 
 export const ContactSection: React.FC = () => {
+  const { section, loading, error } = useGetSection("contactsection");
+
+  if (loading) return <p>Loading...</p>;
+  if (error || !section) return <p>Error loading contact info</p>;
+
+  const { email, phone, address, mapUrl } = section.data;
+
   return (
     <Background id="contact">
       <div className="container mx-auto">
         <Heading
-          title="যোগাযোগের মাধ্যম"
-          subTitle="নিচের মাধ্যমে আমাদের সঙ্গে যোগাযোগ করতে পারেন"
+          title={section.heading?.title || "যোগাযোগের মাধ্যম"}
+          subTitle={
+            section.heading?.subTitle ||
+            "নিচের মাধ্যমে আমাদের সঙ্গে যোগাযোগ করতে পারেন"
+          }
         />
 
-        <div className="mt-10 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-6">
-          {CONTACT_ITEMS.map((item, index) => (
-            <motion.a
-              key={item.id}
-              href={item.url || "#"}
-              target={item.url ? "_blank" : undefined}
-              rel={item.url ? "noopener noreferrer" : undefined}
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5, delay: index * 0.1 }}
-              className="flex flex-col items-center justify-center p-6 bg-emerald-50 dark:bg-gray-800 rounded-2xl shadow-lg dark:shadow-gray-700 hover:shadow-2xl hover:scale-105 transition-transform duration-300 group"
-            >
-              <div
-                className={`text-4xl mb-3 transition-colors group-hover:text-amber-500 ${item.color || "text-emerald-700 dark:text-emerald-300"}`}
+        <motion.div className="mt-10 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-6">
+          {/* Phone */}
+          <ContactCard
+            icon={<FaPhoneAlt />}
+            title="Phone"
+            value={
+              <a href={`tel:${phone}`} className="hover:text-emerald-600">
+                {phone}
+              </a>
+            }
+          />
+
+          {/* WhatsApp */}
+          <ContactCard
+            icon={<FaWhatsapp />}
+            title="WhatsApp"
+            value={
+              <a
+                href={`https://wa.me/${phone.replace("+", "")}`}
+                target="_blank"
+                className="hover:text-green-500"
               >
-                {item.icon}
-              </div>
-              <h4 className="font-semibold text-gray-700 dark:text-gray-300 group-hover:text-emerald-700 dark:group-hover:text-emerald-400 text-lg">
-                {item.title}
-              </h4>
-              <p className="text-gray-600 dark:text-gray-400 text-center mt-1 text-sm break-words">
-                {item.value}
-              </p>
-            </motion.a>
-          ))}
-        </div>
+                Message on WhatsApp
+              </a>
+            }
+          />
+
+          {/* Email */}
+          <ContactCard
+            icon={<FaEnvelope />}
+            title="Email"
+            value={
+              <a href={`mailto:${email}`} className="hover:text-blue-500">
+                {email}
+              </a>
+            }
+          />
+
+          {/* Address */}
+          <ContactCard
+            icon={<FaMapMarkerAlt />}
+            title="Address"
+            value={
+              <a href={mapUrl} target="_blank" className="hover:text-amber-600">
+                {address}
+              </a>
+            }
+          />
+        </motion.div>
       </div>
     </Background>
   );
