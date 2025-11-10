@@ -39,7 +39,7 @@ export const ArticlesSectionDashboard: React.FC = () => {
   const [saving, setSaving] = useState(false);
 
   useEffect(() => {
-    if (section) {
+    if (section && section.data) {
       setFormData({
         heading: {
           title: section.heading?.title || "",
@@ -150,7 +150,7 @@ export const ArticlesSectionDashboard: React.FC = () => {
               value={formData.heading.title}
               onChange={(e) => handleChange("heading", "title", e.target.value)}
               placeholder="Heading Title"
-              className="w-full p-3 border rounded-lg dark:bg-gray-800 dark:text-white"
+              className="w-full p-3 border rounded-lg dark:bg-gray-800 dark:text-white text-lg"
             />
             <textarea
               value={formData.heading.subTitle}
@@ -158,7 +158,8 @@ export const ArticlesSectionDashboard: React.FC = () => {
                 handleChange("heading", "subTitle", e.target.value)
               }
               placeholder="Heading Subtitle"
-              className="w-full p-3 border rounded-lg dark:bg-gray-800 dark:text-white"
+              className="w-full p-3 border rounded-lg dark:bg-gray-800 dark:text-white text-base"
+              rows={5}
             />
             <Button onClick={handleSave} disabled={saving}>
               {saving ? "Saving..." : "Save Heading"}
@@ -179,7 +180,7 @@ export const ArticlesSectionDashboard: React.FC = () => {
           )}
         </div>
 
-        <div className="grid gap-4 md:grid-cols-4">
+        <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
           {formData.data.map((article, index) => (
             <motion.div
               key={article.id}
@@ -189,14 +190,15 @@ export const ArticlesSectionDashboard: React.FC = () => {
               className="bg-white dark:bg-gray-800 rounded-3xl shadow-xl p-6 hover:shadow-2xl transition-all duration-300 flex flex-col justify-between"
             >
               {isEditing ? (
-                <div className="flex flex-col space-y-3">
+                <div className="flex flex-col space-y-4">
                   <input
                     type="text"
                     value={article.blogtitle}
                     onChange={(e) =>
                       handleChange("data", "blogtitle", e.target.value, index)
                     }
-                    className="w-full p-2 rounded-md border dark:bg-gray-900 dark:text-white"
+                    className="w-full p-3 text-lg rounded-md border dark:bg-gray-900 dark:text-white"
+                    placeholder="Article Title"
                   />
                   <textarea
                     value={article.blogdescription}
@@ -208,8 +210,9 @@ export const ArticlesSectionDashboard: React.FC = () => {
                         index
                       )
                     }
-                    rows={6}
-                    className="w-full p-2 rounded-md border dark:bg-gray-900 dark:text-white"
+                    rows={12} // ✅ বড় textarea
+                    className="w-full p-4 text-base rounded-md border dark:bg-gray-900 dark:text-white leading-relaxed"
+                    placeholder="Write the full article here..."
                   />
                   <input
                     type="text"
@@ -217,7 +220,8 @@ export const ArticlesSectionDashboard: React.FC = () => {
                     onChange={(e) =>
                       handleChange("data", "blogwriter", e.target.value, index)
                     }
-                    className="w-full p-2 rounded-md border dark:bg-gray-900 dark:text-white"
+                    className="w-full p-3 rounded-md border dark:bg-gray-900 dark:text-white"
+                    placeholder="Writer name"
                   />
                   <p className="text-gray-500 dark:text-gray-400 text-sm">
                     {article.date}
@@ -232,10 +236,10 @@ export const ArticlesSectionDashboard: React.FC = () => {
                 </div>
               ) : (
                 <>
-                  <h3 className="text-xl font-bold text-emerald-700 dark:text-emerald-400 mb-2">
+                  <h3 className="text-2xl font-bold text-emerald-700 dark:text-emerald-400 mb-2">
                     {article.blogtitle}
                   </h3>
-                  <p className="text-gray-700 dark:text-gray-300 mb-3">
+                  <p className="text-gray-700 dark:text-gray-300 mb-3 leading-relaxed text-justify">
                     {article.blogdescription}
                   </p>
                   <p className="text-sm text-gray-500 dark:text-gray-400">
