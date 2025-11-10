@@ -15,14 +15,42 @@ export async function generateMetadata(): Promise<Metadata> {
     );
     const sectiondata = await res.json();
     const section = sectiondata?.groupedData?.websitesection;
+
+    const title = section?.data?.sitetitle || "Default Site Title";
+    const description =
+      section?.data?.description || "Default site description";
+    const image = section?.data?.profileImage || "/favicon.ico";
+
     return {
       title: {
-        default: section?.data?.sitetitle || "Default Site Title",
-        template: `%s - ${section?.data?.sitetitle || "Default Site Title"}`,
+        default: title,
+        template: `%s - ${title}`,
       },
-      description: section?.data?.description || "Default site description",
+      description,
       icons: {
-        icon: section?.data.profileImage || "/favicon.ico",
+        icon: image || "/favicon.ico", // browser favicon
+      },
+      openGraph: {
+        title,
+        description,
+        url: process.env.NEXT_PUBLIC_SITE_URL,
+        siteName: title,
+        images: [
+          {
+            url: image,
+            width: 1200,
+            height: 630,
+            alt: title,
+          },
+        ],
+        locale: "en_US",
+        type: "website",
+      },
+      twitter: {
+        card: "summary_large_image",
+        title,
+        description,
+        images: [image],
       },
     };
   } catch (err) {

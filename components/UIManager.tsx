@@ -77,9 +77,8 @@ function SectionItem({ id, children, isDraggable }: SectionItemProps) {
 }
 
 interface UIManagerProps {
-  user: string; // এখানে ইউজারের নাম পাঠানো হবে
+  user: string;
 }
-
 export default function UIManager({ user }: UIManagerProps) {
   const [sections, setSections] = useState<string[]>([
     "HeroSection",
@@ -87,9 +86,9 @@ export default function UIManager({ user }: UIManagerProps) {
     "YouTubeVideosSection",
     "RecentProgramsSection",
     "SocialMediaSection",
+    "GallerySection",
     "EducationSection",
     "AchievementsSection",
-    "GallerySection",
     "TestimonialsSection",
     "ArticlesSection",
     "CertificateSection",
@@ -99,7 +98,7 @@ export default function UIManager({ user }: UIManagerProps) {
     "AppointmentSection",
   ]);
 
-  const isDraggable = user === "ismaile"; // শুধুমাত্র ismaile ড্র্যাগ করতে পারবে
+  const isDraggable = user === "ismaile";
 
   const sensors = useSensors(
     useSensor(PointerSensor, { activationConstraint: { distance: 10 } })

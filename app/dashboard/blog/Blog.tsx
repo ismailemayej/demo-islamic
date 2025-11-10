@@ -1,230 +1,211 @@
 "use client";
 
-import { useState } from "react";
 import Background from "@/components/background";
+import { Heading } from "@/components/Heading";
 import { motion } from "framer-motion";
-import { toast } from "sonner";
+import { useState, useEffect } from "react";
+
+import toast from "react-hot-toast";
 import { useGetSection } from "../Hook/GetData";
+import { Spinner } from "@heroui/spinner";
 
 interface Article {
-  _id?: string;
+  id: string;
   blogtitle: string;
   blogdescription: string;
   blogwriter: string;
   date: string;
 }
 
+interface ArticleSection {
+  heading: {
+    title: string;
+    subTitle: string;
+  };
+  data: Article[];
+}
+
 export const ArticlesSectionDashboard: React.FC = () => {
-  const { section, loading } = useGetSection("blogsection");
-  const [editingArticle, setEditingArticle] = useState<Article | null>(null);
-  const [heading, setHeading] = useState({
-    title: section?.heading?.title || "ব্লগ এবং নিবন্ধসমূহ",
-    subTitle:
-      section?.heading?.subTitle ||
-      "সাম্প্রতিক ইসলামিক শিক্ষণ ও দাওয়াতি প্রবন্ধসমূহ",
+  const { section, loading, error } =
+    useGetSection<ArticleSection>("blogsection");
+
+  const [formData, setFormData] = useState<ArticleSection>({
+    heading: { title: "", subTitle: "" },
+    data: [],
   });
 
-  if (loading) {
+  useEffect(() => {
+    if (section) {
+      setFormData({
+        heading: {
+          title: section.heading?.title || "",
+          subTitle: section.heading?.subTitle || "",
+        },
+        data: section.data || [],
+      });
+    }
+  }, [section]);
+
+  // ✅ Deep clone helper
+  const prevData = (data: Article[]) => JSON.parse(JSON.stringify(data));
+
+  // ✅ Handle input changes
+  const handleChange = (
+    sectionType: "heading" | "data",
+    field: string,
+    value: string | number,
+    index?: number
+  ) => {
+    if (sectionType === "heading") {
+      setFormData((prev) => ({
+        ...prev,
+        heading: { ...prev.heading, [field]: value },
+      }));
+    } else if (sectionType === "data" && index !== undefined) {
+      setFormData((prev) => {
+        const newData = [...prevData(prev.data)];
+        newData[index] = { ...newData[index], [field]: value };
+        return { ...prev, data: newData };
+      });
+    }
+  };
+
+  // ✅ Add new blog/article
+  const handleAdd = () => {
+    setFormData((prev) => ({
+      ...prev,
+      data: [
+        ...prev.data,
+        {
+          id: Date.now().toString(),
+          blogtitle: "New Blog Title",
+          blogdescription: "Write your blog description...",
+          blogwriter: "Author name",
+          date: new Date().toISOString().split("T")[0], // auto date
+        },
+      ],
+    }));
+  };
+
+  // ✅ Delete blog/article
+  const handleDelete = (index: number) => {
+    const newData = formData.data.filter((_, i) => i !== index);
+    setFormData((prev) => ({ ...prev, data: newData }));
+  };
+
+  // ✅ Save to Database
+  const handleSave = async () => {
+    toast.loading("Saving data...", { id: "save" });
+    try {
+      const res = await fetch("/api/all-data/blogsection/update", {
+        method: "PATCH",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(formData),
+      });
+      const json = await res.json();
+      if (!json.success) throw new Error(json.error || "Save failed");
+
+      toast.dismiss("save");
+      toast.success("✅ Saved successfully!");
+    } catch (err: any) {
+      toast.dismiss("save");
+      toast.error(err.message || "Save failed");
+    }
+  };
+
+  // ✅ Loading and Error States
+  if (loading)
     return (
-      <div className="flex items-center justify-center min-h-[60vh]">
-        <div className="w-12 h-12 border-4 border-emerald-500 border-t-transparent rounded-full animate-spin"></div>
+      <div className="flex justify-center items-center py-20">
+        <Spinner size="lg" />
       </div>
     );
-  }
 
-  const ARTICLES: Article[] = section?.data || [];
+  if (error) return <p className="text-red-500 text-center py-10">{error}</p>;
 
-  // Heading Save
-  const saveHeading = async () => {
-    try {
-      const res = await fetch(`/api/update-heading/blogsection`, {
-        method: "PUT",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(heading),
-      });
-      if (res.ok) {
-        toast.success("Heading Updated!");
-      }
-    } catch (error) {
-      console.error(error);
-      toast.error("Failed to update heading!");
-    }
-  };
-
-  // Article Save
-  const saveArticle = async () => {
-    if (!editingArticle) return;
-    try {
-      const res = await fetch(
-        `/api/update-data/blogsection/${editingArticle._id}`,
-        {
-          method: "PUT",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify(editingArticle),
-        }
-      );
-      if (res.ok) {
-        toast.success("Article Updated!");
-        setEditingArticle(null);
-      }
-    } catch (error) {
-      console.error(error);
-      toast.error("Failed to update article!");
-    }
-  };
-
-  // Add new article
-  const handleAddArticle = () => {
-    const today = new Date();
-    const formattedDate = today.toLocaleDateString("bn-BD", {
-      year: "numeric",
-      month: "2-digit",
-      day: "2-digit",
-    });
-
-    const newArticle: Article = {
-      _id: Date.now().toString(),
-      blogtitle: "",
-      blogdescription: "",
-      blogwriter: "",
-      date: formattedDate,
-    };
-
-    setEditingArticle(newArticle); // শুধুমাত্র নতুন আর্টিকেল এডিট মডাল খুলবে
-  };
-
+  // ✅ Main UI
   return (
     <Background id="blog">
       <div className="container mx-auto">
-        {/* Editable Heading */}
-        <div className="mb-8 p-4 bg-white dark:bg-gray-800 rounded-xl shadow-md">
-          <input
-            type="text"
-            value={heading.title}
-            onChange={(e) => setHeading({ ...heading, title: e.target.value })}
-            className="w-full p-3 rounded-xl border mb-2 dark:bg-gray-700"
-          />
-          <input
-            type="text"
-            value={heading.subTitle}
-            onChange={(e) =>
-              setHeading({ ...heading, subTitle: e.target.value })
-            }
-            className="w-full p-3 rounded-xl border dark:bg-gray-700"
-          />
+        <Heading
+          title={formData.heading.title || " ব্লগ এবং নিবন্ধসমূহ "}
+          subTitle={
+            formData.heading.subTitle ||
+            " সাম্প্রতিক ইসলামিক শিক্ষণ ও দাওয়াতি প্রবন্ধসমূহ "
+          }
+        />
+
+        {/* Buttons */}
+        <div className="flex justify-end gap-3 mb-4">
           <button
-            onClick={saveHeading}
-            className="mt-2 bg-emerald-600 hover:bg-emerald-700 text-white font-medium px-6 py-2 rounded-xl transition"
+            onClick={handleAdd}
+            className="bg-emerald-600 text-white px-4 py-2 rounded-lg hover:bg-emerald-700"
           >
-            Save Heading
+            ➕ Add
+          </button>
+          <button
+            onClick={handleSave}
+            className="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700"
+          >
+            💾 Save
           </button>
         </div>
 
-        {/* Add New Article Button */}
-        <div className="mb-6">
-          <button
-            onClick={handleAddArticle}
-            className="bg-blue-600 hover:bg-blue-700 text-white px-6 py-2 rounded-xl transition"
-          >
-            Add New Article
-          </button>
-        </div>
+        {/* Articles Grid */}
+        <div className="mt-12 grid gap-4 md:grid-cols-4">
+          {formData.data.map((article, index) => (
+            <motion.div
+              key={article.id}
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6, delay: index * 0.2 }}
+              className="bg-white dark:bg-gray-800 rounded-3xl shadow-xl p-6 hover:shadow-2xl transition-shadow duration-300 flex flex-col justify-between"
+            >
+              <div>
+                <input
+                  type="text"
+                  value={article.blogtitle}
+                  onChange={(e) =>
+                    handleChange("data", "blogtitle", e.target.value, index)
+                  }
+                  className="text-2xl font-bold text-emerald-700 dark:text-emerald-400 bg-transparent w-full mb-2 border-b border-gray-300 focus:outline-none"
+                />
+                <textarea
+                  value={article.blogdescription}
+                  onChange={(e) =>
+                    handleChange(
+                      "data",
+                      "blogdescription",
+                      e.target.value,
+                      index
+                    )
+                  }
+                  className="text-gray-700 dark:text-gray-300 bg-transparent w-full mb-2 border-b border-gray-300 focus:outline-none"
+                />
+                <input
+                  type="text"
+                  value={article.blogwriter}
+                  onChange={(e) =>
+                    handleChange("data", "blogwriter", e.target.value, index)
+                  }
+                  className="text-sm text-gray-500 dark:text-gray-400 bg-transparent w-full border-b border-gray-300 focus:outline-none"
+                />
+              </div>
 
-        {/* Blog Preview Section */}
-        <div className="grid gap-4 md:grid-cols-4">
-          {ARTICLES.length > 0 &&
-            ARTICLES.map((article, index) => (
-              <motion.div
-                key={index}
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.6, delay: index * 0.2 }}
-                className="bg-white dark:bg-gray-800 rounded-3xl shadow-xl p-6 hover:shadow-2xl transition-shadow duration-300 flex flex-col justify-between"
-              >
-                <div>
-                  <h3 className="text-2xl font-bold text-emerald-700 dark:text-emerald-400 mb-2">
-                    {article.blogtitle}
-                  </h3>
-                  <p className="text-gray-700 dark:text-gray-300 mb-4">
-                    {article.blogdescription}
-                  </p>
-                  <p className="text-gray-500 dark:text-gray-400 text-sm">
-                    ✍️ {article.blogwriter}
-                  </p>
-                </div>
-                <div className="flex justify-between items-center mt-6">
-                  <p className="text-sm text-gray-400">{article.date}</p>
-                  <button
-                    onClick={() => setEditingArticle(article)}
-                    className="text-blue-500 hover:text-blue-700"
-                  >
-                    ✏️ Edit
-                  </button>
-                </div>
-              </motion.div>
-            ))}
-        </div>
-
-        {/* Edit Article Modal */}
-        {editingArticle && (
-          <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 p-4">
-            <div className="bg-white dark:bg-gray-800 p-6 rounded-xl shadow-xl w-full max-w-2xl">
-              <h3 className="text-xl font-bold mb-4">
-                {editingArticle._id ? "Edit Article" : "New Article"}
-              </h3>
-              <input
-                type="text"
-                placeholder="Title"
-                value={editingArticle.blogtitle}
-                onChange={(e) =>
-                  setEditingArticle({
-                    ...editingArticle,
-                    blogtitle: e.target.value,
-                  })
-                }
-                className="w-full p-3 rounded-xl border mb-2 dark:bg-gray-700"
-              />
-              <input
-                type="text"
-                placeholder="Writer"
-                value={editingArticle.blogwriter}
-                onChange={(e) =>
-                  setEditingArticle({
-                    ...editingArticle,
-                    blogwriter: e.target.value,
-                  })
-                }
-                className="w-full p-3 rounded-xl border mb-2 dark:bg-gray-700"
-              />
-              <textarea
-                placeholder="Description"
-                value={editingArticle.blogdescription}
-                onChange={(e) =>
-                  setEditingArticle({
-                    ...editingArticle,
-                    blogdescription: e.target.value,
-                  })
-                }
-                rows={4}
-                className="w-full p-3 rounded-xl border dark:bg-gray-700 mb-2"
-              ></textarea>
-              <div className="flex justify-end gap-2 mt-2">
+              <div className="flex justify-between items-center mt-3">
+                <p className="text-gray-500 dark:text-gray-400 text-sm">
+                  {article.date}
+                </p>
                 <button
-                  onClick={() => setEditingArticle(null)}
-                  className="bg-gray-500 hover:bg-gray-600 text-white px-4 py-2 rounded-xl"
+                  onClick={() => handleDelete(index)}
+                  className="text-red-500 hover:text-red-700 text-sm"
                 >
-                  Cancel
-                </button>
-                <button
-                  onClick={saveArticle}
-                  className="bg-emerald-600 hover:bg-emerald-700 text-white px-4 py-2 rounded-xl"
-                >
-                  Save
+                  🗑 Delete
                 </button>
               </div>
-            </div>
-          </div>
-        )}
+            </motion.div>
+          ))}
+        </div>
       </div>
     </Background>
   );
