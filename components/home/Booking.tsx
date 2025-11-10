@@ -2,8 +2,9 @@
 
 import React, { useState } from "react";
 import { motion } from "framer-motion";
-import { Heading } from "../Heading";
-import Background from "../background";
+import Background from "@/components/background";
+import { Heading } from "@/components/Heading";
+import toast from "react-hot-toast";
 
 export const AppointmentSection: React.FC = () => {
   const [formData, setFormData] = useState({
@@ -20,22 +21,53 @@ export const AppointmentSection: React.FC = () => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  // handleSubmit এর মধ্যে
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    // Email link using mailto:
-    const mailtoLink = `mailto:ismaile535@gmail.com?subject=Appointment Request: ${encodeURIComponent(
-      formData.programName
-    )}&body=${encodeURIComponent(
-      `Program Name: ${formData.programName}\nDuration: ${formData.duration}\nDate: ${formData.date}\nContact: ${formData.contact}\nDetails: ${formData.details}`
-    )}`;
+    if (
+      !formData.programName ||
+      !formData.duration ||
+      !formData.date ||
+      !formData.contact ||
+      !formData.details
+    ) {
+      toast.error("সব ফিল্ড পূরণ করুন!");
+      return;
+    }
 
-    window.location.href = mailtoLink;
+    toast.loading("Sending appointment...", { id: "appointment" });
+
+    try {
+      const res = await fetch("/api/send-appointment", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(formData),
+      });
+
+      const json = await res.json();
+
+      if (!json.success) throw new Error(json.error || "Send failed");
+
+      toast.dismiss("appointment");
+      toast.success("অ্যাপয়েন্টমেন্ট সফলভাবে পাঠানো হয়েছে!");
+
+      setFormData({
+        programName: "",
+        duration: "",
+        date: "",
+        contact: "",
+        details: "",
+      });
+    } catch (err: any) {
+      toast.dismiss("appointment");
+      toast.error(err.message || "Send failed");
+    }
   };
 
   return (
     <Background id="booking">
-      <div className="container mx-auto lg:px-8">
+      <div className="container mx-auto lg:px-8 bangla">
         <Heading
           title="অ্যাপয়েন্টমেন্ট"
           subTitle="নিচের ফর্মটি পূরণ করে আমাদের প্রোগ্রাম বুক করুন"

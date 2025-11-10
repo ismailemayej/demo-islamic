@@ -310,7 +310,7 @@ export const GallerySectionDashboard: React.FC = () => {
               initial={{ opacity: 0, scale: 0.95 }}
               whileInView={{ opacity: 1, scale: 1 }}
               transition={{ duration: 0.5, delay: i * 0.1 }}
-              className={`relative overflow-hidden rounded-xl group shadow-md dark:shadow-gray-700 border border-gray-200 dark:border-gray-700 ${i === 0 || i === 1 || i === 5 || i === 2 ? "lg:col-span-2" : ""} ${i === 2 ? "lg:row-span-2" : ""}`}
+              className={`relative overflow-hidden rounded-xl group shadow-md dark:shadow-gray-700 border border-gray-200 dark:border-gray-700 ${i === 1 || i === 0 || i === 5 || i === 2 ? "col-span-2" : ""} ${i === 2 ? "row-span-2" : ""}`}
             >
               {" "}
               <img

@@ -5,6 +5,7 @@ import { motion } from "framer-motion";
 import Background from "@/components/background";
 import { Heading } from "@/components/Heading";
 import toast from "react-hot-toast";
+import { useGetSection } from "../Hook/GetData";
 
 export const AppointmentSectionDashboard: React.FC = () => {
   const [formData, setFormData] = useState({
@@ -22,7 +23,7 @@ export const AppointmentSectionDashboard: React.FC = () => {
   };
 
   // handleSubmit এর মধ্যে
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
     if (
@@ -36,22 +37,33 @@ export const AppointmentSectionDashboard: React.FC = () => {
       return;
     }
 
-    const mailtoLink = `mailto:ismaile535@gmail.com?subject=Appointment Request: ${encodeURIComponent(
-      formData.programName
-    )}&body=${encodeURIComponent(
-      `Program Name: ${formData.programName}\nDuration: ${formData.duration}\nDate: ${formData.date}\nContact: ${formData.contact}\nDetails: ${formData.details}`
-    )}`;
+    toast.loading("Sending appointment...", { id: "appointment" });
 
-    window.location.href = mailtoLink;
+    try {
+      const res = await fetch("/api/send-appointment", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(formData),
+      });
 
-    toast.success("অ্যাপয়েন্টমেন্ট ফর্ম সফলভাবে পাঠানো হয়েছে!");
-    setFormData({
-      programName: "",
-      duration: "",
-      date: "",
-      contact: "",
-      details: "",
-    });
+      const json = await res.json();
+
+      if (!json.success) throw new Error(json.error || "Send failed");
+
+      toast.dismiss("appointment");
+      toast.success("অ্যাপয়েন্টমেন্ট সফলভাবে পাঠানো হয়েছে!");
+
+      setFormData({
+        programName: "",
+        duration: "",
+        date: "",
+        contact: "",
+        details: "",
+      });
+    } catch (err: any) {
+      toast.dismiss("appointment");
+      toast.error(err.message || "Send failed");
+    }
   };
 
   return (
