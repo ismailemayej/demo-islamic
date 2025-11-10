@@ -136,7 +136,10 @@ export const Sidebar = ({ onLinkClick }: { onLinkClick?: () => void }) => {
     <aside className="flex flex-col h-screen w-64 bg-white dark:bg-gray-900 border-r border-gray-200 dark:border-gray-800">
       <SidebarProfile />
 
-      <ScrollShadow hideScrollBar className="flex-1 overflow-y-auto px-2">
+      <ScrollShadow
+        hideScrollBar
+        className="flex-1 overflow-y-auto px-2 lg:mb-0 mb-30"
+      >
         <DraggableList<SidebarLink>
           items={links}
           getId={(item: SidebarLink) => item.id}

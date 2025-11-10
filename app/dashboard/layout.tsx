@@ -6,12 +6,14 @@ import { motion, AnimatePresence } from "framer-motion";
 import { Sidebar } from "./components/Sidebar";
 import { Button } from "@heroui/button";
 import { ScrollShadow } from "@nextui-org/react";
+import { useGetSection } from "./Hook/GetData";
 
 export default function DashboardLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
+  const { section } = useGetSection("websitesection");
   const [open, setOpen] = useState(false);
 
   return (
@@ -57,9 +59,9 @@ export default function DashboardLayout({
       {/* Main Content Area */}
       <main className="flex flex-col h-screen bg-gray-50 dark:bg-gray-950 overflow-hidden">
         {/* Header */}
-        <div className="border-b border-gray-200 dark:border-gray-800 flex justify-between w-full p-4 bg-white dark:bg-gray-900 ml-3">
+        <div className="bangla text-xl border-b border-gray-200 dark:border-gray-800 flex justify-between w-full p-4 bg-white dark:bg-gray-900 ml-3">
           <span></span>
-          Dahsboard
+          {section?.data?.sitetitle}
           <button className="hover:font-extrabold dark:hover:green-500 transition hover:text-blue-500 mx-4">
             Login
           </button>

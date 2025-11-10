@@ -1,16 +1,14 @@
 "use client";
-
-import { useState, useEffect } from "react";
 import Image from "next/image";
-import { UploadCloud, Trash2 } from "lucide-react";
 import { useGetSection } from "../Hook/GetData";
 
 export const SidebarProfile = () => {
-  const { section, loading, error } = useGetSection("websitesection");
+  const { section } = useGetSection("websitesection");
   const imageUrl = section?.data?.profileImage;
+  const name = section?.data?.sitetitle;
 
   return (
-    <div className="flex items-center justify-between p-4 border-b border-gray-200 dark:border-gray-800">
+    <div className="px-3 flex items-center justify-between p-4 border-b border-gray-200 dark:border-gray-800">
       <div className="relative">
         {imageUrl && (
           <div className="relative group">
@@ -25,8 +23,8 @@ export const SidebarProfile = () => {
         )}
       </div>
 
-      <h2 className="lg:block hidden text-xl font-semibold text-gray-800 dark:text-gray-100">
-        Dashboard
+      <h2 className=" bangla  text-lg lg:text-xl font-semibold text-gray-800 dark:text-gray-100">
+        {name}
       </h2>
     </div>
   );

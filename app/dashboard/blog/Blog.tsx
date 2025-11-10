@@ -1,5 +1,4 @@
 "use client";
-
 import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import { toast } from "react-hot-toast";
@@ -39,7 +38,7 @@ export const ArticlesSectionDashboard: React.FC = () => {
   const [saving, setSaving] = useState(false);
 
   useEffect(() => {
-    if (section && section.data) {
+    if (section) {
       setFormData({
         heading: {
           title: section.heading?.title || "",
@@ -227,7 +226,7 @@ export const ArticlesSectionDashboard: React.FC = () => {
                     {article.date}
                   </p>
                   <Button
-                    variant="destructive"
+                    // variant="destructive"
                     onClick={() => handleDelete(index)}
                     className="mt-2"
                   >
