@@ -25,8 +25,7 @@ interface ArticleSection {
 }
 
 export const ArticlesSectionDashboard: React.FC = () => {
-  const { section, loading, error } =
-    useGetSection<ArticleSection>("blogsection");
+  const { section, loading, error } = useGetSection("blogsection");
 
   const [formData, setFormData] = useState<ArticleSection>({
     heading: { title: "", subTitle: "" },
