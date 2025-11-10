@@ -1,13 +1,13 @@
 "use client";
 
-import Background from "@/components/background";
-import { Heading } from "@/components/Heading";
-import { Spinner } from "@heroui/spinner";
+import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
-import { useState, useEffect } from "react";
-
-import toast from "react-hot-toast";
+import { toast } from "react-hot-toast";
+import { Spinner } from "@nextui-org/react";
+import { Heading } from "@/components/Heading";
+import Background from "@/components/background";
 import { useGetSection } from "../Hook/GetData";
+import { Button } from "@heroui/button";
 
 interface Article {
   id: string;
@@ -35,7 +35,8 @@ export const ArticlesSectionDashboard: React.FC = () => {
   });
 
   const [isEditing, setIsEditing] = useState(false);
-  const [editIndex, setEditIndex] = useState<number | null>(null);
+  const [isHeadingEditing, setIsHeadingEditing] = useState(false);
+  const [saving, setSaving] = useState(false);
 
   useEffect(() => {
     if (section) {
@@ -49,14 +50,11 @@ export const ArticlesSectionDashboard: React.FC = () => {
     }
   }, [section]);
 
-  // ✅ Deep clone helper
-  const prevData = (data: Article[]) => JSON.parse(JSON.stringify(data));
-
-  // ✅ Handle input change
+  // ✅ Handle Input Change
   const handleChange = (
     sectionType: "heading" | "data",
     field: string,
-    value: string | number,
+    value: string,
     index?: number
   ) => {
     if (sectionType === "heading") {
@@ -66,14 +64,14 @@ export const ArticlesSectionDashboard: React.FC = () => {
       }));
     } else if (sectionType === "data" && index !== undefined) {
       setFormData((prev) => {
-        const newData = [...prevData(prev.data)];
+        const newData = [...prev.data];
         newData[index] = { ...newData[index], [field]: value };
         return { ...prev, data: newData };
       });
     }
   };
 
-  // ✅ Add new blog/article
+  // ✅ Add new Article
   const handleAdd = () => {
     setFormData((prev) => ({
       ...prev,
@@ -81,30 +79,26 @@ export const ArticlesSectionDashboard: React.FC = () => {
         ...prev.data,
         {
           id: Date.now().toString(),
-          blogtitle: "New Blog Title",
-          blogdescription: "Write your blog description...",
-          blogwriter: "Author name",
+          blogtitle: "New Article Title",
+          blogdescription: "Write your article content here...",
+          blogwriter: "Anonymous",
           date: new Date().toISOString().split("T")[0],
         },
       ],
     }));
   };
 
-  // ✅ Delete blog
+  // ✅ Delete Article
   const handleDelete = (index: number) => {
     const newData = formData.data.filter((_, i) => i !== index);
     setFormData((prev) => ({ ...prev, data: newData }));
   };
 
-  // ✅ Edit blog
-  const handleEdit = (index: number) => {
-    setEditIndex(index);
-    setIsEditing(true);
-  };
-
-  // ✅ Save to Database
+  // ✅ Save to DB
   const handleSave = async () => {
+    setSaving(true);
     toast.loading("Saving data...", { id: "save" });
+
     try {
       const res = await fetch("/api/all-data/blogsection/update", {
         method: "PATCH",
@@ -117,10 +111,12 @@ export const ArticlesSectionDashboard: React.FC = () => {
       toast.dismiss("save");
       toast.success("✅ Saved successfully!");
       setIsEditing(false);
-      setEditIndex(null);
+      setIsHeadingEditing(false);
     } catch (err: any) {
       toast.dismiss("save");
       toast.error(err.message || "Save failed");
+    } finally {
+      setSaving(false);
     }
   };
 
@@ -136,135 +132,120 @@ export const ArticlesSectionDashboard: React.FC = () => {
   return (
     <Background id="blog">
       <div className="container mx-auto">
-        <Heading
-          title={formData.heading.title || " ব্লগ এবং নিবন্ধসমূহ "}
-          subTitle={
-            formData.heading.subTitle ||
-            " সাম্প্রতিক ইসলামিক শিক্ষণ ও দাওয়াতি প্রবন্ধসমূহ "
-          }
-        />
-
-        {/* Top Buttons */}
-        <div className="flex justify-end gap-3 mb-4">
-          <button
-            onClick={handleAdd}
-            className="bg-emerald-600 text-white px-4 py-2 rounded-lg hover:bg-emerald-700"
-          >
-            ➕ Add
-          </button>
-          <button
-            onClick={handleSave}
-            className="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700"
-          >
-            💾 Save
-          </button>
+        {/* ✅ Heading Section */}
+        <div className="flex items-center justify-between">
+          <Heading
+            title={formData.heading.title}
+            subTitle={formData.heading.subTitle}
+          />
+          <Button onClick={() => setIsHeadingEditing(!isHeadingEditing)}>
+            {isHeadingEditing ? "Cancel" : "Edit Heading"}
+          </Button>
         </div>
 
-        {/* Normal Article View */}
-        {!isEditing && (
-          <div className="mt-12 grid gap-4 md:grid-cols-4">
-            {formData.data.map((article, index) => (
-              <motion.div
-                key={article.id}
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.6, delay: index * 0.2 }}
-                className="bg-white dark:bg-gray-800 rounded-3xl shadow-xl p-6 hover:shadow-2xl transition-shadow duration-300 flex flex-col justify-between"
-              >
-                <div>
-                  <h3 className="text-2xl font-bold text-emerald-700 dark:text-emerald-400 mb-2">
-                    {article.blogtitle}
-                  </h3>
-                  <p className="text-gray-700 dark:text-gray-300 mb-2">
-                    {article.blogdescription.slice(0, 100)}...
-                  </p>
-                  <p className="text-sm text-gray-500 dark:text-gray-400">
-                    ✍️ {article.blogwriter}
-                  </p>
-                </div>
+        {isHeadingEditing && (
+          <div className="bg-white dark:bg-gray-900 p-6 rounded-xl shadow-md mt-4 space-y-4">
+            <input
+              type="text"
+              value={formData.heading.title}
+              onChange={(e) => handleChange("heading", "title", e.target.value)}
+              placeholder="Heading Title"
+              className="w-full p-3 border rounded-lg dark:bg-gray-800 dark:text-white"
+            />
+            <textarea
+              value={formData.heading.subTitle}
+              onChange={(e) =>
+                handleChange("heading", "subTitle", e.target.value)
+              }
+              placeholder="Heading Subtitle"
+              className="w-full p-3 border rounded-lg dark:bg-gray-800 dark:text-white"
+            />
+            <Button onClick={handleSave} disabled={saving}>
+              {saving ? "Saving..." : "Save Heading"}
+            </Button>
+          </div>
+        )}
 
-                <div className="flex justify-between items-center mt-4">
+        {/* ✅ Article Cards */}
+        <div className="flex justify-between mt-12 mb-4">
+          <Button onClick={handleAdd}>Add New Article</Button>
+          <Button onClick={() => setIsEditing(!isEditing)}>
+            {isEditing ? "Cancel Edit" : "Edit Articles"}
+          </Button>
+          {isEditing && (
+            <Button onClick={handleSave} disabled={saving}>
+              {saving ? "Saving..." : "Save Changes"}
+            </Button>
+          )}
+        </div>
+
+        <div className="grid gap-4 md:grid-cols-4">
+          {formData.data.map((article, index) => (
+            <motion.div
+              key={article.id}
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6, delay: index * 0.2 }}
+              className="bg-white dark:bg-gray-800 rounded-3xl shadow-xl p-6 hover:shadow-2xl transition-all duration-300 flex flex-col justify-between"
+            >
+              {isEditing ? (
+                <div className="flex flex-col space-y-3">
+                  <input
+                    type="text"
+                    value={article.blogtitle}
+                    onChange={(e) =>
+                      handleChange("data", "blogtitle", e.target.value, index)
+                    }
+                    className="w-full p-2 rounded-md border dark:bg-gray-900 dark:text-white"
+                  />
+                  <textarea
+                    value={article.blogdescription}
+                    onChange={(e) =>
+                      handleChange(
+                        "data",
+                        "blogdescription",
+                        e.target.value,
+                        index
+                      )
+                    }
+                    rows={6}
+                    className="w-full p-2 rounded-md border dark:bg-gray-900 dark:text-white"
+                  />
+                  <input
+                    type="text"
+                    value={article.blogwriter}
+                    onChange={(e) =>
+                      handleChange("data", "blogwriter", e.target.value, index)
+                    }
+                    className="w-full p-2 rounded-md border dark:bg-gray-900 dark:text-white"
+                  />
                   <p className="text-gray-500 dark:text-gray-400 text-sm">
                     {article.date}
                   </p>
-                  <div className="flex gap-2">
-                    <button
-                      onClick={() => handleEdit(index)}
-                      className="text-blue-500 hover:text-blue-700 text-sm"
-                    >
-                      ✏️ Edit
-                    </button>
-                    <button
-                      onClick={() => handleDelete(index)}
-                      className="text-red-500 hover:text-red-700 text-sm"
-                    >
-                      🗑 Delete
-                    </button>
-                  </div>
+                  <Button
+                    variant="destructive"
+                    onClick={() => handleDelete(index)}
+                    className="mt-2"
+                  >
+                    Delete
+                  </Button>
                 </div>
-              </motion.div>
-            ))}
-          </div>
-        )}
-
-        {/* ✏️ Full Screen Editor */}
-        {isEditing && editIndex !== null && (
-          <div className="fixed inset-0 bg-black bg-opacity-70 flex justify-center items-center z-50 p-4">
-            <div className="bg-white dark:bg-gray-900 w-full max-w-4xl rounded-2xl shadow-2xl p-8 overflow-y-auto max-h-[90vh]">
-              <h2 className="text-2xl font-bold text-emerald-700 mb-4">
-                ✏️ Edit Article
-              </h2>
-              <input
-                type="text"
-                value={formData.data[editIndex].blogtitle}
-                onChange={(e) =>
-                  handleChange("data", "blogtitle", e.target.value, editIndex)
-                }
-                className="w-full text-2xl font-bold mb-3 border-b border-gray-300 focus:outline-none bg-transparent"
-              />
-              <textarea
-                value={formData.data[editIndex].blogdescription}
-                onChange={(e) =>
-                  handleChange(
-                    "data",
-                    "blogdescription",
-                    e.target.value,
-                    editIndex
-                  )
-                }
-                className="w-full h-64 text-gray-800 dark:text-gray-200 border border-gray-300 rounded-lg p-3 focus:outline-none mb-3 bg-transparent"
-                placeholder="Write full blog content here..."
-              />
-              <input
-                type="text"
-                value={formData.data[editIndex].blogwriter}
-                onChange={(e) =>
-                  handleChange("data", "blogwriter", e.target.value, editIndex)
-                }
-                className="w-full text-gray-600 border-b border-gray-300 focus:outline-none bg-transparent mb-4"
-                placeholder="Author name"
-              />
-
-              <div className="flex justify-end gap-3">
-                <button
-                  onClick={() => {
-                    setIsEditing(false);
-                    setEditIndex(null);
-                  }}
-                  className="bg-gray-500 text-white px-4 py-2 rounded-lg hover:bg-gray-600"
-                >
-                  ❌ Cancel
-                </button>
-                <button
-                  onClick={handleSave}
-                  className="bg-emerald-600 text-white px-4 py-2 rounded-lg hover:bg-emerald-700"
-                >
-                  💾 Save Changes
-                </button>
-              </div>
-            </div>
-          </div>
-        )}
+              ) : (
+                <>
+                  <h3 className="text-xl font-bold text-emerald-700 dark:text-emerald-400 mb-2">
+                    {article.blogtitle}
+                  </h3>
+                  <p className="text-gray-700 dark:text-gray-300 mb-3">
+                    {article.blogdescription}
+                  </p>
+                  <p className="text-sm text-gray-500 dark:text-gray-400">
+                    ✍️ {article.blogwriter} | 📅 {article.date}
+                  </p>
+                </>
+              )}
+            </motion.div>
+          ))}
+        </div>
       </div>
     </Background>
   );
