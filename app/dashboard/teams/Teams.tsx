@@ -1,140 +1,301 @@
 "use client";
 
+import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
-import { Card, CardHeader, CardBody, CardFooter } from "@heroui/card";
-import { Avatar } from "@heroui/avatar";
-import { Button } from "@heroui/button";
-import { Tooltip } from "@heroui/tooltip";
-import { MessageCircle, PhoneCall } from "lucide-react";
+import { toast } from "react-hot-toast";
 import { Heading } from "@/components/Heading";
+import Background from "@/components/background";
+import { useGetSection } from "../Hook/GetData";
+import { Button } from "@heroui/button";
 
-const teamMembers = [
-  {
-    id: 1,
-    name: "মোঃ ইসমাইল হোসেন",
-    role: "প্রতিষ্ঠাতা ও ডেভেলপার",
-    img: "https://img.freepik.com/free-photo/portrait-handsome-man_273609-23090.jpg",
+interface TeamMember {
+  id: string;
+  name: string;
+  position: string;
+  imageurl: string;
+  number?: string;
+}
 
-    whatsapp: "https://wa.me/8801858226967",
-    imo: "https://imo.im/",
-  },
-  {
-    id: 2,
-    name: "আবদুল্লাহ আল মামুন",
-    role: "UI/UX ডিজাইনার",
-    img: "https://img.freepik.com/free-photo/creative-young-woman-working_23-2148423615.jpg",
-
-    whatsapp: "#",
-    imo: "#",
-  },
-  {
-    id: 3,
-    name: "ড. মিজানুর রহমান",
-    role: "ইসলামিক পরামর্শক",
-    img: "https://img.freepik.com/free-photo/portrait-middle-aged-man_23-2148886214.jpg",
-
-    whatsapp: "#",
-    imo: "#",
-  },
-  {
-    id: 4,
-    name: "রফিকুল ইসলাম",
-    role: "ব্যাকএন্ড ডেভেলপার",
-    img: "https://img.freepik.com/free-photo/smiling-young-man_23-2148886215.jpg",
-
-    whatsapp: "#",
-    imo: "#",
-  },
-  {
-    id: 5,
-    name: "মাহমুদুল হাসান",
-    role: "ফ্রন্টএন্ড ডেভেলপার",
-    img: "https://img.freepik.com/free-photo/happy-young-businessman_23-2148886216.jpg",
-    desc: "রেসপন্সিভ এবং ডাইনামিক ইন্টারফেস তৈরি করেন।",
-    whatsapp: "#",
-    imo: "#",
-  },
-];
+interface TeamSection {
+  heading: {
+    title: string;
+    subTitle: string;
+  };
+  data: TeamMember[];
+}
 
 export const TeamSectionDashboard = () => {
+  const { section, loading, error } = useGetSection("teamsection");
+
+  const [formData, setFormData] = useState<TeamSection>({
+    heading: { title: "", subTitle: "" },
+    data: [],
+  });
+
+  const [isEditing, setIsEditing] = useState(false);
+  const [saving, setSaving] = useState(false);
+  const [uploading, setUploading] = useState(false);
+
+  useEffect(() => {
+    if (section) setFormData(section);
+  }, [section]);
+
+  // Heading change
+  const handleHeadingChange = (field: "title" | "subTitle", value: string) => {
+    setFormData((prev) => ({
+      ...prev,
+      heading: { ...prev.heading, [field]: value },
+    }));
+  };
+
+  // Team member change
+  const handleMemberChange = (
+    index: number,
+    field: keyof TeamMember,
+    value: string
+  ) => {
+    const newData = [...formData.data];
+    newData[index] = { ...newData[index], [field]: value };
+    setFormData((prev) => ({ ...prev, data: newData }));
+  };
+
+  // Add member
+  const handleAddMember = () => {
+    setFormData((prev) => ({
+      ...prev,
+      data: [
+        ...prev.data,
+        {
+          id: Date.now().toString(),
+          name: "",
+          position: "",
+          imageurl: "",
+          number: "",
+        },
+      ],
+    }));
+  };
+
+  // Delete member
+  const handleDeleteMember = (index: number) => {
+    const newData = formData.data.filter((_, i) => i !== index);
+    setFormData((prev) => ({ ...prev, data: newData }));
+  };
+
+  // Save to DB
+  const handleSave = async () => {
+    setSaving(true);
+    toast.loading("Saving data...", { id: "save" });
+
+    try {
+      const res = await fetch("/api/all-data/teamsection/update", {
+        method: "PATCH",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(formData),
+      });
+      const json = await res.json();
+      if (!json.success) throw new Error(json.error || "Save failed");
+
+      toast.dismiss("save");
+      toast.success("✅ Saved successfully!");
+      setIsEditing(false);
+    } catch (err: any) {
+      toast.dismiss("save");
+      toast.error(err.message || "Save failed");
+    } finally {
+      setSaving(false);
+    }
+  };
+
+  // ✅ Handle Image Upload
+  const handleImageUpload = async (
+    e: React.ChangeEvent<HTMLInputElement>,
+    index: number
+  ) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+
+    setUploading(true);
+    toast.loading("Uploading image...", { id: "upload" });
+
+    const form = new FormData();
+    form.append("file", file);
+
+    try {
+      const res = await fetch("/api/upload", { method: "POST", body: form });
+      const data = await res.json();
+
+      if (data?.secure_url) {
+        handleMemberChange(index, "imageurl", data.secure_url);
+        toast.dismiss("upload");
+        toast.success("Image uploaded successfully!");
+      } else throw new Error("Upload failed");
+    } catch (err: any) {
+      toast.dismiss("upload");
+      toast.error(err.message || "Upload failed");
+    } finally {
+      setUploading(false);
+    }
+  };
+
+  // ✅ Handle Image Delete
+  const handleImageDelete = async (index: number) => {
+    const member = formData.data[index];
+    if (!member.imageurl) return;
+
+    setUploading(true);
+    toast.loading("Deleting image...", { id: "delete" });
+
+    try {
+      await fetch("/api/delete-image", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ imageUrl: member.imageurl }),
+      });
+
+      handleMemberChange(index, "imageurl", "");
+      toast.dismiss("delete");
+      toast.success("Image deleted successfully!");
+    } catch (err: any) {
+      toast.dismiss("delete");
+      toast.error(err.message || "Delete failed");
+    } finally {
+      setUploading(false);
+    }
+  };
+
+  if (loading) return <p className="text-center py-10">Loading...</p>;
+  if (error) return <p className="text-center py-10 text-red-500">{error}</p>;
+
   return (
-    <section
-      id="team"
-      className="relative py-20 px-3 rounded-xl 
-                 bg-gradient-to-b from-amber-50 to-white 
-                 dark:bg-gradient-to-b dark:from-gray-700 dark:to-gray-900 
-                 dark:text-gray-200 transition-colors duration-700 bangla"
-    >
-      <div className="w-full text-center sm:px-6 lg:px-8">
-        <Heading
-          title="আমার টিম সদস্যগণ"
-          subTitle="যারা এই প্ল্যাটফর্মটিকে সফল করতে কাজ করে যাচ্ছেন"
-        />
+    <Background id="team">
+      <div className="container mx-auto">
+        {/* Heading */}
+        {isEditing ? (
+          <div className="flex flex-col space-y-2 mb-6">
+            <input
+              type="text"
+              value={formData.heading.title}
+              onChange={(e) => handleHeadingChange("title", e.target.value)}
+              placeholder="Heading Title"
+              className="w-full p-2 border rounded-md text-center"
+            />
+            <input
+              type="text"
+              value={formData.heading.subTitle}
+              onChange={(e) => handleHeadingChange("subTitle", e.target.value)}
+              placeholder="Heading Subtitle"
+              className="w-full p-2 border rounded-md text-center"
+            />
+          </div>
+        ) : (
+          <Heading
+            title={formData.heading.title}
+            subTitle={formData.heading.subTitle}
+          />
+        )}
+
+        <div className="flex gap-4 mb-4">
+          <Button onClick={handleAddMember}>Add Member</Button>
+          <Button
+            onClick={() => (isEditing ? handleSave() : setIsEditing(true))}
+          >
+            {isEditing ? "Save" : "Edit"}
+          </Button>
+        </div>
 
         {/* Team Grid */}
-        <div className="grid gap-6 grid-cols-2 md:grid-cols-3 lg:grid-cols-5 w-full mt-8">
-          {teamMembers.map((member, index) => (
+        <div className="grid gap-6 grid-cols-2 md:grid-cols-3 lg:grid-cols-5">
+          {formData.data.map((member, index) => (
             <motion.div
               key={member.id}
-              initial={{ opacity: 0, y: 30 }}
+              initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.7, delay: index * 0.1 }}
-              className="w-full"
+              transition={{ duration: 0.6, delay: index * 0.1 }}
+              className="bg-white dark:bg-gray-800 rounded-3xl shadow-xl p-6 flex flex-col items-center justify-between"
             >
-              <Card
-                isHoverable
-                isPressable
-                className="flex flex-col items-center shadow-xl 
-                     bg-white/80 dark:bg-gray-800/50 border border-amber-100 dark:border-gray-700 
-                     backdrop-blur-lg rounded-2xl transition-all duration-300 w-full"
-              >
-                <CardHeader className="flex flex-col items-center gap-2 w-full">
-                  <Avatar
-                    src={member.img}
-                    alt={member.name}
-                    className="w-24 h-24 ring-4 ring-amber-400 dark:ring-amber-500 shadow-md"
+              {isEditing ? (
+                <div className="flex flex-col space-y-2 w-full">
+                  <input
+                    type="text"
+                    value={member.name}
+                    onChange={(e) =>
+                      handleMemberChange(index, "name", e.target.value)
+                    }
+                    placeholder="Name"
+                    className="w-full p-2 border rounded-md"
                   />
-                  <h3 className="text-lg font-semibold text-gray-800 dark:text-gray-100 mt-2">
-                    {member.name}
-                  </h3>
-                  <p className="text-amber-600 dark:text-amber-400 text-sm font-medium">
-                    {member.role}
-                  </p>
-                </CardHeader>
+                  <input
+                    type="text"
+                    value={member.position}
+                    onChange={(e) =>
+                      handleMemberChange(index, "position", e.target.value)
+                    }
+                    placeholder="Position"
+                    className="w-full p-2 border rounded-md"
+                  />
+                  <input
+                    type="text"
+                    value={member.number}
+                    onChange={(e) =>
+                      handleMemberChange(index, "number", e.target.value)
+                    }
+                    placeholder="Phone / Whatsapp"
+                    className="w-full p-2 border rounded-md"
+                  />
 
-                <CardFooter className="flex justify-center gap-4 mt-2">
-                  {member.whatsapp && (
-                    <Tooltip content="WhatsApp">
-                      <Button
-                        isIconOnly
-                        as="a"
-                        href={member.whatsapp}
-                        target="_blank"
-                        variant="light"
-                      >
-                        <MessageCircle className="w-5 h-5 text-green-600 dark:text-green-400 hover:scale-110 transition-transform duration-200" />
+                  {/* Image Upload */}
+                  <div className="flex flex-col items-center gap-2">
+                    {member.imageurl && (
+                      <img
+                        src={member.imageurl}
+                        alt={member.name}
+                        className="w-24 h-24 rounded-full object-cover"
+                      />
+                    )}
+                    <input
+                      type="file"
+                      accept="image/*"
+                      onChange={(e) => handleImageUpload(e, index)}
+                      className="w-full"
+                    />
+                    {member.imageurl && (
+                      <Button onClick={() => handleImageDelete(index)}>
+                        Delete Image
                       </Button>
-                    </Tooltip>
+                    )}
+                  </div>
+
+                  <Button onClick={() => handleDeleteMember(index)}>
+                    Delete Member
+                  </Button>
+                </div>
+              ) : (
+                <>
+                  {member.imageurl && (
+                    <img
+                      src={member.imageurl}
+                      alt={member.name}
+                      className="w-24 h-24 rounded-full mb-2 object-cover"
+                    />
                   )}
-                  {member.imo && (
-                    <Tooltip content="Imo">
-                      <Button
-                        isIconOnly
-                        as="a"
-                        href={member.imo}
-                        target="_blank"
-                        variant="light"
-                      >
-                        <PhoneCall className="w-5 h-5 text-sky-500 dark:text-sky-400 hover:scale-110 transition-transform duration-200" />
-                      </Button>
-                    </Tooltip>
+                  <h3 className="text-lg font-semibold">{member.name}</h3>
+                  <p className="text-amber-600">{member.position}</p>
+                  {member.number && (
+                    <a
+                      href={`https://wa.me/${member.number}`}
+                      target="_blank"
+                      className="text-sm text-sky-500 mt-1"
+                    >
+                      WhatsApp
+                    </a>
                   )}
-                </CardFooter>
-              </Card>
+                </>
+              )}
             </motion.div>
           ))}
         </div>
       </div>
-    </section>
+    </Background>
   );
 };

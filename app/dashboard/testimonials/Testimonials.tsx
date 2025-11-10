@@ -6,6 +6,7 @@ import { Heading } from "@/components/Heading";
 import { Trash2, Plus, Save } from "lucide-react";
 import toast from "react-hot-toast";
 import { useGetSection } from "../Hook/GetData";
+import { Textarea } from "@nextui-org/react";
 
 interface Testimonial {
   id: string;
@@ -268,15 +269,6 @@ export const TestimonialsSectionDashboard: React.FC = () => {
                         className="border p-2 rounded-lg dark:bg-gray-700"
                       />
                     </div>
-
-                    <textarea
-                      placeholder="Comment"
-                      value={testimonial.comment}
-                      onChange={(e) =>
-                        handleChange("data", "comment", e.target.value, i)
-                      }
-                      className="border p-2 rounded-lg dark:bg-gray-700"
-                    />
                   </div>
 
                   <div className="flex flex-col items-center gap-2">

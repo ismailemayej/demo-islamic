@@ -175,20 +175,24 @@ export const YouTubeVideosSectionDashboard: React.FC = () => {
             />
 
             {/* Videos Inputs */}
+            {/* Videos Inputs */}
             <div className="space-y-4">
               {formData.data.map((video, index) => (
                 <motion.div
                   key={video.id}
                   whileHover={{ scale: 1.01 }}
-                  className="relative bg-gradient-to-r from-amber-50 to-white dark:from-gray-700 dark:to-gray-800 p-5 rounded-xl shadow-sm border border-gray-200 dark:border-gray-700"
+                  className="relative bg-gradient-to-r from-amber-50 to-white dark:from-gray-700 dark:to-gray-800 p-4 sm:p-5 rounded-xl shadow-sm border border-gray-200 dark:border-gray-700"
                 >
+                  {/* Delete Button */}
                   <button
                     onClick={() => handleDelete(index)}
-                    className="bg-violet-50 z-10 border rounded-2xl p-1 absolute top-3 right-3 text-red-500 hover:text-red-700"
+                    className="bg-red-50 z-10 border rounded-full absolute top-2 right-2 text-red-600 hover:bg-red-100 hover:text-red-800 transition-colors"
+                    title="Delete Video"
                   >
-                    Delete
+                    ✖
                   </button>
-                  <div className="grid sm:grid-cols-2 gap-3">
+
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                     <input
                       type="text"
                       placeholder="Video Title"
@@ -196,7 +200,7 @@ export const YouTubeVideosSectionDashboard: React.FC = () => {
                       onChange={(e) =>
                         handleChange("data", "title", e.target.value, index)
                       }
-                      className="border p-2 rounded-md dark:bg-gray-700"
+                      className="border p-2 rounded-md dark:bg-gray-700 w-full"
                     />
                     <input
                       type="text"
@@ -205,7 +209,7 @@ export const YouTubeVideosSectionDashboard: React.FC = () => {
                       onChange={(e) =>
                         handleChange("data", "url", e.target.value, index)
                       }
-                      className="border p-2 rounded-md dark:bg-gray-700"
+                      className="border p-2 rounded-md dark:bg-gray-700 w-full"
                     />
                   </div>
                 </motion.div>

@@ -1,96 +1,260 @@
 "use client";
 
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { motion } from "framer-motion";
-
 import {
   FaPhoneAlt,
   FaEnvelope,
   FaMapMarkerAlt,
   FaWhatsapp,
+  FaEdit,
 } from "react-icons/fa";
+import { toast } from "react-hot-toast";
 import Background from "@/components/background";
 import { Heading } from "@/components/Heading";
+import { useGetSection } from "../Hook/GetData";
+import { Button } from "@heroui/button";
 
-interface ContactItem {
-  id: string;
-  title: string;
-  value: string;
-  url?: string;
-  icon: React.ReactNode;
-  color?: string;
+interface ContactData {
+  email: string;
+  phone: string;
+  address: string;
+  mapUrl: string;
 }
 
-const CONTACT_ITEMS: ContactItem[] = [
-  {
-    id: "1",
-    title: "মোবাইল",
-    value: "+8801858226967",
-    url: "tel:+8801858226967",
-    icon: <FaPhoneAlt />,
-    color: "text-green-600 dark:text-green-400",
-  },
-  {
-    id: "2",
-    title: "ইমেইল",
-    value: "ismaile535@gmail.com",
-    url: "mailto:ismaile535@gmail.com",
-    icon: <FaEnvelope />,
-    color: "text-red-500 dark:text-red-400",
-  },
-  {
-    id: "3",
-    title: "ঠিকানা",
-    value: "East Hansa, Faridgonj, Chandpur, Bangladesh",
-    icon: <FaMapMarkerAlt />,
-    color: "text-amber-500 dark:text-amber-400",
-  },
-  {
-    id: "4",
-    title: "WhatsApp",
-    value: "+8801858226967",
-    url: "https://wa.me/8801858226967",
-    icon: <FaWhatsapp />,
-    color: "text-green-500 dark:text-green-400",
-  },
-];
+interface ContactSection {
+  heading: {
+    title: string;
+    subTitle: string;
+  };
+  data: ContactData;
+}
 
 export const ContactSectionDashboard: React.FC = () => {
+  const { section, loading, error } =
+    useGetSection<ContactData>("contactsection");
+
+  const [formData, setFormData] = useState<ContactSection>({
+    heading: { title: "", subTitle: "" },
+    data: { email: "", phone: "", address: "", mapUrl: "" },
+  });
+
+  const [isEditing, setIsEditing] = useState(false);
+  const [saving, setSaving] = useState(false);
+
+  useEffect(() => {
+    if (section) {
+      setFormData({
+        heading: section.heading || { title: "", subTitle: "" },
+        data: section.data || { email: "", phone: "", address: "", mapUrl: "" },
+      });
+    }
+  }, [section]);
+
+  const handleChange = (
+    type: "heading" | "data",
+    field: string,
+    value: string
+  ) => {
+    if (type === "heading") {
+      setFormData((prev) => ({
+        ...prev,
+        heading: { ...prev.heading, [field]: value },
+      }));
+    } else {
+      setFormData((prev) => ({
+        ...prev,
+        data: { ...prev.data, [field]: value },
+      }));
+    }
+  };
+
+  const handleSave = async () => {
+    setSaving(true);
+    toast.loading("Saving data...", { id: "save" });
+
+    try {
+      const res = await fetch("/api/all-data/contactsection/update", {
+        method: "PATCH",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(formData),
+      });
+      const json = await res.json();
+      if (!json.success) throw new Error(json.error || "Save failed");
+
+      toast.dismiss("save");
+      toast.success("✅ Saved successfully!");
+      setIsEditing(false);
+    } catch (err: any) {
+      toast.dismiss("save");
+      toast.error(err.message || "Save failed");
+    } finally {
+      setSaving(false);
+    }
+  };
+
+  if (loading) return <p className="text-center py-10">Loading...</p>;
+  if (error) return <p className="text-center py-10 text-red-500">{error}</p>;
+
   return (
     <Background id="contact">
-      <div className="container mx-auto">
-        <Heading
-          title="যোগাযোগের মাধ্যম"
-          subTitle="নিচের মাধ্যমে আমাদের সঙ্গে যোগাযোগ করতে পারেন"
-        />
+      <div className="container mx-auto text-center">
+        {/* Heading Section */}
+        <div className="flex justify-between items-center mb-5">
+          {isEditing ? (
+            <div className="flex flex-col w-full space-y-2">
+              <input
+                type="text"
+                value={formData.heading.title}
+                onChange={(e) =>
+                  handleChange("heading", "title", e.target.value)
+                }
+                className="w-full p-2 border rounded-md text-center dark:bg-gray-800 dark:text-white"
+                placeholder="Heading Title"
+              />
+              <input
+                type="text"
+                value={formData.heading.subTitle}
+                onChange={(e) =>
+                  handleChange("heading", "subTitle", e.target.value)
+                }
+                className="w-full p-2 border rounded-md text-center dark:bg-gray-800 dark:text-white"
+                placeholder="Heading Subtitle"
+              />
+            </div>
+          ) : (
+            <Heading
+              title={formData.heading.title}
+              subTitle={formData.heading.subTitle}
+            />
+          )}
 
-        <div className="mt-10 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-6">
-          {CONTACT_ITEMS.map((item, index) => (
-            <motion.a
-              key={item.id}
-              href={item.url || "#"}
-              target={item.url ? "_blank" : undefined}
-              rel={item.url ? "noopener noreferrer" : undefined}
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5, delay: index * 0.1 }}
-              className="flex flex-col items-center justify-center p-6 bg-emerald-50 dark:bg-gray-800 rounded-2xl shadow-lg dark:shadow-gray-700 hover:shadow-2xl hover:scale-105 transition-transform duration-300 group"
-            >
-              <div
-                className={`text-4xl mb-3 transition-colors group-hover:text-amber-500 ${item.color || "text-emerald-700 dark:text-emerald-300"}`}
-              >
-                {item.icon}
-              </div>
-              <h4 className="font-semibold text-gray-700 dark:text-gray-300 group-hover:text-emerald-700 dark:group-hover:text-emerald-400 text-lg">
-                {item.title}
-              </h4>
-              <p className="text-gray-600 dark:text-gray-400 text-center mt-1 text-sm break-words">
-                {item.value}
-              </p>
-            </motion.a>
-          ))}
+          <Button
+            onClick={() => (isEditing ? handleSave() : setIsEditing(true))}
+            className="ml-4"
+          >
+            {isEditing ? "Save" : "Edit"}
+          </Button>
         </div>
+
+        {/* Contact Items */}
+        <motion.div className="mt-10 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-6">
+          {/* Phone */}
+          <ContactCard
+            icon={<FaPhoneAlt />}
+            title="Phone"
+            value={
+              isEditing ? (
+                <input
+                  type="text"
+                  value={formData.data.phone}
+                  onChange={(e) =>
+                    handleChange("data", "phone", e.target.value)
+                  }
+                  className="w-full text-center bg-transparent border-b border-emerald-500 outline-none dark:text-white"
+                />
+              ) : (
+                <a
+                  href={`https://wa.me/${formData.data.phone.replace("+", "")}`}
+                  target="_blank"
+                  className="hover:text-emerald-600"
+                >
+                  {formData.data.phone}
+                </a>
+              )
+            }
+          />
+
+          {/* WhatsApp */}
+          <ContactCard
+            icon={<FaWhatsapp />}
+            title="WhatsApp"
+            value={
+              <a
+                href={`https://wa.me/${formData.data.phone.replace("+", "")}`}
+                target="_blank"
+                className="hover:text-green-500"
+              >
+                Message on WhatsApp
+              </a>
+            }
+          />
+
+          {/* Email */}
+          <ContactCard
+            icon={<FaEnvelope />}
+            title="Email"
+            value={
+              isEditing ? (
+                <input
+                  type="email"
+                  value={formData.data.email}
+                  onChange={(e) =>
+                    handleChange("data", "email", e.target.value)
+                  }
+                  className="w-full text-center bg-transparent border-b border-emerald-500 outline-none dark:text-white"
+                />
+              ) : (
+                <a
+                  href={`mailto:${formData.data.email}`}
+                  className="hover:text-blue-500"
+                >
+                  {formData.data.email}
+                </a>
+              )
+            }
+          />
+
+          {/* Address */}
+          <ContactCard
+            icon={<FaMapMarkerAlt />}
+            title="Address"
+            value={
+              isEditing ? (
+                <input
+                  type="text"
+                  value={formData.data.address}
+                  onChange={(e) =>
+                    handleChange("data", "address", e.target.value)
+                  }
+                  className="w-full text-center bg-transparent border-b border-emerald-500 outline-none dark:text-white"
+                />
+              ) : (
+                <a
+                  href={formData.data.mapUrl}
+                  target="_blank"
+                  className="hover:text-amber-600"
+                >
+                  {formData.data.address}
+                </a>
+              )
+            }
+          />
+        </motion.div>
       </div>
     </Background>
+  );
+};
+
+interface ContactCardProps {
+  icon: React.ReactNode;
+  title: string;
+  value: React.ReactNode;
+}
+
+const ContactCard: React.FC<ContactCardProps> = ({ icon, title, value }) => {
+  return (
+    <motion.div
+      whileHover={{ scale: 1.05 }}
+      className="flex flex-col items-center justify-center p-6 bg-emerald-50 dark:bg-gray-800 rounded-2xl shadow-lg hover:shadow-2xl transition-transform duration-300"
+    >
+      <div className="text-4xl mb-3 text-emerald-600">{icon}</div>
+      <h4 className="font-semibold text-gray-700 dark:text-gray-300 text-lg mb-1">
+        {title}
+      </h4>
+      <p className="text-gray-600 dark:text-gray-400 text-center text-sm break-words">
+        {value}
+      </p>
+    </motion.div>
   );
 };
