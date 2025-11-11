@@ -161,7 +161,7 @@ export const ProgramsSectionDashboard: React.FC = () => {
             </h3>
 
             {/* Heading Inputs */}
-            <div className="grid sm:grid-cols-2 gap-4 mb-4">
+            <div className="grid sm:grid-cols-2 gap-4 mb-4 p-3">
               <input
                 type="text"
                 placeholder="Section Title"
@@ -183,7 +183,7 @@ export const ProgramsSectionDashboard: React.FC = () => {
             </div>
 
             {/* Program Items */}
-            <div className="space-y-4">
+            <div className=" grid lg:grid-cols-3 grid-cols-1 gap-4 bg-amber-100 p-2 rounded-xl">
               {formData.data.map((program, i) => (
                 <motion.div
                   key={program.id}
@@ -197,7 +197,7 @@ export const ProgramsSectionDashboard: React.FC = () => {
                     <Trash2 size={18} />
                   </button>
 
-                  <div className="grid sm:grid-cols-2 gap-2 mb-2">
+                  <div className="grid sm:grid-cols-1 gap-2 mb-2">
                     <input
                       type="text"
                       placeholder="Program Name"
@@ -218,7 +218,7 @@ export const ProgramsSectionDashboard: React.FC = () => {
                     />
                   </div>
 
-                  <div className="grid sm:grid-cols-3 gap-2">
+                  <div className="grid sm:grid-cols-1 gap-2">
                     <input
                       type="text"
                       placeholder="Location"
@@ -238,7 +238,7 @@ export const ProgramsSectionDashboard: React.FC = () => {
                       className="border p-2 rounded-lg dark:bg-gray-700"
                     />
                     <input
-                      type="text"
+                      type="number"
                       placeholder="Day"
                       value={program.day}
                       onChange={(e) =>

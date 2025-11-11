@@ -7,7 +7,6 @@ import toast from "react-hot-toast";
 import { Button } from "@heroui/button";
 import { Input } from "@heroui/input";
 import { Heading } from "@/components/Heading";
-import { DraggableList } from "../Hook/DraggableList";
 
 interface EducationItem {
   id: string;
@@ -50,25 +49,30 @@ export const CertificateSectionDashboard: React.FC = () => {
     }
   }, [section]);
 
-  // Handle field changes
+  // Handle input changes
   const handleChange = (
     sectionType: "heading" | "data",
     field: string,
     value: string,
     index?: number
   ) => {
-    if (sectionType === "heading") {
-      setFormData((prev) => ({
-        ...prev,
-        heading: { ...prev.heading, [field]: value },
-      }));
-    } else if (sectionType === "data" && index !== undefined) {
-      setFormData((prev) => {
-        const newData = [...prev.data];
-        newData[index] = { ...newData[index], [field]: value };
-        return { ...prev, data: newData };
-      });
-    }
+    setFormData((prev) => {
+      if (sectionType === "heading") {
+        return {
+          ...prev,
+          heading: { ...prev.heading, [field]: value },
+        };
+      }
+
+      if (sectionType === "data" && index !== undefined) {
+        const updatedData = prev.data.map((item, i) =>
+          i === index ? { ...item, [field]: value } : item
+        );
+        return { ...prev, data: updatedData };
+      }
+
+      return prev;
+    });
   };
 
   // Save handler
@@ -98,7 +102,7 @@ export const CertificateSectionDashboard: React.FC = () => {
     }
   };
 
-  // Delete one item
+  // Delete item
   const handleDelete = (index: number) => {
     setFormData((prev) => ({
       ...prev,
@@ -108,21 +112,19 @@ export const CertificateSectionDashboard: React.FC = () => {
 
   // Add new item
   const addNewEducation = () => {
-    setFormData((prev) => ({
-      ...prev,
-      data: [
-        ...prev.data,
-        {
-          id: Date.now().toString(),
-          degree: "",
-          institution: "",
-          board: "",
-          year: "",
-          gpa: "",
-        },
-      ],
-    }));
-    setEditingIndex(formData.data.length);
+    setFormData((prev) => {
+      const newItem: EducationItem = {
+        id: Date.now().toString(),
+        degree: "",
+        institution: "",
+        board: "",
+        year: "",
+        gpa: "",
+      };
+      const updatedData = [...prev.data, newItem];
+      setEditingIndex(updatedData.length - 1);
+      return { ...prev, data: updatedData };
+    });
   };
 
   return (
@@ -196,22 +198,16 @@ export const CertificateSectionDashboard: React.FC = () => {
           )}
         </div>
 
-        {/* ======= Education Cards ======= */}
-        <DraggableList<EducationItem>
-          items={formData.data}
-          getId={(item) => item.id}
-          onChange={(newItems) =>
-            setFormData((prev) => ({ ...prev, data: newItems }))
-          }
-          className="grid gap-6 md:grid-cols-3"
-          renderItem={(edu, index) => (
+        {/* ======= Education Cards (without DraggableList) ======= */}
+        <div className="grid gap-6 md:grid-cols-3">
+          {formData.data.map((edu, index) => (
             <motion.div
               key={edu.id}
               initial={{ opacity: 0, y: 30 }}
               whileInView={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.5 }}
               className="relative bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 
-        rounded-2xl shadow-md hover:shadow-lg transition-all duration-300 p-5 cursor-grab active:cursor-grabbing"
+              rounded-2xl shadow-md hover:shadow-lg transition-all duration-300 p-5"
             >
               {editingIndex === index ? (
                 <div className="space-y-3">
@@ -278,7 +274,7 @@ export const CertificateSectionDashboard: React.FC = () => {
                 <div>
                   <div className="flex items-center justify-between mb-3">
                     <h3 className="text-lg font-semibold text-emerald-700 dark:text-emerald-300">
-                      {edu.degree}
+                      {edu.degree || "Untitled"}
                     </h3>
                     <div className="flex gap-2">
                       <Button
@@ -322,8 +318,8 @@ export const CertificateSectionDashboard: React.FC = () => {
                 </div>
               )}
             </motion.div>
-          )}
-        />
+          ))}
+        </div>
       </div>
     </section>
   );

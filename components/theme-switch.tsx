@@ -6,7 +6,8 @@ import { SwitchProps, useSwitch } from "@heroui/switch";
 import { useTheme } from "next-themes";
 import { useIsSSR } from "@react-aria/ssr";
 import clsx from "clsx";
-import { Sun, Moon } from "lucide-react"; // ✅ Modern icons
+import { Sun, Moon } from "lucide-react";
+import { IoSunny } from "react-icons/io5";
 
 export interface ThemeSwitchProps {
   className?: string;
@@ -75,10 +76,7 @@ export const ThemeSwitch: FC<ThemeSwitchProps> = ({
         })}
       >
         {!isSelected || isSSR ? (
-          <Sun
-            size={22}
-            className="text-yellow-500 hover:text-yellow-400 transition-transform duration-300"
-          />
+          <IoSunny className="text-yellow-500 hover:text-yellow-400 transition-transform duration-300" />
         ) : (
           <Moon
             size={22}

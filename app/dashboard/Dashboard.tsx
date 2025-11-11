@@ -166,10 +166,10 @@ export default function DashboardPage() {
                 No Image
               </div>
             )}
-            <h3 className="text-2xl font-bold text-gray-800 dark:text-white">
+            <h3 className="bangla text-2xl font-bold text-gray-800 dark:text-white">
               {formData.sitetitle || "Website Title"}
             </h3>
-            <p className="text-gray-600 dark:text-gray-300 max-w-md">
+            <p className="bangla text-gray-600 dark:text-gray-300 max-w-md">
               {formData.description ||
                 "This is where your website description will appear."}
             </p>

@@ -223,12 +223,12 @@ export const GallerySectionDashboard: React.FC = () => {
             </div>
 
             {/* Gallery Items */}
-            <div className="space-y-4">
+            <div className="space-y-4 grid grid-cols-1 lg:grid-cols-4 gap-4">
               {formData.data.map((item, i) => (
                 <motion.div
                   key={item.id}
                   whileHover={{ scale: 1.01 }}
-                  className="relative bg-gradient-to-r from-amber-50 to-white dark:from-gray-700 dark:to-gray-800 p-4 rounded-xl shadow-sm border border-gray-200 dark:border-gray-700"
+                  className="relative bg-gradient-to-r from-amber-50 to-amber-100 dark:from-gray-700 dark:to-gray-800 p-4 rounded-xl shadow-sm border border-gray-200 dark:border-gray-700"
                 >
                   <button
                     onClick={() => handleDeleteItem(i)}

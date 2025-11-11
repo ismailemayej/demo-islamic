@@ -237,7 +237,7 @@ export const OrganizationSectionDashboard = () => {
             </div>
 
             {/* Organization Items */}
-            <div className="space-y-4">
+            <div className=" grid lg:grid-cols-3 grid-cols-1 gap-2">
               {formData.data.map((org, i) => (
                 <motion.div
                   key={org.id}
@@ -246,12 +246,12 @@ export const OrganizationSectionDashboard = () => {
                 >
                   <button
                     onClick={() => handleDelete(i)}
-                    className="absolute top-2 right-2 text-red-500 hover:text-red-700"
+                    className="z-10 border p-1 rounded-full bg-white absolute top-2 right-2 text-red-500 hover:text-red-700"
                   >
                     <Trash2 size={18} />
                   </button>
 
-                  <div className="grid sm:grid-cols-2 gap-2 mb-2">
+                  <div className="grid grid-cols-1 gap-2 mb-2">
                     <input
                       type="text"
                       placeholder="Organization Name"
@@ -272,7 +272,7 @@ export const OrganizationSectionDashboard = () => {
                     />
                   </div>
 
-                  <div className="grid sm:grid-cols-3 gap-2 mb-2">
+                  <div className="grid sm:grid-cols-1 gap-2 mb-2">
                     <input
                       type="text"
                       placeholder="Address"
@@ -314,7 +314,7 @@ export const OrganizationSectionDashboard = () => {
                     <input
                       type="file"
                       onChange={(e) => handleImageUpload(e, i)}
-                      className="border p-1 rounded-lg"
+                      className="border p-1 rounded-lg w-32"
                     />
                     {org.img && (
                       <button
@@ -348,7 +348,7 @@ export const OrganizationSectionDashboard = () => {
         )}
 
         {/* ---------- Display Organizations ---------- */}
-        <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3 justify-items-center mt-8">
+        <div className="grid gap-4 sgrid-cols-2 lg:grid-cols-3 justify-items-center mt-8">
           {formData.data.map((org, index) => (
             <motion.div
               key={org.id}

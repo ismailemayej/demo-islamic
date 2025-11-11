@@ -41,7 +41,7 @@ export default function DashboardLayout({ children }: DashboardLayoutProps) {
             transition={{ duration: 0.25 }}
             className="fixed inset-y-0 left-0 z-50 w-64 bg-white dark:bg-gray-900 shadow-lg border-r border-gray-200 dark:border-gray-800"
           >
-            <div className="flex justify-between items-center p-4 border-b border-gray-200 dark:border-gray-800">
+            <div className="flex justify-between items-center border-b border-gray-200 dark:border-gray-800">
               <button
                 onClick={() => setOpen(false)}
                 className="rounded-md hover:bg-gray-200 dark:hover:bg-gray-800 p-1"

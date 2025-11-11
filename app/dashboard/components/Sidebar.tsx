@@ -1,28 +1,29 @@
+"use client";
 import { useState } from "react";
-
 import { usePathname } from "next/navigation";
 import Link from "next/link";
-import {
-  Users,
-  FileText,
-  User,
-  BookOpen,
-  Calendar,
-  Image,
-  Mail,
-  Award,
-  Star,
-  Book,
-  Grid,
-  Tv,
-  Smile,
-  Menu,
-} from "lucide-react";
 import { SidebarProfile } from "./DashboardProfile";
 import { ScrollShadow } from "@nextui-org/react";
 import { DraggableList } from "../Hook/DraggableList";
 
-// 🧠 Type for Sidebar Link
+import {
+  FaHome,
+  FaUserAlt,
+  FaAward,
+  FaBlogger,
+  FaCalendarAlt,
+  FaStar,
+  FaEnvelope,
+  FaBook,
+  FaImages,
+  FaThLarge,
+  FaUsers,
+  FaSmileBeam,
+  FaTv,
+  FaBookReader,
+  FaMedal,
+} from "react-icons/fa";
+
 interface SidebarLink {
   id: string;
   name: string;
@@ -35,105 +36,105 @@ export const Sidebar = ({ onLinkClick }: { onLinkClick?: () => void }) => {
 
   const [links, setLinks] = useState<SidebarLink[]>([
     {
-      id: "16",
+      id: "1",
       name: "Dashboard",
-      icon: <Menu size={18} />,
+      icon: <FaHome className="text-blue-500 text-lg" />,
       href: "/dashboard",
     },
     {
-      id: "1",
-      name: "HeroSection",
-      icon: <BookOpen size={18} />,
+      id: "2",
+      name: "Hero Section",
+      icon: <FaBookReader className="text-rose-500 text-lg" />,
       href: "/dashboard/herosection",
     },
     {
-      id: "2",
-      name: "AboutSection",
-      icon: <User size={18} />,
+      id: "3",
+      name: "About Section",
+      icon: <FaUserAlt className="text-green-500 text-lg" />,
       href: "/dashboard/about",
     },
     {
-      id: "3",
+      id: "4",
       name: "Achievements",
-      icon: <Award size={18} />,
+      icon: <FaMedal className="text-yellow-500 text-lg" />,
       href: "/dashboard/achievements",
     },
     {
-      id: "4",
+      id: "5",
       name: "Blog",
-      icon: <FileText size={18} />,
+      icon: <FaBlogger className="text-orange-500 text-lg" />,
       href: "/dashboard/blog",
     },
     {
-      id: "5",
+      id: "6",
       name: "Booking",
-      icon: <Calendar size={18} />,
+      icon: <FaCalendarAlt className="text-purple-500 text-lg" />,
       href: "/dashboard/booking",
     },
     {
-      id: "6",
+      id: "7",
       name: "Certificate",
-      icon: <Star size={18} />,
+      icon: <FaAward className="text-teal-500 text-lg" />,
       href: "/dashboard/certificate",
     },
     {
-      id: "7",
+      id: "8",
       name: "Contact",
-      icon: <Mail size={18} />,
+      icon: <FaEnvelope className="text-pink-500 text-lg" />,
       href: "/dashboard/contact",
     },
     {
-      id: "8",
+      id: "9",
       name: "Education",
-      icon: <Book size={18} />,
+      icon: <FaBook className="text-indigo-500 text-lg" />,
       href: "/dashboard/education",
     },
     {
-      id: "9",
+      id: "10",
       name: "Gallery",
-      icon: <Image size={18} />,
+      icon: <FaImages className="text-cyan-500 text-lg" />,
       href: "/dashboard/gallery",
     },
     {
-      id: "10",
+      id: "11",
       name: "Programs",
-      icon: <Grid size={18} />,
+      icon: <FaThLarge className="text-lime-500 text-lg" />,
       href: "/dashboard/programs",
     },
     {
-      id: "11",
+      id: "12",
       name: "Organization",
-      icon: <Users size={18} />,
+      icon: <FaUsers className="text-blue-400 text-lg" />,
       href: "/dashboard/organization",
     },
     {
-      id: "12",
-      name: "SocialMedia",
-      icon: <Smile size={18} />,
+      id: "13",
+      name: "Social Media",
+      icon: <FaSmileBeam className="text-yellow-400 text-lg" />,
       href: "/dashboard/socialmedia",
     },
     {
-      id: "13",
+      id: "14",
       name: "Teams",
-      icon: <Users size={18} />,
+      icon: <FaUsers className="text-emerald-500 text-lg" />,
       href: "/dashboard/teams",
     },
     {
-      id: "14",
+      id: "15",
       name: "Testimonials",
-      icon: <Star size={18} />,
+      icon: <FaStar className="text-amber-400 text-lg" />,
       href: "/dashboard/testimonials",
     },
     {
-      id: "15",
-      name: "YoutubeVideos",
-      icon: <Tv size={18} />,
+      id: "16",
+      name: "Youtube Videos",
+      icon: <FaTv className="text-red-500 text-lg" />,
       href: "/dashboard/youtube",
     },
     {
-      id: "16",
-      name: "books",
-      icon: <Tv size={18} />,
+      id: "17",
+      name: "Books",
+      icon: <FaBookReader className="text-green-400 text-lg" />,
       href: "/dashboard/books",
     },
   ]);
@@ -154,10 +155,10 @@ export const Sidebar = ({ onLinkClick }: { onLinkClick?: () => void }) => {
             <Link
               href={link.href}
               onClick={onLinkClick}
-              className={`group flex items-center gap-3 rounded-md px-3 py-2 text-sm font-medium transition
+              className={`group flex items-center gap-3 rounded-md px-3 py-2 text-sm font-medium transition-all duration-200
                 ${
                   pathname === link.href
-                    ? "bg-indigo-100 dark:bg-gray-800 text-green-500"
+                    ? "bg-gradient-to-r from-blue-100 to-indigo-100 dark:from-gray-800 dark:to-gray-700 text-green-600 scale-105"
                     : "text-gray-500 hover:bg-gray-100 dark:hover:bg-gray-800 hover:text-gray-900 dark:hover:text-gray-100"
                 }`}
             >
