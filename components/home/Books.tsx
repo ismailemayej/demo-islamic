@@ -25,7 +25,7 @@ export const BookSection = () => {
 
   if (loading) {
     return (
-      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 p-6">
+      <div className="grid grid-cols-1 lg:grid-cols-5 gap-">
         {[1, 2, 3].map((i) => (
           <Card key={i} className="p-4 rounded-2xl shadow-md">
             <Skeleton className="h-72 w-full rounded-lg" />
@@ -50,7 +50,7 @@ export const BookSection = () => {
       <Heading title={heading.title} subTitle={heading.subTitle} />
 
       {/* Books */}
-      <div className="px-4 mx-auto grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-2">
+      <div className="px-4 mx-auto grid grid-cols-1 lg:grid-cols-4 gap-2">
         {books.map((book: any) => (
           <motion.div key={book.id} whileHover={{ scale: 1.03 }}>
             <Card

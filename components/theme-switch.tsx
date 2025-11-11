@@ -6,8 +6,7 @@ import { SwitchProps, useSwitch } from "@heroui/switch";
 import { useTheme } from "next-themes";
 import { useIsSSR } from "@react-aria/ssr";
 import clsx from "clsx";
-
-import { SunFilledIcon, MoonFilledIcon } from "@/components/icons";
+import { Sun, Moon } from "lucide-react"; // ✅ Modern icons
 
 export interface ThemeSwitchProps {
   className?: string;
@@ -56,7 +55,7 @@ export const ThemeSwitch: FC<ThemeSwitchProps> = ({
     <Component
       {...getBaseProps({
         className: clsx(
-          "px-1 transition-opacity hover:opacity-80 cursor-pointer focus:outline-none",
+          "px-1 cursor-pointer focus:outline-none hover:opacity-80 transition-opacity",
           className,
           classNames?.base
         ),
@@ -65,19 +64,26 @@ export const ThemeSwitch: FC<ThemeSwitchProps> = ({
       <VisuallyHidden>
         <input {...getInputProps()} />
       </VisuallyHidden>
+
       <div
         {...getWrapperProps()}
         className={slots.wrapper({
           className: clsx(
-            "flex items-center justify-center w-auto h-auto rounded-lg bg-transparent focus:outline-none active:bg-transparent",
+            "flex items-center justify-center w-auto h-auto rounded-lg !ring-0 !outline-none !focus:ring-0 !active:ring-0 !bg-transparent",
             classNames?.wrapper
           ),
         })}
       >
         {!isSelected || isSSR ? (
-          <SunFilledIcon size={22} className="text-yellow-400" />
+          <Sun
+            size={22}
+            className="text-yellow-500 hover:text-yellow-400 transition-transform duration-300"
+          />
         ) : (
-          <MoonFilledIcon size={22} className="text-white" />
+          <Moon
+            size={22}
+            className="text-blue-300 hover:text-blue-400 transition-transform duration-300"
+          />
         )}
       </div>
     </Component>

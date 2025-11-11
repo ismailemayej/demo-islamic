@@ -36,7 +36,7 @@ export const OrganizationSection = () => {
 
   return (
     <Background id="organizations">
-      <div className="mx-auto px-4 sm:px-6 lg:px-8 py-12">
+      <div className="mx-auto px-3 lg:px-8 py-12">
         <Heading
           title={section?.heading?.title || "আমার প্রতিষ্ঠান সমূহ"}
           subTitle={
