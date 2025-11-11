@@ -172,7 +172,7 @@ export const TeamSectionDashboard = () => {
       <div className="container mx-auto">
         {/* Heading */}
         {isEditing ? (
-          <div className="flex flex-col space-y-2 mb-6">
+          <div className="lg:flex flex-col space-y-2 mb-6">
             <input
               type="text"
               value={formData.heading.title}
@@ -195,7 +195,7 @@ export const TeamSectionDashboard = () => {
           />
         )}
 
-        <div className="flex gap-4 mb-4">
+        <div className="lg:flex gap-4 mb-4">
           <Button onClick={handleAddMember}>Add Member</Button>
           <Button
             onClick={() => (isEditing ? handleSave() : setIsEditing(true))}
@@ -205,7 +205,7 @@ export const TeamSectionDashboard = () => {
         </div>
 
         {/* Team Grid */}
-        <div className="grid gap-6 grid-cols-2 md:grid-cols-3 lg:grid-cols-5">
+        <div className="grid gap-6 grid-cols-1 md:grid-cols-3 lg:grid-cols-5">
           {formData.data.map((member, index) => (
             <motion.div
               key={member.id}
