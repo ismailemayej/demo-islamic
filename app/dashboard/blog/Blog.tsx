@@ -268,7 +268,7 @@ export const ArticlesSectionDashboard: React.FC = () => {
       {/* ✅ Full-Screen Modal Editor */}
       {showEditor && (
         <div className="fixed inset-0 bg-black bg-opacity-60 z-50 flex justify-center items-center">
-          <div className="bg-white dark:bg-gray-900 w-4/10 h-[90vh] rounded-xl p-6 shadow-2xl overflow-y-auto relative">
+          <div className="bg-white dark:bg-gray-900 lg:w-4/10 h-[90vh] rounded-xl p-6 shadow-2xl overflow-y-auto relative">
             <h2 className="text-2xl font-bold mb-4 dark:text-white">
               ✍️ Create New Article
             </h2>

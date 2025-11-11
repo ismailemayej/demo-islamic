@@ -130,6 +130,12 @@ export const Sidebar = ({ onLinkClick }: { onLinkClick?: () => void }) => {
       icon: <Tv size={18} />,
       href: "/dashboard/youtube",
     },
+    {
+      id: "16",
+      name: "books",
+      icon: <Tv size={18} />,
+      href: "/dashboard/books",
+    },
   ]);
 
   return (

@@ -12,6 +12,7 @@ import Background from "../background";
 
 export const TeamSection = () => {
   const { section, loading, error } = useGetSection("teamsection");
+  const { section: mobilenumber } = useGetSection("contactsection");
 
   if (loading) return <p>Loading team members...</p>;
   if (error || !section) return <p>Error loading team members</p>;
@@ -30,7 +31,7 @@ export const TeamSection = () => {
         />
 
         {/* Team Grid */}
-        <div className="grid gap-6 grid-cols-2 md:grid-cols-3 lg:grid-cols-5 w-full mt-8">
+        <div className="grid gap-6 grid-cols-1 md:grid-cols-2 lg:grid-cols-5 w-full mt-8">
           {teamMembers.map((member: any, index: number) => (
             <motion.div
               key={member.id}
@@ -79,7 +80,7 @@ export const TeamSection = () => {
                       <Button
                         isIconOnly
                         as="a"
-                        href={member.imo}
+                        href={`tel:${mobilenumber?.data?.phone}`}
                         target="_blank"
                         variant="light"
                       >

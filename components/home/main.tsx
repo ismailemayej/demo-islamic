@@ -3,6 +3,7 @@ import { AboutSection } from "./About";
 import { AchievementsSection } from "./Achievements";
 import { ArticlesSection } from "./Blog";
 import { AppointmentSection } from "./Booking";
+import { BookSection } from "./Books";
 import { CertificateSection } from "./Certificate";
 import { ContactSection } from "./Contact";
 import { EducationSection } from "./Education";
@@ -86,6 +87,10 @@ export default function Main() {
       {/* Booking */}
       <section className="w-full transition-colors duration-500">
         <AppointmentSection />
+      </section>
+      {/* Booksection */}
+      <section className="w-full transition-colors duration-500">
+        <BookSection />
       </section>
     </main>
   );

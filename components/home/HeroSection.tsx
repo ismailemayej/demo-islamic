@@ -3,16 +3,12 @@ import { motion } from "framer-motion";
 
 import profile from "@/public/images/profile.png";
 import { useGetSection } from "@/app/dashboard/Hook/GetData";
+import SkeletonPage from "../Skeleton";
 
 export const HeroSection: React.FC = () => {
   const { section, loading, error } = useGetSection<any>("herosection");
 
-  if (loading)
-    return (
-      <div className="flex items-center justify-center py-20">
-        <div className="h-10 w-10 border-4 border-emerald-500 border-t-transparent rounded-full animate-spin"></div>
-      </div>
-    );
+  if (loading) return <SkeletonPage />;
 
   if (error)
     return (
