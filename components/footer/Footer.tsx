@@ -13,7 +13,7 @@ export const Footer: React.FC = () => {
 
         {/* Created by + WhatsApp */}
         <p className="text-gray-600 dark:text-gray-300 bangla">
-          Created by{" "}
+          Created by
           <a
             href="https://wa.me/8801858226967"
             target="_blank"
