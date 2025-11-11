@@ -1,4 +1,6 @@
+import Main from "@/components/home/main";
 import UIManager from "@/components/UIManager";
 export default function Home() {
-  return <UIManager user="ismaile" />;
+  return <Main />;
+  // <UIManager user="ismaile" />;
 }

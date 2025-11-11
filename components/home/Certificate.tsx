@@ -4,6 +4,7 @@ import { motion } from "framer-motion";
 import { Heading } from "../Heading";
 import { Award } from "lucide-react";
 import { useGetSection } from "@/app/dashboard/Hook/GetData";
+import Background from "../background";
 
 interface Certificate {
   degree?: string;
@@ -25,12 +26,7 @@ export const CertificateSection: React.FC = () => {
   const CERTIFICATES = section?.data || [];
 
   return (
-    <section
-      id="certificates"
-      className="py-10 px-3 rounded-xl 
-             bg-gradient-to-b from-amber-50 to-white 
-             dark:bg-gradient-to-b dark:from-gray-700 dark:to-gray-900 transition-colors duration-500"
-    >
+    <Background id="certificates">
       <div className="container mx-auto bangla">
         <Heading
           title={section?.heading?.title || "সার্টিফিকেট "}
@@ -97,6 +93,6 @@ export const CertificateSection: React.FC = () => {
           ))}
         </div>
       </div>
-    </section>
+    </Background>
   );
 };

@@ -16,6 +16,7 @@ import {
   FaWhatsapp,
 } from "react-icons/fa";
 import { useGetSection } from "@/app/dashboard/Hook/GetData";
+import Background from "../background";
 
 interface SocialLink {
   name: string;
@@ -75,12 +76,7 @@ export const SocialMediaSection: React.FC = () => {
   };
 
   return (
-    <section
-      id="social"
-      className="py-10 px-3 rounded-xl 
-             bg-gradient-to-b from-amber-50 to-white 
-             dark:bg-gradient-to-b dark:from-gray-700 dark:to-gray-900 transition-colors duration-500"
-    >
+    <Background id="social">
       <div className="container mx-auto px-0">
         <Heading
           title={section?.heading?.title || "সোস্যাল মিডিয়া"}
@@ -121,6 +117,6 @@ export const SocialMediaSection: React.FC = () => {
           })}
         </div>
       </div>
-    </section>
+    </Background>
   );
 };

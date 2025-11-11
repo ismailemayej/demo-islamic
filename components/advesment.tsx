@@ -5,7 +5,7 @@ const TopAdBanner = () => {
   return (
     <div className=" bg-emerald-600 text-white w-full shadow-md">
       <div className="flex items-center justify-center gap-2 px-3 py-2">
-        <p className="text-lg sm:text-lg font-semibold truncate text-center bangla">
+        <p className="text-md sm:text-md font-semibold truncate text-center bangla">
           অল্প টাকায় এমন নিজের নামে ওয়েবসাইট বানাতে যোগাযোগ করুন!
         </p>
         <a

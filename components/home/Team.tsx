@@ -8,6 +8,7 @@ import { Tooltip } from "@heroui/tooltip";
 import { MessageCircle, PhoneCall } from "lucide-react";
 import { Heading } from "../Heading";
 import { useGetSection } from "@/app/dashboard/Hook/GetData";
+import Background from "../background";
 
 export const TeamSection = () => {
   const { section, loading, error } = useGetSection("teamsection");
@@ -18,13 +19,7 @@ export const TeamSection = () => {
   const teamMembers = section.data || [];
 
   return (
-    <section
-      id="team"
-      className="relative py-20 px-3 rounded-xl 
-                 bg-gradient-to-b from-amber-50 to-white 
-                 dark:bg-gradient-to-b dark:from-gray-700 dark:to-gray-900 
-                 dark:text-gray-200 transition-colors duration-700 bangla"
-    >
+    <Background id="team">
       <div className="w-full text-center sm:px-6 lg:px-8">
         <Heading
           title={section.heading?.title || "আমার টিম সদস্যগণ"}
@@ -98,6 +93,6 @@ export const TeamSection = () => {
           ))}
         </div>
       </div>
-    </section>
+    </Background>
   );
 };

@@ -7,6 +7,7 @@ import { Video } from "lucide-react";
 import { Heading } from "../Heading";
 import Link from "next/link";
 import { useGetSection } from "@/app/dashboard/Hook/GetData";
+import Background from "../background";
 
 interface VideoItem {
   title: string;
@@ -46,12 +47,7 @@ export const YouTubeVideosSection: React.FC = () => {
     : MOCK_VIDEOS.slice(0, 8);
 
   return (
-    <section
-      id="videos"
-      className="bg-white px-3 rounded-xl 
-             bg-gradient-to-b from-amber-50 to-white 
-             dark:bg-gradient-to-b dark:from-gray-700 dark:to-gray-900 py-10 relative overflow-hidden"
-    >
+    <Background id="youtubevideos">
       <div className="container mx-auto">
         <Heading
           title="ভিডিও গেলারি"
@@ -129,6 +125,6 @@ export const YouTubeVideosSection: React.FC = () => {
           </div>
         </div>
       )}
-    </section>
+    </Background>
   );
 };

@@ -1,7 +1,7 @@
 import { Navbar } from "@/components/navbar/Navbar";
 import { Container } from "@/components/container";
-import { Footer } from "@/components/footer/Footer";
 import TopAdBanner from "@/components/advesment";
+import { Footer } from "@/components/footer/Footer";
 
 export default function HomeLayout({
   children,

@@ -3,6 +3,7 @@
 import { motion } from "framer-motion";
 import { Heading } from "../Heading";
 import { useGetSection } from "@/app/dashboard/Hook/GetData";
+import Background from "../background";
 
 interface Testimonial {
   id: string;
@@ -24,12 +25,7 @@ export const TestimonialsSection: React.FC = () => {
   }
 
   return (
-    <section
-      id="testimonials"
-      className="py-10 px-3 rounded-xl 
-             bg-gradient-to-b from-amber-50 to-white 
-             dark:bg-gradient-to-b dark:from-gray-700 dark:to-gray-900 bangla transition-colors duration-500"
-    >
+    <Background id="testimonials">
       <div className="container mx-auto px-0">
         <Heading
           title={section?.heading?.title || "জনপ্রিয় মতামত"}
@@ -75,6 +71,6 @@ export const TestimonialsSection: React.FC = () => {
           )}
         </div>
       </div>
-    </section>
+    </Background>
   );
 };

@@ -4,6 +4,7 @@ import { motion } from "framer-motion";
 import { Heading } from "../Heading";
 import { CheckCircle, Clock } from "lucide-react";
 import { useGetSection } from "@/app/dashboard/Hook/GetData";
+import Background from "../background";
 
 interface Program {
   programName: string;
@@ -36,12 +37,7 @@ export const RecentProgramsSection: React.FC = () => {
   };
 
   return (
-    <section
-      id="programs"
-      className="py-10 px-3 rounded-xl 
-             bg-gradient-to-b from-amber-50 to-white 
-             dark:bg-gradient-to-b dark:from-gray-700 dark:to-gray-900"
-    >
+    <Background id="programs">
       <div className="container mx-auto px-0 bangla">
         <Heading
           title={section?.heading?.title || "প্রোগ্রাম"}
@@ -117,6 +113,6 @@ export const RecentProgramsSection: React.FC = () => {
           })}
         </div>
       </div>
-    </section>
+    </Background>
   );
 };

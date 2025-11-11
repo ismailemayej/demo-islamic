@@ -3,6 +3,7 @@
 import { motion } from "framer-motion";
 import { Heading } from "../Heading";
 import { useGetSection } from "@/app/dashboard/Hook/GetData";
+import Background from "../background";
 
 export const GallerySection: React.FC = () => {
   const { section, loading, error } = useGetSection("gallerysection");
@@ -15,12 +16,7 @@ export const GallerySection: React.FC = () => {
     );
   }
   return (
-    <section
-      id="gallery"
-      className="py-24 px-3 rounded-xl 
-             bg-gradient-to-b from-amber-50 to-white 
-             dark:bg-gradient-to-b dark:from-gray-700 dark:to-gray-900 transition-colors duration-500 overflow-hidden"
-    >
+    <Background id="gallery">
       <div className="container mx-auto px-0">
         <Heading
           title={section?.heading?.title || " প্রতিষ্ঠানের গ্যালারি "}
@@ -56,6 +52,6 @@ export const GallerySection: React.FC = () => {
           ))}
         </div>
       </div>
-    </section>
+    </Background>
   );
 };

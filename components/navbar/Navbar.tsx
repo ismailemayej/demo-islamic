@@ -5,6 +5,7 @@ import { MOCK_NAV_LINKS } from "@/data";
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { ThemeSwitch } from "../theme-switch";
+import { Container } from "../container";
 
 export const Navbar: React.FC = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -16,72 +17,74 @@ export const Navbar: React.FC = () => {
                  backdrop-blur-md shadow-sm border-b border-gray-200 dark:border-gray-700 
                  transition-all duration-500"
     >
-      <nav className="container mx-auto px-4 py-3 flex justify-between items-center">
-        {/* Logo */}
-        <motion.div
-          className="text-2xl sm:text-2xl font-[Quicksand] font-extrabold 
+      <Container>
+        <nav className="container mx-auto px-4 py-3 flex justify-between items-center">
+          {/* Logo */}
+          <motion.div
+            className="text-2xl sm:text-2xl font-[Quicksand] font-extrabold 
                      text-transparent bg-clip-text 
                      bg-gradient-to-r from-yellow-400 via-amber-500 to-yellow-600 
                      dark:from-yellow-300 dark:via-amber-400 dark:to-yellow-400 
                      drop-shadow-sm"
-          initial={{ opacity: 0, y: 20, scale: 0.95 }}
-          animate={{ opacity: 1, y: 0, scale: 1 }}
-          transition={{ duration: 1.2, ease: "easeOut" }}
-        >
-          <motion.span
-            className="bg-clip-text text-transparent bg-gradient-to-r from-yellow-400 via-amber-500 to-yellow-600"
-            animate={{
-              backgroundPosition: ["0% 0%", "100% 0%"],
-              scale: [1, 1.03, 1],
-            }}
-            transition={{
-              repeat: Infinity,
-              repeatType: "loop",
-              duration: 4,
-              ease: "linear",
-            }}
-            style={{ backgroundSize: "200% auto", display: "inline-block" }}
+            initial={{ opacity: 0, y: 20, scale: 0.95 }}
+            animate={{ opacity: 1, y: 0, scale: 1 }}
+            transition={{ duration: 1.2, ease: "easeOut" }}
           >
-            Dr.Mizanur Rahman
-          </motion.span>
-        </motion.div>
+            <motion.span
+              className="bg-clip-text text-transparent bg-gradient-to-r from-yellow-400 via-amber-500 to-yellow-600"
+              animate={{
+                backgroundPosition: ["0% 0%", "100% 0%"],
+                scale: [1, 1.03, 1],
+              }}
+              transition={{
+                repeat: Infinity,
+                repeatType: "loop",
+                duration: 4,
+                ease: "linear",
+              }}
+              style={{ backgroundSize: "200% auto", display: "inline-block" }}
+            >
+              Dr.Mizanur Rahman
+            </motion.span>
+          </motion.div>
 
-        {/* Desktop Links */}
-        <div className="hidden lg:flex items-center space-x-8">
-          {MOCK_NAV_LINKS.map((link) => (
-            <a
-              key={link.name}
-              href={link.href}
-              className="text-[17px] font-semibold text-gray-700 dark:text-gray-300 bangla 
+          {/* Desktop Links */}
+          <div className="hidden lg:flex items-center space-x-8">
+            {MOCK_NAV_LINKS.map((link) => (
+              <a
+                key={link.name}
+                href={link.href}
+                className="text-[17px] font-semibold text-gray-700 dark:text-gray-300 bangla 
                          hover:text-amber-600 dark:hover:text-amber-400 
                          transition-colors duration-200"
-            >
-              {link.name}
-            </a>
-          ))}
-        </div>
-
-        {/* Right Section */}
-        <div className="flex items-center space-x-4">
-          <div className="hidden lg:flex items-center justify-center">
-            <span className="text-3xl text-amber-600 dark:text-amber-400 font-serif">
-              ﷻ
-            </span>
+              >
+                {link.name}
+              </a>
+            ))}
           </div>
-          <ThemeSwitch />
-          {/* Mobile Menu Button */}
-          <button
-            className="lg:hidden text-gray-700 dark:text-gray-300 focus:outline-none"
-            onClick={() => setIsOpen(!isOpen)}
-          >
-            {isOpen ? (
-              <X className="w-6 h-6 text-amber-600 dark:text-amber-400" />
-            ) : (
-              <Menu className="w-6 h-6 text-amber-600 dark:text-amber-400" />
-            )}
-          </button>
-        </div>
-      </nav>
+
+          {/* Right Section */}
+          <div className="flex items-center space-x-4">
+            <div className="hidden lg:flex items-center justify-center">
+              <span className="text-3xl text-amber-600 dark:text-amber-400 font-serif">
+                ﷻ
+              </span>
+            </div>
+            <ThemeSwitch />
+            {/* Mobile Menu Button */}
+            <button
+              className="lg:hidden text-gray-700 dark:text-gray-300 focus:outline-none"
+              onClick={() => setIsOpen(!isOpen)}
+            >
+              {isOpen ? (
+                <X className="w-6 h-6 text-amber-600 dark:text-amber-400" />
+              ) : (
+                <Menu className="w-6 h-6 text-amber-600 dark:text-amber-400" />
+              )}
+            </button>
+          </div>
+        </nav>
+      </Container>
 
       {/* Mobile Menu */}
       <AnimatePresence>

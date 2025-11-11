@@ -4,6 +4,7 @@ import { motion } from "framer-motion";
 import { GraduationCap } from "lucide-react";
 import { Heading } from "../Heading";
 import { useGetSection } from "@/app/dashboard/Hook/GetData";
+import Background from "../background";
 
 interface Education {
   id: number;
@@ -26,12 +27,7 @@ export const EducationSection: React.FC = () => {
   }
 
   return (
-    <section
-      id="education"
-      className="py-16 px-3 rounded-xl 
-             bg-gradient-to-b from-amber-50 to-white 
-             dark:bg-gradient-to-b dark:from-gray-700 dark:to-gray-900 transition-colors duration-500"
-    >
+    <Background id="education">
       <Heading
         title={section?.heading?.title || "শিক্ষাগত যোগ্যতা"}
         subTitle={
@@ -82,6 +78,6 @@ export const EducationSection: React.FC = () => {
           </motion.div>
         ))}
       </div>
-    </section>
+    </Background>
   );
 };
