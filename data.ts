@@ -17,10 +17,10 @@ export type Testimonial = {
 };
 
 export const MOCK_NAV_LINKS: NavLink[] = [
-  { name: "হোম", href: "#" },
+  { name: "হোম", href: "/" },
   { name: "আমাদের কথা", href: "#about" },
-  { name: "লেকচারসমূহ", href: "#lectures" },
-  { name: "প্রবন্ধ", href: "#articles" },
+  { name: "লেকচারসমূহ", href: "/" },
+  { name: "প্রবন্ধ", href: "#blog" },
   { name: "যোগাযোগ", href: "#contact" },
 ];
 

@@ -4,7 +4,6 @@ import { useState } from "react";
 import { Menu, X } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Sidebar } from "./components/Sidebar";
-import { Button } from "@heroui/button";
 import { ScrollShadow } from "@nextui-org/react";
 import { useGetSection } from "./Hook/GetData";
 
@@ -50,7 +49,7 @@ export default function DashboardLayout({
       <div className="fixed top-4 left-4 z-40 lg:hidden">
         <button
           onClick={() => setOpen(true)}
-          className="p-2 bg-white dark:bg-gray-800 rounded-md shadow-md hover:scale-105 transition"
+          className="p-2 bg-white dark:bg-gray-800  shadow-md hover:scale-105 transition"
         >
           <Menu size={20} />
         </button>
@@ -59,7 +58,7 @@ export default function DashboardLayout({
       {/* Main Content Area */}
       <main className="flex flex-col h-screen bg-gray-50 dark:bg-gray-950 overflow-hidden">
         {/* Header */}
-        <div className="bangla text-xl border-b border-gray-200 dark:border-gray-800 flex justify-between w-full p-4 bg-white dark:bg-gray-900 ml-3">
+        <div className=" w-full bangla text-xl border-b border-gray-200 dark:border-gray-800 flex justify-between p-4 bg-white dark:bg-gray-900">
           <span></span>
           {section?.data?.sitetitle}
           <button className="hover:font-extrabold dark:hover:green-500 transition hover:text-blue-500 mx-4">
@@ -69,7 +68,8 @@ export default function DashboardLayout({
         {/* Scrollable Section */}
         <ScrollShadow
           hideScrollBar
-          className="flex-1 overflow-y-auto lg:px-10 py-6 bg-white dark:bg-gray-900 rounded-t-2xl shadow-inner"
+          className="flex-1 overflow-y-auto
+           py-6 bg-white dark:bg-gray-900  shadow-inner"
         >
           {children}
         </ScrollShadow>

@@ -6,19 +6,22 @@ import { Card, CardBody } from "@heroui/card";
 import { Heading } from "../Heading";
 import { OpenModal } from "../Modal";
 import { useGetSection } from "@/app/dashboard/Hook/GetData";
+import Background from "../background";
 
 export const OrganizationSection = () => {
   const { section, loading, error } = useGetSection("organizationsection");
   const [selectedOrg, setSelectedOrg] = useState<any>(null);
 
-  if (loading) return <p>Loading organizations...</p>;
-  if (error || !section) return <p>Error loading organizations</p>;
+  if (loading)
+    return <p className="text-center py-10">Loading organizations...</p>;
+  if (error || !section)
+    return <p className="text-center py-10">Error loading organizations</p>;
 
   const organizations = section.data || [];
 
   return (
-    <section className="relative py-20 px-3 rounded-xl bg-gradient-to-b from-amber-50 to-white dark:bg-gradient-to-b dark:from-gray-700 dark:to-gray-900 dark:text-gray-200 transition-colors duration-700 bangla">
-      <div className="container mx-auto text-center">
+    <Background id="organizations">
+      <div className="mx-auto py-12">
         <Heading
           title={section.heading?.title || "আমার প্রতিষ্ঠান সমূহ"}
           subTitle={
@@ -27,40 +30,40 @@ export const OrganizationSection = () => {
           }
         />
 
-        <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3 mt-8">
+        {/* ✅ Grid responsive করা */}
+        <div className="grid gap-6 mt-8 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3">
           {organizations.map((org: any, index: number) => (
             <motion.div
               key={org.id}
               initial={{ opacity: 0, y: 30 }}
               whileInView={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.7, delay: index * 0.2 }}
+              className="w-full cursor-pointer"
             >
               <Card
                 isHoverable
-                className="shadow-lg bg-white/90 dark:bg-gray-800/60 border border-amber-100 dark:border-gray-700 rounded-2xl transition-all duration-300"
+                className="flex flex-col items-center shadow-xl bg-white/80 dark:bg-gray-800/50 border border-amber-100 dark:border-gray-700 backdrop-blur-lg rounded-2xl transition-all duration-300"
               >
-                <img
-                  src={org.img}
-                  alt={org.name}
-                  className="w-full h-48 object-cover rounded-t-2xl"
-                />
+                {org.img && (
+                  <img
+                    src={org.img}
+                    alt={org.name}
+                    className="w-full h-40 object-cover rounded-t-2xl"
+                    onClick={() => setSelectedOrg(org)}
+                  />
+                )}
                 <CardBody className="text-center py-4">
-                  {/* শুধু Name ক্লিকযোগ্য */}
-                  <h3
-                    className="text-xl font-semibold text-gray-800 dark:text-gray-100 mb-1 cursor-pointer hover:text-amber-600 dark:hover:text-amber-400 transition-colors duration-300"
+                  <h4
+                    className="text-lg font-semibold text-gray-800 dark:text-gray-100 hover:text-amber-600 dark:hover:text-amber-400 transition-colors duration-300 cursor-pointer"
                     onClick={() => setSelectedOrg(org)}
                   >
                     {org.name}
-                  </h3>
-
-                  <p className="text-amber-600 dark:text-amber-400 font-medium mb-2">
+                  </h4>
+                  <p className="text-gray-700 dark:text-gray-200 text-sm">
                     পজিশন: {org.possition}
                   </p>
-                  <p className="text-gray-700 dark:text-gray-200 text-sm mb-1">
+                  <p className="text-gray-600 dark:text-gray-300 text-sm">
                     ঠিকানা: {org.address}
-                  </p>
-                  <p className="text-gray-600 dark:text-gray-300 text-sm truncate">
-                    {org.details}
                   </p>
                 </CardBody>
               </Card>
@@ -68,7 +71,7 @@ export const OrganizationSection = () => {
           ))}
         </div>
 
-        {/* Scrollable Modal */}
+        {/* ✅ Modal ঠিক আছে */}
         {selectedOrg && (
           <OpenModal
             title={selectedOrg.name}
@@ -80,9 +83,9 @@ export const OrganizationSection = () => {
               <img
                 src={selectedOrg.img}
                 alt={selectedOrg.name}
-                className="w-full h-64 object-cover rounded-lg mb-4"
+                className="w-full h-64 sm:h-72 md:h-80 object-cover rounded-lg mb-4"
               />
-              <h2 className="text-2xl font-bold text-gray-800 dark:text-gray-100 mb-2">
+              <h2 className="text-2xl sm:text-3xl font-bold text-gray-800 dark:text-gray-100 mb-2">
                 {selectedOrg.name}
               </h2>
               <p className="text-amber-600 dark:text-amber-400 font-medium text-lg mb-1">
@@ -98,6 +101,6 @@ export const OrganizationSection = () => {
           </OpenModal>
         )}
       </div>
-    </section>
+    </Background>
   );
 };
