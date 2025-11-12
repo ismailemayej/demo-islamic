@@ -26,9 +26,7 @@ export function useGetSection<T = any>(sectionName: string) {
 
   useEffect(() => {
     if (!sectionName) return;
-
-    let isMounted = true; // ✅ unmount হলে state update রোধ করবে
-
+    let isMounted = true;
     const fetchSection = async () => {
       try {
         setLoading(true);

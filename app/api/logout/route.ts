@@ -1,14 +1,14 @@
-// app/api/auth/logout/route.ts
 import { NextResponse } from "next/server";
 
 export async function POST() {
   const res = NextResponse.json({ success: true });
-  res.cookies.set({
-    name: "loggedIn",
-    value: "false",
+
+  // Cookie মুছে ফেলো
+  res.cookies.set("loggedIn", "", {
     httpOnly: true,
     path: "/",
-    maxAge: 0,
+    expires: new Date(0),
   });
+
   return res;
 }

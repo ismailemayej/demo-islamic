@@ -7,8 +7,8 @@ import { Sidebar } from "./components/Sidebar";
 import { ScrollShadow } from "@nextui-org/react";
 import { useGetSection } from "./Hook/GetData";
 import { useRouter } from "next/navigation";
-import { Button } from "@heroui/button";
 import { ThemeSwitch } from "@/components/theme-switch";
+import { Alert } from "@heroui/alert";
 
 interface DashboardLayoutProps {
   children: React.ReactNode;
@@ -18,10 +18,14 @@ export default function DashboardLayout({ children }: DashboardLayoutProps) {
   const router = useRouter();
   const { section } = useGetSection("websitesection");
   const [open, setOpen] = useState(false);
+  const [alert, setAlert] = useState<{
+    type: "success" | "error";
+    msg: string;
+  } | null>(null);
 
   const handleLogout = async () => {
-    document.cookie =
-      "loggedIn=; path=/; max-age=0; expires=Thu, 01 Jan 1970 00:00:00 GMT";
+    await fetch("/api/logout", { method: "POST" });
+    setAlert({ type: "success", msg: "✅ Logout successful!" });
     router.push("/login");
   };
 
@@ -31,7 +35,15 @@ export default function DashboardLayout({ children }: DashboardLayoutProps) {
       <aside className="hidden lg:block h-full border-r border-gray-300 dark:border-gray-800 bg-white dark:bg-gray-900 shadow-lg">
         <Sidebar />
       </aside>
-
+      {alert && (
+        <Alert
+          color={alert.type === "success" ? "success" : "danger"}
+          variant="flat"
+          className="mb-4 text-sm"
+        >
+          {alert.msg}
+        </Alert>
+      )}
       {/* Sidebar (Mobile) */}
       <AnimatePresence>
         {open && (

@@ -20,7 +20,7 @@ export const TeamSection = () => {
   const teamMembers = section.data || [];
 
   return (
-    <Background id="team">
+    <Background id="teams">
       <div className="w-full text-center sm:px-6 lg:px-8">
         <Heading
           title={section.heading?.title || "আমার টিম সদস্যগণ"}

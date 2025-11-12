@@ -1,6 +1,7 @@
 export type NavLink = {
   name: string;
   href: string;
+  icon?: ReactNode;
 };
 
 export type Sermon = {
@@ -15,14 +16,7 @@ export type Testimonial = {
   author: string;
   imageSrc?: string;
 };
-
-export const MOCK_NAV_LINKS: NavLink[] = [
-  { name: "হোম", href: "/" },
-  { name: "আমাদের কথা", href: "#about" },
-  { name: "লেকচারসমূহ", href: "/" },
-  { name: "প্রবন্ধ", href: "#blog" },
-  { name: "যোগাযোগ", href: "#contact" },
-];
+import React, { ReactNode } from "react";
 
 type Lecture = {
   title: string;

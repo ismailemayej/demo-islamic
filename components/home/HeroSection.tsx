@@ -5,10 +5,8 @@ import { useGetSection } from "@/app/dashboard/Hook/GetData";
 import SkeletonPage from "../Skeleton";
 
 export const HeroSection: React.FC = () => {
-  const { section, loading, error } = useGetSection<any>("herosection");
-
+  const { section, loading, error } = useGetSection("herosection");
   if (loading) return <SkeletonPage />;
-
   if (error)
     return (
       <p className="text-center text-red-500 font-semibold py-10">

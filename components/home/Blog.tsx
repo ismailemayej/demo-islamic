@@ -5,6 +5,7 @@ import { Heading } from "../Heading";
 import Background from "../background";
 import { useGetSection } from "@/app/dashboard/Hook/GetData";
 import { useState } from "react";
+import { OpenModal } from "../Modal";
 
 interface Article {
   id: string;
@@ -62,20 +63,13 @@ export const ArticlesSection: React.FC = () => {
 
       {/* Modal */}
       {activeArticle && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/70 dark:bg-black/90 p-4">
-          <div className="relative w-full max-w-3xl bg-white dark:bg-gray-800 rounded-2xl shadow-xl overflow-y-auto max-h-[90vh] p-6 sm:p-10">
-            {/* Close Button */}
-            <button
-              onClick={() => setActiveArticle(null)}
-              className="absolute top-3 right-3 text-gray-800 dark:text-gray-200 text-2xl font-bold hover:text-red-500 transition"
-            >
-              &times;
-            </button>
-
-            {/* Article Content */}
-            <h2 className="text-3xl font-bold text-emerald-700 dark:text-emerald-400 mb-4">
-              {activeArticle.blogtitle}
-            </h2>
+        <OpenModal
+          title={activeArticle.blogtitle}
+          isOpen={!!activeArticle}
+          onClose={() => setActiveArticle(null)}
+          size="xl"
+        >
+          <div className="max-h-[70vh] overflow-y-auto p-4">
             <p className="text-gray-600 dark:text-gray-300 mb-2">
               Writer: {activeArticle.blogwriter}
             </p>
@@ -86,7 +80,7 @@ export const ArticlesSection: React.FC = () => {
               {activeArticle.blogdescription}
             </p>
           </div>
-        </div>
+        </OpenModal>
       )}
     </Background>
   );

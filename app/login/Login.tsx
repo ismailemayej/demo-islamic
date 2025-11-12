@@ -1,104 +1,83 @@
 "use client";
 
-import { useState } from "react";
 import { useRouter } from "next/navigation";
-import toast, { Toaster } from "react-hot-toast";
-import { Button, Input } from "@heroui/react";
+import { useState } from "react";
+import { Input } from "@heroui/input";
+import { Button } from "@heroui/button";
+import { Alert } from "@heroui/alert";
 
 export default function LoginPage() {
   const router = useRouter();
-  const [user, setUser] = useState("");
+  const [mobile, setMobile] = useState("");
   const [password, setPassword] = useState("");
-  const [loading, setLoading] = useState(false);
+  const [alert, setAlert] = useState<{
+    type: "success" | "error";
+    msg: string;
+  } | null>(null);
 
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
-    setLoading(true);
+    const res = await fetch("/api/login", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ email: mobile, password }),
+    });
 
-    try {
-      // Fetch usersection from API
-      const res = await fetch("/api/all-data/usersection");
-      const json = await res.json();
+    const data = await res.json();
 
-      const dbUser = json.groupedData.usersection.data.user;
-      const dbPassword = json.groupedData.usersection.data.password;
-
-      if (user === dbUser && password === dbPassword) {
-        toast.success("Login Successful!");
-
-        // ✅ Set cookie via API
-        await fetch("/api/auth/login", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ loggedIn: true }),
-        });
-
-        router.push("/dashboard");
-      } else {
-        toast.error("Invalid Credentials!");
-      }
-    } catch (err: any) {
-      toast.error(err.message || "Login failed!");
-    } finally {
-      setLoading(false);
+    if (data.success) {
+      setAlert({ type: "success", msg: "✅ Login successful!" });
+      setTimeout(() => router.push("/dashboard"), 1200);
+    } else {
+      setAlert({ type: "error", msg: "❌ Invalid email or password!" });
     }
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gradient-to-r from-emerald-100 to-white dark:from-gray-900 dark:to-gray-950 transition-colors duration-500 px-4">
-      <Toaster position="top-right" />
+    <div className="flex items-center justify-center min-h-screen bg-gradient-to-br from-blue-50 to-gray-100 dark:from-gray-900 dark:to-gray-800 transition-colors duration-300">
       <form
         onSubmit={handleLogin}
-        className="bg-white dark:bg-gray-800 shadow-2xl rounded-2xl p-10 w-full max-w-sm flex flex-col gap-6 transform transition-transform duration-300 hover:scale-105"
+        className="bg-white dark:bg-gray-900 p-8 rounded-2xl shadow-2xl w-80 border border-gray-200 dark:border-gray-700 transition-all"
       >
-        <h2 className="bangla text-3xl font-extrabold text-emerald-700 dark:text-emerald-400 text-center mb-4">
-          লগইন করুন
+        <h2 className="text-2xl font-bold mb-4 text-center text-gray-800 dark:text-gray-100">
+          Login
         </h2>
 
-        {/* Mobile Input */}
-        <div className="flex flex-col gap-1">
-          <label className="bangla text-gray-600 dark:text-gray-300 font-medium bangla">
-            মোবাইল নাম্বার
-          </label>
-          <Input
-            type="text"
-            placeholder="018XXXXXXXX"
-            value={user}
-            onChange={(e) => setUser(e.target.value)}
-            required
-            className="rounded-lg border border-gray-300 dark:border-gray-700 focus:ring-2 focus:ring-emerald-500 dark:focus:ring-emerald-400 focus:outline-none bg-gray-50 dark:bg-gray-900 text-gray-900 dark:text-gray-100 p-3"
-          />
-        </div>
+        {alert && (
+          <Alert
+            color={alert.type === "success" ? "success" : "danger"}
+            variant="flat"
+            className="mb-4 text-sm"
+          >
+            {alert.msg}
+          </Alert>
+        )}
 
-        {/* Password Input */}
-        <div className="flex flex-col gap-1">
-          <label className="bangla text-gray-600 dark:text-gray-300 font-medium bangla">
-            পাসওয়ার্ড
-          </label>
-          <Input
-            type="password"
-            placeholder="******"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            required
-            className="rounded-lg border border-gray-300 dark:border-gray-700 focus:ring-2 focus:ring-emerald-500 dark:focus:ring-emerald-400 focus:outline-none bg-gray-50 dark:bg-gray-900 text-gray-900 dark:text-gray-100 p-3"
-          />
-        </div>
+        <Input
+          type="text"
+          label="Email or Mobile"
+          value={mobile}
+          onChange={(e) => setMobile(e.target.value)}
+          className="mb-3"
+          isRequired
+        />
 
-        {/* Submit Button */}
+        <Input
+          type="password"
+          label="Password"
+          value={password}
+          onChange={(e) => setPassword(e.target.value)}
+          className="mb-4"
+          isRequired
+        />
+
         <Button
           type="submit"
-          color="success"
-          variant="solid"
-          size="lg"
-          className="w-full py-3 font-bold rounded-xl shadow-lg hover:shadow-2xl transition-all duration-300"
-          disabled={loading}
+          color="primary"
+          variant="shadow"
+          className="w-full font-semibold"
         >
-          {loading ? (
-            <span className="bangla animate-spin w-5 h-5 border-2 border-white rounded-full border-t-transparent mx-auto"></span>
-          ) : (
-            "লগইন"
-          )}
+          Login
         </Button>
       </form>
     </div>
