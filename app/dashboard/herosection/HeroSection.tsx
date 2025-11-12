@@ -1,10 +1,17 @@
 "use client";
 import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
-import { Save, UploadCloud, Trash2, Edit2 } from "lucide-react";
+import {
+  Save,
+  UploadCloud,
+  Trash2,
+  Edit2,
+  XCircle,
+  CheckCircle,
+} from "lucide-react";
 import { Button } from "@heroui/button";
+import { Alert } from "@heroui/alert";
 import { useGetSection } from "../Hook/GetData";
-import toast, { Toaster } from "react-hot-toast";
 import profile from "@/public/images/profile.png";
 
 export const HeroSectionDashboard: React.FC = () => {
@@ -20,6 +27,15 @@ export const HeroSectionDashboard: React.FC = () => {
   });
   const [uploading, setUploading] = useState(false);
 
+  // 🟢 Alert system
+  const [alert, setAlert] = useState<{
+    type: "success" | "error" | null;
+    message: string;
+  }>({
+    type: null,
+    message: "",
+  });
+
   useEffect(() => {
     if (section?.data) {
       setFormData({
@@ -32,12 +48,13 @@ export const HeroSectionDashboard: React.FC = () => {
     }
   }, [section]);
 
+  const showAlert = (type: "success" | "error", message: string) => {
+    setAlert({ type, message });
+    setTimeout(() => setAlert({ type: null, message: "" }), 3000);
+  };
+
   if (loading) return <p>Loading...</p>;
   if (error) return <p>Error: {error}</p>;
-
-  const notify = (msg: string, type: "success" | "error" = "success") => {
-    type === "success" ? toast.success(msg) : toast.error(msg);
-  };
 
   // 🟢 Upload Image Handler
   const handleImageUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -45,7 +62,7 @@ export const HeroSectionDashboard: React.FC = () => {
     if (!file) return;
 
     setUploading(true);
-    toast.loading("Uploading image...", { id: "upload" });
+    showAlert("success", "Uploading image...");
 
     const form = new FormData();
     form.append("file", file);
@@ -56,14 +73,12 @@ export const HeroSectionDashboard: React.FC = () => {
 
       if (data?.secure_url) {
         setFormData((prev) => ({ ...prev, image: data.secure_url }));
-        toast.dismiss("upload");
-        notify("✅ Image uploaded successfully!");
+        showAlert("success", "✅ Image uploaded successfully!");
       } else {
         throw new Error("Upload failed");
       }
     } catch (err: any) {
-      toast.dismiss("upload");
-      notify(err.message || "Upload failed", "error");
+      showAlert("error", err.message || "Upload failed");
     } finally {
       setUploading(false);
     }
@@ -72,12 +87,12 @@ export const HeroSectionDashboard: React.FC = () => {
   // 🟠 Delete Image Handler
   const handleImageDelete = async () => {
     if (!formData.image) {
-      notify("No image to delete!", "error");
+      showAlert("error", "No image to delete!");
       return;
     }
 
     setUploading(true);
-    toast.loading("Deleting image...", { id: "delete" });
+    showAlert("success", "Deleting image...");
 
     try {
       const res = await fetch("/api/delete-image", {
@@ -89,12 +104,10 @@ export const HeroSectionDashboard: React.FC = () => {
 
       if (!json.success) throw new Error(json.error || "Delete failed");
 
-      setFormData((prev) => ({ ...prev, image: "" })); // ✅ reset image
-      toast.dismiss("delete");
-      notify("🗑️ Image deleted successfully!");
+      setFormData((prev) => ({ ...prev, image: "" }));
+      showAlert("success", "🗑️ Image deleted successfully!");
     } catch (err: any) {
-      toast.dismiss("delete");
-      notify(err.message || "Delete failed", "error");
+      showAlert("error", err.message || "Delete failed");
     } finally {
       setUploading(false);
     }
@@ -103,7 +116,7 @@ export const HeroSectionDashboard: React.FC = () => {
   // 🟢 Save Handler
   const handleSave = async () => {
     setUploading(true);
-    toast.loading("Saving data...", { id: "save" });
+    showAlert("success", "Saving data...");
 
     try {
       const res = await fetch("/api/all-data/herosection/update", {
@@ -114,12 +127,10 @@ export const HeroSectionDashboard: React.FC = () => {
       const json = await res.json();
       if (!json.success) throw new Error(json.error || "Save failed");
 
-      toast.dismiss("save");
-      notify("✅ Saved successfully!");
+      showAlert("success", "✅ Saved successfully!");
       setIsEditing(false);
     } catch (err: any) {
-      toast.dismiss("save");
-      notify(err.message || "Save failed", "error");
+      showAlert("error", err.message || "Save failed");
     } finally {
       setUploading(false);
     }
@@ -127,7 +138,19 @@ export const HeroSectionDashboard: React.FC = () => {
 
   return (
     <section className="bangla relative py-10 px-3 rounded-xl bg-gradient-to-b from-amber-50 to-white dark:bg-gradient-to-b dark:from-gray-700 dark:to-gray-900 transition-colors duration-500">
-      <Toaster position="top-right" />
+      {/* 🔔 HeroUI Alert */}
+      {alert.type && (
+        <div className="fixed top-4 right-4 z-50 w-[90%] sm:w-auto">
+          <Alert
+            color={alert.type === "success" ? "success" : "danger"}
+            icon={alert.type === "success" ? <CheckCircle /> : <XCircle />}
+            title={alert.type === "success" ? "Success" : "Error"}
+          >
+            {alert.message}
+          </Alert>
+        </div>
+      )}
+
       <div className="container mx-auto flex flex-col lg:flex-row items-center justify-between gap-12">
         {/* Left: Image */}
         <motion.div
@@ -137,7 +160,6 @@ export const HeroSectionDashboard: React.FC = () => {
           className="w-full lg:w-1/2 flex flex-col items-center lg:items-start"
         >
           <div className="relative w-full max-w-md">
-            {/* ✅ Conditional Image Preview */}
             {isEditing && (
               <>
                 <label className="flex items-center justify-center gap-2 p-3 bg-emerald-500 hover:bg-emerald-600 text-white rounded cursor-pointer transition w-full max-w-md">
@@ -152,22 +174,20 @@ export const HeroSectionDashboard: React.FC = () => {
                   />
                 </label>
 
-                {/* 🗑️ Delete Button (Only when Editing) */}
-                {isEditing && (
-                  <div className="absolute top-2 right-2 flex gap-2">
-                    <button
-                      onClick={handleImageDelete}
-                      className="p-2 bg-red-600 hover:bg-red-700 text-white rounded-full shadow-lg transition"
-                      disabled={uploading}
-                    >
-                      {uploading ? (
-                        <span className="animate-spin w-5 h-5 border-2 border-white rounded-full border-t-transparent"></span>
-                      ) : (
-                        <Trash2 className="w-5 h-5" />
-                      )}
-                    </button>
-                  </div>
-                )}
+                {/* 🗑️ Delete Button */}
+                <div className="absolute top-2 right-2 flex gap-2">
+                  <button
+                    onClick={handleImageDelete}
+                    className="p-2 bg-red-600 hover:bg-red-700 text-white rounded-full shadow-lg transition"
+                    disabled={uploading}
+                  >
+                    {uploading ? (
+                      <span className="animate-spin w-5 h-5 border-2 border-white rounded-full border-t-transparent"></span>
+                    ) : (
+                      <Trash2 className="w-5 h-5" />
+                    )}
+                  </button>
+                </div>
               </>
             )}
             <img
@@ -175,8 +195,8 @@ export const HeroSectionDashboard: React.FC = () => {
               alt="Hero Image"
               className="w-full max-w-md sm:max-w-lg md:max-w-xl lg:max-w-2xl h-auto object-cover rounded-3xl shadow-2xl mb-4"
               onError={(e) => {
-                (e.target as HTMLImageElement).src = profile.src; // fallback
-                setFormData((prev) => ({ ...prev, image: "" })); // remove broken link
+                (e.target as HTMLImageElement).src = profile.src;
+                setFormData((prev) => ({ ...prev, image: "" }));
               }}
             />
           </div>
@@ -191,7 +211,6 @@ export const HeroSectionDashboard: React.FC = () => {
         >
           <div className="flex justify-between items-start">
             <div className="space-y-2 w-full">
-              {/* Title */}
               <input
                 value={formData.title}
                 onChange={(e) =>
@@ -206,7 +225,6 @@ export const HeroSectionDashboard: React.FC = () => {
                 }`}
               />
 
-              {/* SubTitle */}
               <input
                 value={formData.subTitle}
                 onChange={(e) =>
@@ -221,7 +239,6 @@ export const HeroSectionDashboard: React.FC = () => {
                 }`}
               />
 
-              {/* Description */}
               <textarea
                 value={formData.description}
                 onChange={(e) =>
@@ -236,7 +253,6 @@ export const HeroSectionDashboard: React.FC = () => {
                 }`}
               />
 
-              {/* Button Text */}
               <input
                 value={formData.buttonText}
                 onChange={(e) =>
@@ -252,7 +268,6 @@ export const HeroSectionDashboard: React.FC = () => {
               />
             </div>
 
-            {/* Edit Button */}
             <Button
               size="sm"
               className="bg-blue-600 text-white flex items-center gap-1"
@@ -262,7 +277,6 @@ export const HeroSectionDashboard: React.FC = () => {
             </Button>
           </div>
 
-          {/* Save Button */}
           {isEditing && (
             <Button
               size="sm"

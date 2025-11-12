@@ -18,6 +18,25 @@ import {
 import { useGetSection } from "@/app/dashboard/Hook/GetData";
 import Background from "../background";
 
+// 3D Card Component
+const ThreeDCard: React.FC<React.PropsWithChildren<{ href: string }>> = ({
+  href,
+  children,
+}) => {
+  return (
+    <motion.a
+      href={href}
+      target="_blank"
+      rel="noopener noreferrer"
+      whileHover={{ scale: 1.05, rotateX: -5, rotateY: 5 }}
+      whileTap={{ scale: 0.95, rotateX: 0, rotateY: 0 }}
+      className="flex flex-col items-center justify-center p-6 bg-white dark:bg-gray-800 rounded-2xl shadow-lg hover:shadow-2xl transition-transform duration-300 perspective-1000"
+    >
+      {children}
+    </motion.a>
+  );
+};
+
 interface SocialLink {
   name: string;
   url: string;
@@ -39,6 +58,7 @@ const SOCIAL_OPTIONS = [
 export const SocialMediaSection: React.FC = () => {
   const { section, loading, error } = useGetSection<any>("socialmediasection");
   const SOCIAL_LINKS = section?.data || [];
+
   if (loading) {
     return (
       <div className="flex items-center justify-center py-20">
@@ -47,7 +67,6 @@ export const SocialMediaSection: React.FC = () => {
     );
   }
 
-  // নাম অনুযায়ী icon সেট করা
   const getIcon = (name: string) => {
     switch (name) {
       case "Facebook":
@@ -71,7 +90,7 @@ export const SocialMediaSection: React.FC = () => {
       case "WhatsApp":
         return <FaWhatsapp />;
       default:
-        return <FaFacebookF />; // default icon
+        return <FaFacebookF />;
     }
   };
 
@@ -88,7 +107,6 @@ export const SocialMediaSection: React.FC = () => {
 
         <div className="mt-10 grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-6">
           {SOCIAL_LINKS?.map((social: SocialLink, index: number) => {
-            // নাম যদি SOCIAL_OPTIONS এ না থাকে, default icon দেখাবে
             const icon = SOCIAL_OPTIONS.includes(social.name) ? (
               getIcon(social.name)
             ) : (
@@ -96,23 +114,14 @@ export const SocialMediaSection: React.FC = () => {
             );
 
             return (
-              <motion.a
-                key={index}
-                href={social.url}
-                target="_blank"
-                rel="noopener noreferrer"
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.5, delay: index * 0.1 }}
-                className="flex flex-col items-center justify-center p-6 bg-white dark:bg-gray-800 rounded-2xl shadow-lg hover:shadow-2xl hover:scale-105 transition-transform duration-300 group"
-              >
+              <ThreeDCard key={index} href={social.url}>
                 <div className="text-5xl text-emerald-700 dark:text-emerald-400 mb-3 group-hover:text-amber-500 transition-colors">
                   {icon}
                 </div>
                 <span className="font-semibold text-gray-700 dark:text-gray-200 group-hover:text-emerald-700 dark:group-hover:text-amber-400 transition-colors">
                   {social.name}
                 </span>
-              </motion.a>
+              </ThreeDCard>
             );
           })}
         </div>

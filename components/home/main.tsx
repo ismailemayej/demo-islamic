@@ -27,13 +27,13 @@ export default function Main() {
       <section className="w-full transition-colors duration-500">
         <AboutSection />
       </section>
-      {/* YouTube Videos */}
-      <section className="w-full transition-colors duration-500">
-        <YouTubeVideosSection />
-      </section>
       {/* Programs */}
       <section className="w-full  transition-colors duration-500">
         <RecentProgramsSection />
+      </section>
+      {/* YouTube Videos */}
+      <section className="w-full transition-colors duration-500">
+        <YouTubeVideosSection />
       </section>
 
       {/* Social Media */}
@@ -41,6 +41,26 @@ export default function Main() {
         <SocialMediaSection />
       </section>
 
+      {/* Gallery */}
+      <section className="w-full transition-colors duration-500">
+        <GallerySection />
+      </section>
+      {/* Contact */}
+      <section className="w-full transition-colors duration-500">
+        <ContactSection />
+      </section>
+      {/* Organization */}
+      <section className="w-full transition-colors duration-500">
+        <OrganizationSection />
+      </section>
+      {/* Booksection */}
+      <section className="w-full transition-colors duration-500">
+        <BookSection />
+      </section>
+      {/* Testimonials */}
+      <section className="w-full transition-colors duration-500">
+        <TestimonialsSection />
+      </section>
       {/* Education */}
       <section className="w-full transition-colors duration-500">
         <EducationSection />
@@ -49,16 +69,6 @@ export default function Main() {
       {/* Achievements */}
       <section className="w-full transition-colors duration-500">
         <AchievementsSection />
-      </section>
-
-      {/* Gallery */}
-      <section className="w-full transition-colors duration-500">
-        <GallerySection />
-      </section>
-
-      {/* Testimonials */}
-      <section className="w-full transition-colors duration-500">
-        <TestimonialsSection />
       </section>
 
       {/* Articles */}
@@ -71,26 +81,14 @@ export default function Main() {
         <CertificateSection />
       </section>
 
-      {/* Contact */}
-      <section className="w-full transition-colors duration-500">
-        <ContactSection />
-      </section>
       {/* TEAM */}
       <section className="w-full transition-colors duration-500">
         <TeamSection />
-      </section>
-      {/* Organization */}
-      <section className="w-full transition-colors duration-500">
-        <OrganizationSection />
       </section>
 
       {/* Booking */}
       <section className="w-full transition-colors duration-500">
         <AppointmentSection />
-      </section>
-      {/* Booksection */}
-      <section className="w-full transition-colors duration-500">
-        <BookSection />
       </section>
     </main>
   );

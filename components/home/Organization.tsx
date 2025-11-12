@@ -15,22 +15,6 @@ export const OrganizationSection = () => {
 
   const organizations = section?.data || [];
 
-  // ✅ Skeleton Loader JSX
-  // const renderSkeletons = () => (
-  //   <div className="grid gap-6 mt-8 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3">
-  //     {[...Array(6)].map((_, i) => (
-  //       <Card key={i} className="p-3 rounded-2xl shadow-lg">
-  //         <Skeleton className="w-full h-48 rounded-xl mb-4" />
-  //         <div className="space-y-2">
-  //           <Skeleton className="h-5 w-3/4 mx-auto rounded-md" />
-  //           <Skeleton className="h-4 w-1/2 mx-auto rounded-md" />
-  //           <Skeleton className="h-4 w-2/3 mx-auto rounded-md" />
-  //         </div>
-  //       </Card>
-  //     ))}
-  //   </div>
-  // );
-
   if (error || !section)
     return <p className="text-center py-10">Error loading organizations</p>;
 
@@ -53,6 +37,13 @@ export const OrganizationSection = () => {
                 key={org.id}
                 initial={{ opacity: 0, y: 30 }}
                 whileInView={{ opacity: 1, y: 0 }}
+                whileHover={{
+                  scale: 1.05,
+                  rotateX: 5,
+                  rotateY: -5,
+                  transition: { type: "spring", stiffness: 300, damping: 20 },
+                }}
+                style={{ perspective: 1000 }}
                 transition={{ duration: 0.7, delay: index * 0.2 }}
                 className="w-full cursor-pointer"
               >

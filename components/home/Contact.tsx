@@ -19,7 +19,16 @@ interface ContactItemProps {
 }
 
 const ContactCard: React.FC<ContactItemProps> = ({ icon, title, value }) => (
-  <div className="flex flex-col items-center text-center bg-white dark:bg-gray-800 p-6 rounded-2xl shadow-lg border border-gray-200 dark:border-gray-700">
+  <motion.div
+    whileHover={{
+      scale: 1.05,
+      rotateX: 5,
+      rotateY: -5,
+      transition: { type: "spring", stiffness: 300, damping: 20 },
+    }}
+    style={{ perspective: 1000 }}
+    className="flex flex-col items-center text-center bg-white dark:bg-gray-800 p-6 rounded-2xl shadow-lg border border-gray-200 dark:border-gray-700"
+  >
     <div className="text-3xl text-emerald-600 dark:text-emerald-400 mb-3">
       {icon}
     </div>
@@ -27,7 +36,7 @@ const ContactCard: React.FC<ContactItemProps> = ({ icon, title, value }) => (
       {title}
     </h3>
     <div className="text-gray-600 dark:text-gray-300">{value}</div>
-  </div>
+  </motion.div>
 );
 
 export const ContactSection: React.FC = () => {
