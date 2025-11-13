@@ -1,14 +1,15 @@
 @import url("https://fonts.googleapis.com/css2?family=Tiro+Bangla&display=swap");
-@import url("https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400..900;1,400..900&family=Tiro+Bangla&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap");
 @import "tailwindcss";
 @config "../tailwind.config.js";
-.bangla {
-  font-family: "Tiro Bangla", serif;
-  font-weight: 400;
-  font-style: normal;
+
+body {
+  font-family: "Roboto", "Tiro Bangla", sans-serif;
+  @apply bg-white dark:bg-gray-900;
+  color: #111827;
 }
 
-/* Light & Dark Background (optional fallback) */
-body {
-  @apply bg-white dark:bg-gray-900;
+.bangla {
+  font-family: "Tiro Bangla", "Roboto", sans-serif;
+  font-weight: 400;
 }

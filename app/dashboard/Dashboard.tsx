@@ -13,6 +13,7 @@ export default function DashboardPage() {
     sitetitle: "",
     description: "",
     profileImage: "",
+    keywords: "",
   });
   const [saving, setSaving] = useState(false);
   const [uploading, setUploading] = useState(false);
@@ -25,6 +26,7 @@ export default function DashboardPage() {
         sitetitle: section.data.sitetitle || "",
         description: section.data.description || "",
         profileImage: section.data.profileImage || "",
+        keywords: section.data.keywords || "",
       });
     }
   }, [section]);
@@ -173,6 +175,10 @@ export default function DashboardPage() {
               {formData.description ||
                 "This is where your website description will appear."}
             </p>
+            <p className="bangla text-gray-600 dark:text-gray-300 max-w-md">
+              {formData.keywords ||
+                "This is where your website description will appear."}
+            </p>
           </div>
         )}
 
@@ -193,6 +199,13 @@ export default function DashboardPage() {
               onChange={(e) => handleChange("description", e.target.value)}
               minRows={4}
               placeholder="Write a short description..."
+            />
+            <Textarea
+              label="Website keywords"
+              value={formData.keywords}
+              onChange={(e) => handleChange("keywords", e.target.value)}
+              minRows={1}
+              placeholder="Write all keywords..."
             />
 
             {/* Image Upload */}

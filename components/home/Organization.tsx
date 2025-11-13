@@ -61,7 +61,7 @@ export const OrganizationSection = () => {
                   )}
                   <CardBody className="text-center py-4">
                     <h4
-                      className="text-lg font-semibold text-gray-800 dark:text-gray-100 hover:text-amber-600 dark:hover:text-amber-400 transition-colors duration-300 cursor-pointer"
+                      className="bangla text-lg font-semibold text-gray-800 dark:text-gray-100 hover:text-amber-600 dark:hover:text-amber-400 transition-colors duration-300 cursor-pointer"
                       onClick={() => setSelectedOrg(org)}
                     >
                       {org.name}

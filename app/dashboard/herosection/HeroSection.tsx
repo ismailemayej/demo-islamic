@@ -246,25 +246,12 @@ export const HeroSectionDashboard: React.FC = () => {
                 }
                 placeholder="Description"
                 disabled={!isEditing}
-                className={`w-full p-2 rounded text-lg ${
+                className={`w-full p-4 rounded-lg text-lg md:text-xl lg:text-xl ${
                   isEditing
-                    ? "border border-gray-400"
+                    ? "border border-gray-400 bg-white dark:bg-gray-700"
                     : "bg-transparent border-0"
-                }`}
-              />
-
-              <input
-                value={formData.buttonText}
-                onChange={(e) =>
-                  setFormData({ ...formData, buttonText: e.target.value })
-                }
-                placeholder="Button Text"
-                disabled={!isEditing}
-                className={`w-full p-2 rounded ${
-                  isEditing
-                    ? "border border-gray-400"
-                    : "bg-transparent border-0"
-                }`}
+                } h-40 md:h-48 lg:h-60 resize-y`}
+                style={{ minHeight: "10rem" }} // optional inline for extra height
               />
             </div>
 

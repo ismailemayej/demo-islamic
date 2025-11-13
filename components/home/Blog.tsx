@@ -43,13 +43,13 @@ export const ArticlesSection: React.FC = () => {
               onClick={() => setActiveArticle(article)}
             >
               <div className="mb-4">
-                <h3 className="text-2xl font-bold text-emerald-700 dark:text-emerald-400 mb-2 transition-colors duration-500">
+                <h3 className="bangla text-2xl font-bold text-emerald-700 dark:text-emerald-400 mb-2 transition-colors duration-500">
                   {article.blogtitle}
                 </h3>
-                <p className="text-gray-600 dark:text-gray-300 text-sm">
+                <p className="bangla text-gray-600 dark:text-gray-300 text-sm">
                   Writer: {article.blogwriter}
                 </p>
-                <p className="text-gray-700 dark:text-gray-300 transition-colors duration-500 truncate">
+                <p className="bnagla text-gray-700 dark:text-gray-300 transition-colors duration-500 truncate">
                   {article.blogdescription}
                 </p>
               </div>

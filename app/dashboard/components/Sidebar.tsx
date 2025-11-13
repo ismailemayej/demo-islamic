@@ -23,6 +23,7 @@ import {
   FaBookReader,
   FaMedal,
 } from "react-icons/fa";
+import { Divider } from "@heroui/divider";
 
 interface SidebarLink {
   id: string;
@@ -145,26 +146,29 @@ export const Sidebar = ({ onLinkClick }: { onLinkClick?: () => void }) => {
 
       <ScrollShadow
         hideScrollBar
-        className="flex-1 overflow-y-auto px-2 lg:mb-0 mb-30"
+        className="flex-1 overflow-y-auto lg:mb-0 mb-30 ml-2"
       >
         <DraggableList<SidebarLink>
           items={links}
           getId={(item: SidebarLink) => item.id}
           onChange={setLinks}
           renderItem={(link: SidebarLink) => (
-            <Link
-              href={link.href}
-              onClick={onLinkClick}
-              className={`group flex items-center gap-3 rounded-md px-3 py-2 text-sm font-medium transition-all duration-200
+            <>
+              <Link
+                href={link.href}
+                onClick={onLinkClick}
+                className={`group flex items-center gap-3 rounded-md px-3 py-2 text-sm font-medium transition-all duration-200
                 ${
                   pathname === link.href
                     ? "bg-gradient-to-r from-blue-100 to-indigo-100 dark:from-gray-800 dark:to-gray-700 text-green-600 scale-105"
                     : "text-gray-500 hover:bg-gray-100 dark:hover:bg-gray-800 hover:text-gray-900 dark:hover:text-gray-100"
                 }`}
-            >
-              {link.icon}
-              <span>{link.name}</span>
-            </Link>
+              >
+                {link.icon}
+                <span>{link.name}</span>
+              </Link>
+              <Divider />
+            </>
           )}
         />
       </ScrollShadow>

@@ -53,10 +53,10 @@ export const TeamSection = () => {
                     alt={member.name}
                     className="w-24 h-24 ring-4 ring-amber-400 dark:ring-amber-500 shadow-md"
                   />
-                  <h3 className="text-lg font-semibold text-gray-800 dark:text-gray-100 mt-2">
+                  <h3 className="bangla text-lg font-semibold text-gray-800 dark:text-gray-100 mt-2">
                     {member.name}
                   </h3>
-                  <p className="text-amber-600 dark:text-amber-400 text-sm font-medium">
+                  <p className="bangla text-amber-600 dark:text-amber-400 text-sm font-medium">
                     {member.position}
                   </p>
                 </CardHeader>

@@ -10,6 +10,8 @@ import { useRouter } from "next/navigation";
 import { ThemeSwitch } from "@/components/theme-switch";
 import { Alert } from "@heroui/alert";
 
+import { RiLogoutBoxRFill } from "react-icons/ri";
+
 interface DashboardLayoutProps {
   children: React.ReactNode;
 }
@@ -86,18 +88,27 @@ export default function DashboardLayout({ children }: DashboardLayoutProps) {
           </span>
           <div className="flex items-center gap-3">
             <ThemeSwitch />
-            <motion.button
+            <button
               onClick={handleLogout}
-              whileHover={{ scale: 1.05, y: -2 }}
-              whileTap={{ scale: 0.95 }}
-              transition={{ type: "spring", stiffness: 300 }}
-              className="relative px-5 py-2 bg-gradient-to-r from-blue-500 to-indigo-600 text-white font-semibold rounded-xl shadow-[0_5px_0px_0px_rgba(0,0,0,0.2)] 
-                         hover:shadow-[0_8px_20px_rgba(0,0,0,0.3)] 
-                         active:shadow-[inset_0_4px_8px_rgba(0,0,0,0.4)] 
-                         active:translate-y-0.5 transition-all duration-300"
+              className="
+    relative
+    rounded-lg
+    bg-gradient-to-br from-amber-400 to-amber-300
+    text-green-600
+    flex items-center gap-2 px-4 py-2
+    shadow-md
+    hover:shadow-xl
+    hover:translate-y-[-2px]
+    transition-all duration-300
+    active:translate-y-0 active:shadow-md
+  "
             >
-              <span className="drop-shadow-sm">Logout</span>
-            </motion.button>
+              {/* Mobile: Icon only */}
+              <RiLogoutBoxRFill className="block lg:hidden w-5 h-5" />
+
+              {/* Desktop/Laptop: Text only */}
+              <span className="hidden lg:inline font-semibold">logOut</span>
+            </button>
           </div>
         </header>
 

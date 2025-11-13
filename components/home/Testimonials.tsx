@@ -54,7 +54,7 @@ export const TestimonialsSection: React.FC = () => {
                     />
                   )}
                   <div>
-                    <h3 className="text-xl font-semibold text-emerald-700 dark:text-emerald-400">
+                    <h3 className="bangla text-xl font-semibold text-emerald-700 dark:text-emerald-400">
                       {testimonial.name}
                     </h3>
                     <p className="text-gray-600 dark:text-gray-300 text-sm">
