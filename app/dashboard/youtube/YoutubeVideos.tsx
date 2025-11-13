@@ -5,6 +5,7 @@ import { motion } from "framer-motion";
 import { Heading } from "@/components/Heading";
 import toast from "react-hot-toast";
 import { useGetSection } from "../Hook/GetData";
+import { Trash2 } from "lucide-react";
 
 interface VideoItem {
   id: string;
@@ -175,13 +176,12 @@ export const YouTubeVideosSectionDashboard: React.FC = () => {
             />
 
             {/* Videos Inputs */}
-            {/* Videos Inputs */}
-            <div className="space-y-4">
+            <div className="grid grid-cols-1 lg:grid-cols-4 gap-4">
               {formData.data.map((video, index) => (
                 <motion.div
                   key={video.id}
                   whileHover={{ scale: 1.01 }}
-                  className="relative bg-gradient-to-r from-amber-50 to-white dark:from-gray-700 dark:to-gray-800 p-4 sm:p-5 rounded-xl shadow-sm border border-gray-200 dark:border-gray-700"
+                  className="relative bg-gradient-to-r from-amber-50 to-white dark:from-gray-700 dark:to-gray-800 p-3 rounded-xl shadow-sm border border-gray-200 dark:border-gray-700"
                 >
                   {/* Delete Button */}
                   <button
@@ -189,10 +189,10 @@ export const YouTubeVideosSectionDashboard: React.FC = () => {
                     className="bg-red-50 z-10 border rounded-full absolute top-2 right-2 text-red-600 hover:bg-red-100 hover:text-red-800 transition-colors"
                     title="Delete Video"
                   >
-                    ✖
+                    <Trash2 size={18} className="m-1" />
                   </button>
 
-                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                  <div className="grid grid-cols-1  gap-3">
                     <input
                       type="text"
                       placeholder="Video Title"

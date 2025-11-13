@@ -14,10 +14,7 @@ export async function GET(
   context: { params: Promise<SectionParams> }
 ) {
   try {
-    // 🧠 params এখন Promise, তাই await দিয়ে resolve করতে হবে
     const { section } = await context.params;
-
-    // ❗ Section name না থাকলে error
     if (!section) {
       return NextResponse.json(
         { success: false, error: "Section parameter is required" },

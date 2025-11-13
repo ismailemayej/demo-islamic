@@ -23,15 +23,13 @@ interface SocialLink {
   id: string;
   name: string;
   url: string;
-  iconName: string; // শুধুমাত্র নাম সংরক্ষণ হবে
+  iconName: string;
 }
 
 interface SocialMediaSectionData {
   heading: { title: string; subTitle: string };
   data: SocialLink[];
 }
-
-// ... উপরের import অংশ একই থাকবে
 
 const SOCIAL_OPTIONS = [
   "Facebook",
@@ -68,7 +66,7 @@ export const SocialMediaSectionDashboard: React.FC = () => {
     }
   }, [section]);
 
-  // ✅ Update handleChange
+  // Handle changes
   const handleChange = (
     sectionType: "heading" | "data",
     field: string,
@@ -84,7 +82,6 @@ export const SocialMediaSectionDashboard: React.FC = () => {
       const updated = [...formData.data];
       (updated[index] as any)[field] = value;
 
-      // 🟢 যদি iconName পরিবর্তন হয়, name field auto update
       if (field === "iconName") {
         (updated[index] as any).name = value;
       }
@@ -101,7 +98,7 @@ export const SocialMediaSectionDashboard: React.FC = () => {
         {
           id: Date.now().toString(),
           iconName: "Facebook",
-          name: "Facebook", // iconName অনুযায়ী name auto set
+          name: "Facebook",
           url: "",
         },
       ],
@@ -165,13 +162,22 @@ export const SocialMediaSectionDashboard: React.FC = () => {
     }
   };
 
-  // ... Loading/Error UI একই থাকবে
+  if (loading)
+    return (
+      <div className="flex justify-center items-center py-20">
+        <p>Loading...</p>
+      </div>
+    );
+
+  if (error)
+    return (
+      <p className="text-red-500 text-center py-10">
+        {error || "Something went wrong!"}
+      </p>
+    );
 
   return (
-    <section
-      id="social"
-      className="py-10 px-3 rounded-xl bg-gradient-to-b from-amber-50 to-white dark:from-gray-700 dark:to-gray-900 transition-colors duration-500"
-    >
+    <section className="py-10 px-3 rounded-xl bg-gradient-to-b from-amber-50 to-white dark:from-gray-700 dark:to-gray-900 transition-colors duration-500">
       <div className="container mx-auto px-0">
         {/* Heading + Edit Button */}
         <div className="flex justify-between items-center mb-6">
@@ -194,6 +200,7 @@ export const SocialMediaSectionDashboard: React.FC = () => {
               ✏️ Edit Social Media Section
             </h3>
 
+            {/* Heading Inputs */}
             <div className="grid sm:grid-cols-2 gap-4 mb-4">
               <input
                 type="text"
@@ -215,12 +222,13 @@ export const SocialMediaSectionDashboard: React.FC = () => {
               />
             </div>
 
-            <div className="space-y-4">
+            {/* Social Links */}
+            <div className="grid grid-cols-1 lg:grid-cols-4 space-y-4 max-h-[60vh] overflow-y-auto">
               {formData.data.map((social, i) => (
                 <motion.div
                   key={social.id}
                   whileHover={{ scale: 1.01 }}
-                  className="relative bg-gradient-to-r from-amber-50 to-white dark:from-gray-700 dark:to-gray-800 p-4 rounded-xl shadow-sm border border-gray-200 dark:border-gray-700 flex items-center gap-2"
+                  className="relative bg-gradient-to-r from-amber-50 to-white dark:from-gray-700 dark:to-gray-800 p-4 rounded-xl shadow-sm border border-gray-200 dark:border-gray-700 grid grid-cols-1 gap-2"
                 >
                   <button
                     onClick={() => handleDelete(i)}
@@ -262,6 +270,7 @@ export const SocialMediaSectionDashboard: React.FC = () => {
               ))}
             </div>
 
+            {/* Buttons */}
             <div className="mt-5 flex justify-between items-center">
               <button
                 onClick={handleAdd}
@@ -280,12 +289,12 @@ export const SocialMediaSectionDashboard: React.FC = () => {
           </div>
         )}
 
-        {/* Display Social Links */}
+        {/* Preview */}
         <div className="mt-10 grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-6">
           {formData.data.map((social, index) => (
             <motion.a
               key={social.id}
-              href={social.url}
+              href={social.url || "#"}
               target="_blank"
               rel="noopener noreferrer"
               initial={{ opacity: 0, y: 20 }}

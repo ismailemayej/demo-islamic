@@ -29,8 +29,11 @@ export const EducationSectionDashboard: React.FC = () => {
     data: [],
   });
 
-  const [editing, setEditing] = useState(false);
+  const [editingSection, setEditingSection] = useState(false);
   const [saving, setSaving] = useState(false);
+
+  // Track which card is being edited individually
+  const [editingCardIndex, setEditingCardIndex] = useState<number | null>(null);
 
   useEffect(() => {
     if (section) {
@@ -44,8 +47,6 @@ export const EducationSectionDashboard: React.FC = () => {
     }
   }, [section]);
 
-  const prevData = (data: Education[]) => JSON.parse(JSON.stringify(data));
-
   const handleChange = (
     sectionType: "heading" | "data",
     field: string,
@@ -58,7 +59,7 @@ export const EducationSectionDashboard: React.FC = () => {
         heading: { ...prev.heading, [field]: value },
       }));
     } else if (sectionType === "data" && index !== undefined) {
-      const newData = [...prevData(formData.data)];
+      const newData = [...formData.data];
       newData[index] = { ...newData[index], [field]: value };
       setFormData((prev) => ({ ...prev, data: newData }));
     }
@@ -82,11 +83,10 @@ export const EducationSectionDashboard: React.FC = () => {
   };
 
   const handleDelete = (index: number) => {
-    setFormData((prev) => {
-      const newData = [...prev.data];
-      newData.splice(index, 1);
-      return { ...prev, data: newData };
-    });
+    const newData = [...formData.data];
+    newData.splice(index, 1);
+    setFormData((prev) => ({ ...prev, data: newData }));
+    if (editingCardIndex === index) setEditingCardIndex(null);
   };
 
   const handleSave = async () => {
@@ -103,7 +103,8 @@ export const EducationSectionDashboard: React.FC = () => {
 
       toast.dismiss("save");
       toast.success("✅ Saved successfully!");
-      setEditing(false);
+      setEditingSection(false);
+      setEditingCardIndex(null);
     } catch (err: any) {
       toast.dismiss("save");
       toast.error(err.message || "Save failed");
@@ -112,28 +113,27 @@ export const EducationSectionDashboard: React.FC = () => {
     }
   };
 
+  if (loading) return <p className="text-center py-20">Loading...</p>;
+  if (error) return <p className="text-red-500 text-center py-10">{error}</p>;
+
   return (
-    <section
-      id="education"
-      className="py-16 px-3 rounded-xl 
-             bg-gradient-to-b from-amber-50 to-white 
-             dark:bg-gradient-to-b dark:from-gray-700 dark:to-gray-900 transition-colors duration-500"
-    >
-      <div className="flex justify-between items-center">
+    <section className="py-16 px-3 rounded-xl bg-gradient-to-b from-amber-50 to-white dark:bg-gradient-to-b dark:from-gray-700 dark:to-gray-900 transition-colors duration-500">
+      {/* Section Heading */}
+      <div className="flex flex-col sm:flex-row justify-between items-center mb-6 gap-4">
         <Heading
           title={formData.heading.title}
           subTitle={formData.heading.subTitle}
           center
         />
         <button
-          onClick={() => setEditing(!editing)}
+          onClick={() => setEditingSection(!editingSection)}
           className={`flex items-center gap-2 px-4 py-2 rounded-lg transition ${
-            editing
+            editingSection
               ? "bg-red-500 hover:bg-red-600 text-white"
               : "bg-amber-500 hover:bg-amber-600 text-white"
           }`}
         >
-          {editing ? (
+          {editingSection ? (
             <>
               <X size={18} /> Cancel
             </>
@@ -145,41 +145,27 @@ export const EducationSectionDashboard: React.FC = () => {
         </button>
       </div>
 
-      {editing && (
+      {/* Edit Heading */}
+      {editingSection && (
         <div className="bg-white dark:bg-gray-800 p-6 rounded-xl shadow-lg my-6">
-          <h3 className="text-lg font-bold text-amber-700 mb-4">
-            🎓 Edit Education Section
-          </h3>
-
           <div className="grid sm:grid-cols-2 gap-4 mb-5">
-            <div>
-              <label className="text-sm font-semibold text-gray-600 dark:text-gray-300">
-                Title
-              </label>
-              <input
-                type="text"
-                value={formData.heading.title}
-                onChange={(e) =>
-                  handleChange("heading", "title", e.target.value)
-                }
-                className="w-full border rounded-lg p-2 mt-1 bg-gray-50 dark:bg-gray-700 dark:text-white focus:ring-2 focus:ring-amber-400 outline-none"
-              />
-            </div>
-            <div>
-              <label className="text-sm font-semibold text-gray-600 dark:text-gray-300">
-                Subtitle
-              </label>
-              <input
-                type="text"
-                value={formData.heading.subTitle}
-                onChange={(e) =>
-                  handleChange("heading", "subTitle", e.target.value)
-                }
-                className="w-full border rounded-lg p-2 mt-1 bg-gray-50 dark:bg-gray-700 dark:text-white focus:ring-2 focus:ring-amber-400 outline-none"
-              />
-            </div>
+            <input
+              type="text"
+              value={formData.heading.title}
+              onChange={(e) => handleChange("heading", "title", e.target.value)}
+              placeholder="Title"
+              className="w-full border rounded-lg p-2 bg-gray-50 dark:bg-gray-700 dark:text-white focus:ring-2 focus:ring-amber-400"
+            />
+            <input
+              type="text"
+              value={formData.heading.subTitle}
+              onChange={(e) =>
+                handleChange("heading", "subTitle", e.target.value)
+              }
+              placeholder="Subtitle"
+              className="w-full border rounded-lg p-2 bg-gray-50 dark:bg-gray-700 dark:text-white focus:ring-2 focus:ring-amber-400"
+            />
           </div>
-
           <button
             onClick={handleAdd}
             className="flex items-center gap-2 bg-emerald-600 text-white px-4 py-2 rounded-lg hover:bg-emerald-700 transition"
@@ -189,78 +175,92 @@ export const EducationSectionDashboard: React.FC = () => {
         </div>
       )}
 
-      <div className="mx-auto grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
-        {formData.data.map((edu, index) => (
-          <motion.div
-            key={index}
-            initial={{ opacity: 0, y: 30 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8, delay: index * 0.1 }}
-            className="relative p-6 bg-white dark:bg-gray-800 shadow-md rounded-2xl border border-amber-100 dark:border-gray-700 hover:shadow-lg transition-all duration-300"
-          >
-            {editing && (
-              <button
-                onClick={() => handleDelete(index)}
-                className="absolute top-3 right-3 text-red-500 hover:text-red-700 transition"
-              >
-                <Trash2 size={18} />
-              </button>
-            )}
-
-            <div className="flex items-center gap-3 mb-4">
-              <GraduationCap className="text-amber-600 dark:text-amber-400 w-6 h-6" />
-              {editing ? (
-                <input
-                  type="text"
-                  value={edu.examName}
-                  onChange={(e) =>
-                    handleChange("data", "examName", e.target.value, index)
+      {/* Education Cards */}
+      <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+        {formData.data.map((edu, index) => {
+          const isEditingCard = editingCardIndex === index;
+          return (
+            <motion.div
+              key={index}
+              initial={{ opacity: 0, y: 30 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.8, delay: index * 0.1 }}
+              className="relative p-6 bg-white dark:bg-gray-800 shadow-md rounded-2xl border border-amber-100 dark:border-gray-700 hover:shadow-xl transition-all duration-300"
+            >
+              {/* Card Edit/Delete Buttons */}
+              <div className="absolute top-3 right-3 flex gap-2">
+                <button
+                  onClick={() =>
+                    setEditingCardIndex(isEditingCard ? null : index)
                   }
-                  className="w-full border-b border-gray-300 bg-transparent dark:text-white focus:outline-none focus:border-amber-400"
-                />
-              ) : (
-                <h3 className="bangla text-lg font-semibold text-amber-800 dark:text-amber-400">
-                  {edu.examName}
-                </h3>
-              )}
-            </div>
+                  className="text-blue-500 hover:text-blue-700 transition"
+                >
+                  <Edit3 size={18} />
+                </button>
+                <button
+                  onClick={() => handleDelete(index)}
+                  className="text-red-500 hover:text-red-700 transition"
+                >
+                  <Trash2 size={18} />
+                </button>
+              </div>
 
-            <div className="space-y-2 text-gray-700 dark:text-gray-300 bangla">
-              {["institution", "board", "year", "result", "duration"].map(
-                (field) => (
-                  <div key={field}>
-                    <span className="text-amber-700 dark:text-amber-500 font-semibold">
-                      {field === "institution"
-                        ? "প্রতিষ্ঠান:"
-                        : field === "board"
-                          ? "বোর্ড:"
-                          : field === "year"
-                            ? "সাল:"
-                            : field === "result"
-                              ? "রেজাল্ট:"
-                              : "সময়:"}
-                    </span>{" "}
-                    {editing ? (
-                      <input
-                        type="text"
-                        value={(edu as any)[field]}
-                        onChange={(e) =>
-                          handleChange("data", field, e.target.value, index)
-                        }
-                        className="border-b border-gray-300 bg-transparent dark:text-white w-3/4 focus:outline-none focus:border-amber-400"
-                      />
-                    ) : (
-                      (edu as any)[field]
-                    )}
-                  </div>
-                )
-              )}
-            </div>
-          </motion.div>
-        ))}
+              <div className="flex items-center gap-3 mb-4">
+                <GraduationCap className="text-amber-600 dark:text-amber-400 w-6 h-6" />
+                {isEditingCard ? (
+                  <input
+                    type="text"
+                    value={edu.examName}
+                    onChange={(e) =>
+                      handleChange("data", "examName", e.target.value, index)
+                    }
+                    className="w-full border-b border-gray-300 bg-transparent dark:text-white focus:outline-none focus:border-amber-400"
+                  />
+                ) : (
+                  <h3 className="bangla text-lg font-semibold text-amber-800 dark:text-amber-400">
+                    {edu.examName}
+                  </h3>
+                )}
+              </div>
+
+              <div className="space-y-2 text-gray-700 dark:text-gray-300 bangla">
+                {["institution", "board", "year", "result", "duration"].map(
+                  (field) => (
+                    <div key={field}>
+                      <span className="text-amber-700 dark:text-amber-500 font-semibold">
+                        {field === "institution"
+                          ? "প্রতিষ্ঠান:"
+                          : field === "board"
+                            ? "বোর্ড:"
+                            : field === "year"
+                              ? "সাল:"
+                              : field === "result"
+                                ? "রেজাল্ট:"
+                                : "সময়:"}
+                      </span>{" "}
+                      {isEditingCard ? (
+                        <input
+                          type="text"
+                          value={(edu as any)[field]}
+                          onChange={(e) =>
+                            handleChange("data", field, e.target.value, index)
+                          }
+                          className="border-b border-gray-300 bg-transparent dark:text-white w-3/4 focus:outline-none focus:border-amber-400"
+                        />
+                      ) : (
+                        (edu as any)[field]
+                      )}
+                    </div>
+                  )
+                )}
+              </div>
+            </motion.div>
+          );
+        })}
       </div>
 
-      {editing && (
+      {/* Save Button */}
+      {(editingSection || editingCardIndex !== null) && (
         <div className="flex justify-center mt-8">
           <button
             onClick={handleSave}

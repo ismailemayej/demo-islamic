@@ -3,10 +3,13 @@ import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import { toast } from "react-hot-toast";
 import { Spinner } from "@nextui-org/react";
-import { Heading } from "@/components/Heading";
-import Background from "@/components/background";
-import { useGetSection } from "../Hook/GetData";
 import { Button } from "@heroui/button";
+import { Input } from "@heroui/input";
+import { Heading } from "@/components/Heading";
+import { useGetSection } from "../Hook/GetData";
+import Background from "@/components/background";
+import { OpenModal } from "@/components/Modal";
+import { Edit3, Trash2, Save, X } from "lucide-react";
 
 interface Article {
   id: string;
@@ -16,125 +19,93 @@ interface Article {
   date: string;
 }
 
-interface ArticleSection {
-  heading: {
-    title: string;
-    subTitle: string;
-  };
+interface HeadingType {
+  title: string;
+  subTitle: string;
+}
+
+interface FormDataType {
+  heading: HeadingType;
   data: Article[];
 }
 
 export const ArticlesSectionDashboard: React.FC = () => {
   const { section, loading, error } = useGetSection("blogsection");
-
-  const [formData, setFormData] = useState<ArticleSection>({
+  const [formData, setFormData] = useState<FormDataType>({
     heading: { title: "", subTitle: "" },
     data: [],
   });
-
-  const [isEditing, setIsEditing] = useState(false);
-  const [isHeadingEditing, setIsHeadingEditing] = useState(false);
+  const [selectedArticle, setSelectedArticle] = useState<Article | null>(null);
+  const [editingHeading, setEditingHeading] = useState(false);
   const [saving, setSaving] = useState(false);
-  const [showEditor, setShowEditor] = useState(false);
-  const [newArticle, setNewArticle] = useState<Article>({
-    id: "",
-    blogtitle: "",
-    blogdescription: "",
-    blogwriter: "",
-    date: "",
-  });
+  const [modalOpen, setModalOpen] = useState(false);
 
+  // ✅ Load API data
   useEffect(() => {
     if (section) {
       setFormData({
-        heading: {
-          title: section.heading?.title || "",
-          subTitle: section.heading?.subTitle || "",
-        },
+        heading: section.heading || { title: "", subTitle: "" },
         data: section.data || [],
       });
     }
   }, [section]);
 
-  // ✅ Handle Input Change
-  const handleChange = (
-    sectionType: "heading" | "data",
-    field: string,
-    value: string,
-    index?: number
-  ) => {
-    if (sectionType === "heading") {
-      setFormData((prev) => ({
-        ...prev,
-        heading: { ...prev.heading, [field]: value },
-      }));
-    } else if (sectionType === "data" && index !== undefined) {
-      setFormData((prev) => {
-        const newData = [...prev.data];
-        newData[index] = { ...newData[index], [field]: value };
-        return { ...prev, data: newData };
-      });
-    }
-  };
-
-  // ✅ Open modal for new article
-  const handleAdd = () => {
-    setNewArticle({
-      id: Date.now().toString(),
-      blogtitle: "",
-      blogdescription: "",
-      blogwriter: "",
-      date: new Date().toISOString().split("T")[0],
-    });
-    setShowEditor(true);
-  };
-
-  // ✅ Save new article from modal
-  const handleSaveNewArticle = () => {
-    if (!newArticle.blogtitle || !newArticle.blogdescription) {
-      toast.error("Title and description are required!");
-      return;
-    }
-
-    setFormData((prev) => ({
-      ...prev,
-      data: [...prev.data, newArticle],
-    }));
-
-    setShowEditor(false);
-    toast.success("✅ New article added!");
-  };
-
-  // ✅ Delete Article
-  const handleDelete = (index: number) => {
-    const newData = formData.data.filter((_, i) => i !== index);
-    setFormData((prev) => ({ ...prev, data: newData }));
-  };
-
   // ✅ Save to DB
-  const handleSave = async () => {
+  const handleSave = async (updatedData = formData) => {
     setSaving(true);
-    toast.loading("Saving data...", { id: "save" });
-
+    toast.loading("Saving...", { id: "save" });
     try {
       const res = await fetch("/api/all-data/blogsection/update", {
         method: "PATCH",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(formData),
+        body: JSON.stringify(updatedData),
       });
       const json = await res.json();
       if (!json.success) throw new Error(json.error || "Save failed");
 
       toast.dismiss("save");
-      toast.success("✅ Saved successfully!");
-      setIsEditing(false);
-      setIsHeadingEditing(false);
+      toast.success("✅ Updated Successfully!");
+      setSelectedArticle(null);
+      setEditingHeading(false);
     } catch (err: any) {
       toast.dismiss("save");
-      toast.error(err.message || "Save failed");
+      toast.error(err.message || "Failed to save");
     } finally {
       setSaving(false);
     }
+  };
+
+  // ✅ Article Change
+  const handleArticleChange = (field: keyof Article, value: string) => {
+    if (!selectedArticle) return;
+    setSelectedArticle({ ...selectedArticle, [field]: value });
+  };
+
+  const handleModalSave = () => {
+    if (!selectedArticle) return;
+    const exists = formData.data.some((a) => a.id === selectedArticle.id);
+    const updatedData = exists
+      ? formData.data.map((a) =>
+          a.id === selectedArticle.id ? selectedArticle : a
+        )
+      : [...formData.data, selectedArticle];
+
+    const updated = { ...formData, data: updatedData };
+    setFormData(updated);
+    handleSave(updated);
+    setSelectedArticle(null);
+    setModalOpen(false);
+  };
+
+  // ✅ Handle Delete
+  const handleDelete = (id: string) => {
+    const updated = {
+      ...formData,
+      data: formData.data.filter((a) => a.id !== id),
+    };
+    setFormData(updated);
+    handleSave(updated);
+    toast.success("🗑️ Deleted successfully");
   };
 
   if (loading)
@@ -149,167 +120,171 @@ export const ArticlesSectionDashboard: React.FC = () => {
   return (
     <Background id="blog">
       <div className="container mx-auto">
-        {/* ✅ Heading Section */}
-        <div className="flex items-center justify-between">
+        {/* ---------- Heading ---------- */}
+        <div className="flex justify-center items-center mb-6">
           <Heading
             title={formData.heading.title}
             subTitle={formData.heading.subTitle}
           />
-          <Button onClick={() => setIsHeadingEditing(!isHeadingEditing)}>
-            {isHeadingEditing ? "Cancel" : "Edit Heading"}
+          <Button
+            isIconOnly
+            variant="light"
+            onClick={() => setEditingHeading(true)}
+            className="hover:scale-110 transition-transform"
+          >
+            <Edit3 className="w-6 h-6 text-yellow-500 border p-1 rounded" />
           </Button>
         </div>
 
-        {isHeadingEditing && (
-          <div className="bg-white dark:bg-gray-900 p-6 rounded-xl shadow-md mt-4 space-y-4">
-            <input
-              type="text"
-              value={formData.heading.title}
-              onChange={(e) => handleChange("heading", "title", e.target.value)}
-              placeholder="Heading Title"
-              className="w-full p-3 border rounded-lg dark:bg-gray-800 dark:text-white text-lg"
-            />
-            <textarea
-              value={formData.heading.subTitle}
-              onChange={(e) =>
-                handleChange("heading", "subTitle", e.target.value)
-              }
-              placeholder="Heading Subtitle"
-              className="w-full p-3 border rounded-lg dark:bg-gray-800 dark:text-white text-base"
-              rows={5}
-            />
-            <Button onClick={handleSave} disabled={saving}>
-              {saving ? "Saving..." : "Save Heading"}
-            </Button>
-          </div>
+        {/* ---------- Edit Heading Modal ---------- */}
+        {editingHeading && (
+          <OpenModal
+            title="Edit Section Heading"
+            isOpen={editingHeading}
+            onClose={() => setEditingHeading(false)}
+            size="md"
+          >
+            <div className="space-y-4">
+              <Input
+                label="Title"
+                value={formData.heading.title}
+                onChange={(e) =>
+                  setFormData({
+                    ...formData,
+                    heading: { ...formData.heading, title: e.target.value },
+                  })
+                }
+              />
+              <Input
+                label="Sub Title"
+                value={formData.heading.subTitle}
+                onChange={(e) =>
+                  setFormData({
+                    ...formData,
+                    heading: { ...formData.heading, subTitle: e.target.value },
+                  })
+                }
+              />
+              <div className="flex justify-end gap-3 mt-3">
+                <Button
+                  onClick={() => setEditingHeading(false)}
+                  className="bg-gray-400 text-white"
+                >
+                  Cancel
+                </Button>
+                <Button
+                  onClick={() => handleSave()}
+                  disabled={saving}
+                  className="bg-emerald-600 text-white"
+                >
+                  {saving ? "Saving..." : "Save"}
+                </Button>
+              </div>
+            </div>
+          </OpenModal>
         )}
 
-        {/* ✅ Article Cards */}
-        <div className="flex justify-between mt-12 mb-4">
-          <Button onClick={handleAdd}>Add New Article</Button>
-          <Button onClick={() => setIsEditing(!isEditing)}>
-            {isEditing ? "Cancel Edit" : "Edit Articles"}
-          </Button>
-          {isEditing && (
-            <Button onClick={handleSave} disabled={saving}>
-              {saving ? "Saving..." : "Save Changes"}
-            </Button>
-          )}
-        </div>
-
-        <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-          {formData.data.map((article, index) => (
+        {/* ---------- Articles Grid ---------- */}
+        <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3 mt-10">
+          {formData.data.map((article) => (
             <motion.div
               key={article.id}
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6, delay: index * 0.2 }}
-              className="bg-white dark:bg-gray-800 rounded-3xl shadow-xl p-6 hover:shadow-2xl transition-all duration-300 flex flex-col justify-between"
+              transition={{ duration: 0.5 }}
+              className="bg-white dark:bg-gray-900 rounded-2xl shadow-lg p-6 relative"
             >
-              {isEditing ? (
-                <div className="flex flex-col space-y-4">
-                  <input
-                    type="text"
-                    value={article.blogtitle}
-                    onChange={(e) =>
-                      handleChange("data", "blogtitle", e.target.value, index)
-                    }
-                    className="w-full p-3 text-lg rounded-md border dark:bg-gray-900 dark:text-white"
-                    placeholder="Article Title"
-                  />
-                  <textarea
-                    value={article.blogdescription}
-                    onChange={(e) =>
-                      handleChange(
-                        "data",
-                        "blogdescription",
-                        e.target.value,
-                        index
-                      )
-                    }
-                    rows={12}
-                    className="w-full p-4 text-base rounded-md border dark:bg-gray-900 dark:text-white leading-relaxed"
-                    placeholder="Write the full article here..."
-                  />
-                  <input
-                    type="text"
-                    value={article.blogwriter}
-                    onChange={(e) =>
-                      handleChange("data", "blogwriter", e.target.value, index)
-                    }
-                    className="w-full p-3 rounded-md border dark:bg-gray-900 dark:text-white"
-                    placeholder="Writer name"
-                  />
-                  <p className="text-gray-500 dark:text-gray-400 text-sm">
-                    {article.date}
-                  </p>
-                  <Button onClick={() => handleDelete(index)} className="mt-2">
-                    Delete
-                  </Button>
-                </div>
-              ) : (
-                <>
-                  <h3 className="text-2xl font-bold text-emerald-700 dark:text-emerald-400 mb-2">
-                    {article.blogtitle}
-                  </h3>
-                  <p className="text-gray-700 dark:text-gray-300 mb-3 leading-relaxed text-justify">
-                    {article.blogdescription}
-                  </p>
-                  <p className="text-sm text-gray-500 dark:text-gray-400">
-                    ✍️ {article.blogwriter} | 📅 {article.date}
-                  </p>
-                </>
-              )}
+              <h3 className="text-2xl font-semibold mb-2 text-emerald-700 dark:text-emerald-400">
+                {article.blogtitle}
+              </h3>
+              <p className="text-gray-700 dark:text-gray-300 mb-3 line-clamp-3">
+                {article.blogdescription}
+              </p>
+              <p className="text-sm text-gray-500 dark:text-gray-400">
+                ✍️ {article.blogwriter} | 📅 {article.date}
+              </p>
+
+              <div className="absolute top-4 right-4 flex gap-3">
+                <Button
+                  isIconOnly
+                  variant="light"
+                  className="hover:scale-110 transition-transform"
+                  onClick={() => {
+                    setSelectedArticle(article);
+                    setModalOpen(true);
+                  }}
+                >
+                  <Edit3 className="w-5 h-5 text-blue-600" />
+                </Button>
+                <Button
+                  isIconOnly
+                  variant="light"
+                  className="hover:scale-110 transition-transform"
+                  onClick={() => handleDelete(article.id)}
+                >
+                  <Trash2 className="w-5 h-5 text-red-600" />
+                </Button>
+              </div>
             </motion.div>
           ))}
         </div>
-      </div>
 
-      {/* ✅ Full-Screen Modal Editor */}
-      {showEditor && (
-        <div className="fixed inset-0 bg-black bg-opacity-60 z-50 flex justify-end items-center mr-4">
-          <div className="bg-white dark:bg-gray-900 lg:w-9/12 h-[80vh] rounded-xl p-6 shadow-2xl overflow-y-auto relative">
-            <h2 className="text-2xl font-bold mb-4 dark:text-white">
-              ✍️ Create New Article
-            </h2>
-            <input
-              type="text"
-              value={newArticle.blogtitle}
-              onChange={(e) =>
-                setNewArticle({ ...newArticle, blogtitle: e.target.value })
-              }
-              placeholder="Article Title"
-              className="w-full p-3 text-lg rounded-md border mb-4 dark:bg-gray-800 dark:text-white"
-            />
-            <textarea
-              value={newArticle.blogdescription}
-              onChange={(e) =>
-                setNewArticle({
-                  ...newArticle,
-                  blogdescription: e.target.value,
-                })
-              }
-              rows={20}
-              className="w-full p-4 text-base rounded-md border dark:bg-gray-800 dark:text-white leading-relaxed mb-4"
-              placeholder="Write your full article content here..."
-            />
-            <input
-              type="text"
-              value={newArticle.blogwriter}
-              onChange={(e) =>
-                setNewArticle({ ...newArticle, blogwriter: e.target.value })
-              }
-              placeholder="Writer Name"
-              className="w-full p-3 rounded-md border dark:bg-gray-800 dark:text-white mb-4"
-            />
-
-            <div className="flex justify-between mt-6">
-              <Button onClick={() => setShowEditor(false)}>Cancel</Button>
-              <Button onClick={handleSaveNewArticle}>Save Article</Button>
+        {/* ---------- Edit / Add Modal ---------- */}
+        {modalOpen && selectedArticle && (
+          <OpenModal
+            title={`Edit: ${selectedArticle.blogtitle}`}
+            isOpen={modalOpen}
+            onClose={() => setSelectedArticle(null)}
+            size="xl"
+          >
+            <div className="max-h-[80vh] overflow-y-auto space-y-4 p-4">
+              <Input
+                label="Title"
+                value={selectedArticle.blogtitle}
+                onChange={(e) =>
+                  handleArticleChange("blogtitle", e.target.value)
+                }
+              />
+              <Input
+                label="Writer"
+                value={selectedArticle.blogwriter}
+                onChange={(e) =>
+                  handleArticleChange("blogwriter", e.target.value)
+                }
+              />
+              <textarea
+                value={selectedArticle.blogdescription}
+                onChange={(e) =>
+                  handleArticleChange("blogdescription", e.target.value)
+                }
+                rows={12}
+                className="w-full border p-3 rounded-lg dark:bg-gray-800 dark:text-white"
+              />
+              <Input
+                label="Date"
+                type="date"
+                value={selectedArticle.date}
+                onChange={(e) => handleArticleChange("date", e.target.value)}
+              />
+              <div className="flex justify-end gap-3 mt-3">
+                <Button
+                  onClick={() => setSelectedArticle(null)}
+                  className="bg-gray-400 text-white"
+                >
+                  Cancel
+                </Button>
+                <Button
+                  onClick={handleModalSave}
+                  disabled={saving}
+                  className="bg-emerald-600 text-white"
+                >
+                  {saving ? "Saving..." : "Save Changes"}
+                </Button>
+              </div>
             </div>
-          </div>
-        </div>
-      )}
+          </OpenModal>
+        )}
+      </div>
     </Background>
   );
 };

@@ -1,15 +1,20 @@
 "use client";
 import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
-import { Award, Edit, Save, Trash2, X } from "lucide-react";
-import { useGetSection } from "../Hook/GetData";
+import { Award } from "lucide-react";
 import toast from "react-hot-toast";
 import { Button } from "@heroui/button";
 import { Input } from "@heroui/input";
 import { Heading } from "@/components/Heading";
+import { OpenModal } from "@/components/Modal";
+import { IoAddCircleSharp } from "react-icons/io5";
+import { FaRegEdit } from "react-icons/fa";
+import { BsTrash3Fill } from "react-icons/bs";
+import { Spinner } from "@heroui/spinner";
+import { useGetSection } from "../Hook/GetData";
 
-interface EducationItem {
-  id: string;
+interface CertificateItem {
+  id: string | number;
   degree: string;
   institution: string;
   board?: string;
@@ -17,124 +22,89 @@ interface EducationItem {
   gpa?: string;
 }
 
-interface EducationSection {
-  heading: {
-    title: string;
-    subTitle: string;
-  };
-  data: EducationItem[];
-}
-
-export const CertificateSectionDashboard: React.FC = () => {
-  const { section } = useGetSection("certificatesection");
-  const [formData, setFormData] = useState<EducationSection>({
+export const CertificateSectionDashboard = () => {
+  const { section, loading, error } = useGetSection("certificatesection");
+  const [formData, setFormData] = useState({
     heading: { title: "", subTitle: "" },
-    data: [],
+    data: [] as CertificateItem[],
   });
-
-  const [editingIndex, setEditingIndex] = useState<number | null>(null);
+  const [selectedItem, setSelectedItem] = useState<CertificateItem | null>(
+    null
+  );
   const [editingHeading, setEditingHeading] = useState(false);
   const [saving, setSaving] = useState(false);
 
-  // Load section data
+  // ✅ Initial Data Load
   useEffect(() => {
     if (section) {
       setFormData({
-        heading: {
-          title: section.heading?.title || "",
-          subTitle: section.heading?.subTitle || "",
-        },
+        heading: section.heading || { title: "", subTitle: "" },
         data: section.data || [],
       });
     }
   }, [section]);
 
-  // Handle input changes
-  const handleChange = (
-    sectionType: "heading" | "data",
-    field: string,
-    value: string,
-    index?: number
-  ) => {
-    setFormData((prev) => {
-      if (sectionType === "heading") {
-        return {
-          ...prev,
-          heading: { ...prev.heading, [field]: value },
-        };
-      }
-
-      if (sectionType === "data" && index !== undefined) {
-        const updatedData = prev.data.map((item, i) =>
-          i === index ? { ...item, [field]: value } : item
-        );
-        return { ...prev, data: updatedData };
-      }
-
-      return prev;
-    });
-  };
-
-  // Save handler
-  const handleSave = async () => {
+  // ✅ Save to DB (Full update)
+  const handleSave = async (updatedData = formData) => {
     setSaving(true);
-    toast.loading("Saving data...", { id: "save" });
-
+    toast.loading("Saving...", { id: "save" });
     try {
       const res = await fetch("/api/all-data/certificatesection/update", {
         method: "PATCH",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(formData),
+        body: JSON.stringify(updatedData),
       });
-
       const json = await res.json();
       if (!json.success) throw new Error(json.error || "Save failed");
-
       toast.dismiss("save");
-      toast.success("✅ Saved successfully!");
-      setEditingIndex(null);
+      toast.success("✅ Updated Successfully!");
+      setSelectedItem(null);
       setEditingHeading(false);
     } catch (err: any) {
       toast.dismiss("save");
-      toast.error(err.message || "Save failed");
+      toast.error(err.message || "Failed to save");
     } finally {
       setSaving(false);
     }
   };
+  // ✅ Modal Save (Add/Edit)
+  const handleModalSave = () => {
+    if (!selectedItem) return;
+    const exists = formData.data.some((a) => a.id === selectedItem.id);
+    const updatedData = exists
+      ? formData.data.map((a) => (a.id === selectedItem.id ? selectedItem : a))
+      : [...formData.data, { ...selectedItem, id: Date.now() }];
 
-  // Delete item
-  const handleDelete = (index: number) => {
-    setFormData((prev) => ({
-      ...prev,
-      data: prev.data.filter((_, i) => i !== index),
-    }));
+    const updated = { ...formData, data: updatedData };
+    setFormData(updated);
+    handleSave(updated);
+    setSelectedItem(null);
   };
 
-  // Add new item
-  const addNewEducation = () => {
-    setFormData((prev) => {
-      const newItem: EducationItem = {
-        id: Date.now().toString(),
-        degree: "",
-        institution: "",
-        board: "",
-        year: "",
-        gpa: "",
-      };
-      const updatedData = [...prev.data, newItem];
-      setEditingIndex(updatedData.length - 1);
-      return { ...prev, data: updatedData };
-    });
+  // ✅ Delete
+  const handleDelete = (id: string | number) => {
+    const updated = {
+      ...formData,
+      data: formData.data.filter((a) => a.id !== id),
+    };
+    setFormData(updated);
+    handleSave(updated);
+    toast.success("🗑️ Deleted successfully");
   };
+
+  if (loading)
+    return (
+      <div className="flex justify-center items-center py-20">
+        <Spinner size="lg" />
+      </div>
+    );
+
+  if (error) return <p className="text-red-500 text-center py-10">{error}</p>;
 
   return (
-    <section
-      id="education"
-      className="py-10 px-3 rounded-xl bg-gradient-to-b from-amber-50 to-white 
-      dark:bg-gradient-to-b dark:from-gray-800 dark:to-gray-900 transition-colors duration-500"
-    >
+    <section className="py-10 px-3 rounded-xl bg-gradient-to-b from-amber-50 to-white dark:from-gray-800 dark:to-gray-900 transition-colors duration-500">
       <div className="container mx-auto">
-        {/* ======= Section Heading ======= */}
+        {/* Heading */}
         <div className="flex items-center justify-between mb-8">
           {editingHeading ? (
             <div className="flex flex-col md:flex-row gap-3 items-center w-full md:w-auto">
@@ -143,7 +113,10 @@ export const CertificateSectionDashboard: React.FC = () => {
                 variant="bordered"
                 value={formData.heading.title}
                 onChange={(e) =>
-                  handleChange("heading", "title", e.target.value)
+                  setFormData({
+                    ...formData,
+                    heading: { ...formData.heading, title: e.target.value },
+                  })
                 }
               />
               <Input
@@ -151,24 +124,22 @@ export const CertificateSectionDashboard: React.FC = () => {
                 variant="bordered"
                 value={formData.heading.subTitle}
                 onChange={(e) =>
-                  handleChange("heading", "subTitle", e.target.value)
+                  setFormData({
+                    ...formData,
+                    heading: { ...formData.heading, subTitle: e.target.value },
+                  })
                 }
               />
               <div className="flex gap-2">
-                <Button
-                  color="success"
-                  variant="solid"
-                  onClick={handleSave}
-                  disabled={saving}
-                >
-                  <Save className="w-4 h-4 mr-1" /> Save
+                <Button color="success" onClick={() => handleSave(formData)}>
+                  Save
                 </Button>
                 <Button
                   color="danger"
                   variant="flat"
                   onClick={() => setEditingHeading(false)}
                 >
-                  <X className="w-4 h-4 mr-1" /> Cancel
+                  Cancel
                 </Button>
               </div>
             </div>
@@ -178,149 +149,137 @@ export const CertificateSectionDashboard: React.FC = () => {
                 title={formData.heading.title}
                 subTitle={formData.heading.subTitle}
               />
-              <div className="flex gap-3">
-                <Button
-                  color="primary"
-                  variant="flat"
-                  onClick={addNewEducation}
-                >
-                  ➕ Add
-                </Button>
-                <Button
-                  color="warning"
-                  variant="flat"
+              <div className="flex gap-4 items-center">
+                <IoAddCircleSharp
+                  onClick={() =>
+                    setSelectedItem({
+                      id: Date.now(),
+                      degree: "",
+                      institution: "",
+                      board: "",
+                      year: "",
+                      gpa: "",
+                    })
+                  }
+                  className="text-green-500 cursor-pointer w-7 h-7"
+                />
+                <FaRegEdit
                   onClick={() => setEditingHeading(true)}
-                >
-                  ✏️ Edit Heading
-                </Button>
+                  className="text-yellow-500 cursor-pointer w-6 h-6"
+                />
               </div>
             </>
           )}
         </div>
 
-        {/* ======= Education Cards (without DraggableList) ======= */}
+        {/* Data Cards */}
         <div className="grid gap-6 md:grid-cols-3">
-          {formData.data.map((edu, index) => (
+          {formData.data.map((item) => (
             <motion.div
-              key={edu.id}
+              key={item.id}
               initial={{ opacity: 0, y: 30 }}
               whileInView={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5 }}
-              className="relative bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 
-              rounded-2xl shadow-md hover:shadow-lg transition-all duration-300 p-5"
+              transition={{ duration: 0.4 }}
+              className="relative bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-2xl shadow-md hover:shadow-2xl transition-all duration-300 p-5"
             >
-              {editingIndex === index ? (
-                <div className="space-y-3">
-                  <Input
-                    label="Degree"
-                    variant="bordered"
-                    value={edu.degree}
-                    onChange={(e) =>
-                      handleChange("data", "degree", e.target.value, index)
-                    }
+              <div className="flex items-center justify-between mb-3">
+                <h3 className="text-lg font-semibold text-emerald-700 dark:text-emerald-300">
+                  {item.degree || "Untitled"}
+                </h3>
+                <div className="flex gap-3 items-center">
+                  <FaRegEdit
+                    onClick={() => setSelectedItem(item)}
+                    className="text-sky-500 cursor-pointer w-5 h-5"
                   />
-                  <Input
-                    label="Institution"
-                    variant="bordered"
-                    value={edu.institution}
-                    onChange={(e) =>
-                      handleChange("data", "institution", e.target.value, index)
-                    }
+                  <BsTrash3Fill
+                    onClick={() => handleDelete(item.id)}
+                    className="text-rose-500 cursor-pointer w-5 h-5"
                   />
-                  <Input
-                    label="Board"
-                    variant="bordered"
-                    value={edu.board}
-                    onChange={(e) =>
-                      handleChange("data", "board", e.target.value, index)
-                    }
-                  />
-                  <Input
-                    label="Year"
-                    variant="bordered"
-                    value={edu.year}
-                    onChange={(e) =>
-                      handleChange("data", "year", e.target.value, index)
-                    }
-                  />
-                  <Input
-                    label="GPA"
-                    variant="bordered"
-                    value={edu.gpa}
-                    onChange={(e) =>
-                      handleChange("data", "gpa", e.target.value, index)
-                    }
-                  />
+                </div>
+              </div>
+              <p className="text-sm">
+                <strong>Institution:</strong> {item.institution}
+              </p>
+              <p className="text-sm">
+                <strong>Board:</strong> {item.board}
+              </p>
+              <p className="text-sm">
+                <strong>Year:</strong> {item.year}
+              </p>
+              <p className="text-sm">
+                <strong>GPA:</strong> {item.gpa}
+              </p>
 
-                  <div className="flex gap-2 mt-3">
-                    <Button
-                      color="success"
-                      variant="solid"
-                      onClick={handleSave}
-                      disabled={saving}
-                    >
-                      <Save className="w-4 h-4 mr-1" /> Save
-                    </Button>
-                    <Button
-                      color="danger"
-                      variant="flat"
-                      onClick={() => setEditingIndex(null)}
-                    >
-                      <X className="w-4 h-4 mr-1" /> Cancel
-                    </Button>
-                  </div>
-                </div>
-              ) : (
-                <div>
-                  <div className="flex items-center justify-between mb-3">
-                    <h3 className="text-lg font-semibold text-emerald-700 dark:text-emerald-300">
-                      {edu.degree || "Untitled"}
-                    </h3>
-                    <div className="flex gap-2">
-                      <Button
-                        isIconOnly
-                        color="warning"
-                        variant="flat"
-                        onClick={() => setEditingIndex(index)}
-                      >
-                        <Edit className="w-4 h-4" />
-                      </Button>
-                      <Button
-                        isIconOnly
-                        color="danger"
-                        variant="flat"
-                        onClick={() => handleDelete(index)}
-                      >
-                        <Trash2 className="w-4 h-4" />
-                      </Button>
-                    </div>
-                  </div>
-                  <p className="text-gray-700 dark:text-gray-300 text-sm">
-                    <strong>Institution:</strong> {edu.institution}
-                  </p>
-                  <p className="text-gray-700 dark:text-gray-300 text-sm">
-                    <strong>Board:</strong> {edu.board}
-                  </p>
-                  <p className="text-gray-700 dark:text-gray-300 text-sm">
-                    <strong>Year:</strong> {edu.year}
-                  </p>
-                  <p className="text-gray-700 dark:text-gray-300 text-sm">
-                    <strong>GPA:</strong> {edu.gpa}
-                  </p>
-                  <motion.div
-                    initial={{ scale: 0 }}
-                    whileInView={{ scale: 1 }}
-                    transition={{ delay: 0.3 }}
-                    className="absolute bottom-3 right-3 bg-amber-500 dark:bg-amber-400 text-white w-9 h-9 rounded-full flex items-center justify-center shadow-md"
-                  >
-                    <Award className="w-4 h-4" />
-                  </motion.div>
-                </div>
-              )}
+              <div className="absolute bottom-3 right-3 bg-gradient-to-br from-amber-400 to-amber-600 text-white w-10 h-10 rounded-full flex items-center justify-center shadow-lg">
+                <Award className="w-5 h-5" />
+              </div>
             </motion.div>
           ))}
         </div>
       </div>
+
+      {/* Modal */}
+      {selectedItem && (
+        <OpenModal
+          title={selectedItem.id ? "Edit Certificate" : "Add Certificate"}
+          isOpen={!!selectedItem}
+          onClose={() => setSelectedItem(null)}
+          size="xl"
+        >
+          <div className="max-h-[80vh] overflow-y-auto space-y-4 p-3">
+            <Input
+              label="Degree"
+              value={selectedItem.degree}
+              onChange={(e) =>
+                setSelectedItem({ ...selectedItem, degree: e.target.value })
+              }
+            />
+            <Input
+              label="Institution"
+              value={selectedItem.institution}
+              onChange={(e) =>
+                setSelectedItem({
+                  ...selectedItem,
+                  institution: e.target.value,
+                })
+              }
+            />
+            <Input
+              label="Board"
+              value={selectedItem.board}
+              onChange={(e) =>
+                setSelectedItem({ ...selectedItem, board: e.target.value })
+              }
+            />
+            <Input
+              label="Year"
+              value={selectedItem.year}
+              onChange={(e) =>
+                setSelectedItem({ ...selectedItem, year: e.target.value })
+              }
+            />
+            <Input
+              label="GPA"
+              value={selectedItem.gpa}
+              onChange={(e) =>
+                setSelectedItem({ ...selectedItem, gpa: e.target.value })
+              }
+            />
+            <div className="flex justify-end gap-3 mt-4">
+              <Button color="primary" onClick={handleModalSave}>
+                Save
+              </Button>
+              <Button
+                color="danger"
+                variant="flat"
+                onClick={() => setSelectedItem(null)}
+              >
+                Cancel
+              </Button>
+            </div>
+          </div>
+        </OpenModal>
+      )}
     </section>
   );
 };

@@ -124,8 +124,8 @@ export default function DashboardPage() {
     return <p className="text-red-500 text-center mt-10">Error: {error}</p>;
 
   return (
-    <section className="p-8 max-w-5xl mx-auto">
-      <Card className="p-8 shadow-2xl rounded-3xl bg-gradient-to-br from-sky-50 to-indigo-100 dark:from-gray-800 dark:to-gray-900">
+    <section className="mx-auto">
+      <Card className="lg:p-4 p-2 shadow-2xl rounded-3xl bg-gradient-to-br from-sky-50 to-indigo-100 dark:from-gray-800 dark:to-gray-900">
         <div className="flex justify-between items-center mb-6">
           <h2 className="text-2xl font-bold text-indigo-700 dark:text-indigo-400">
             🌐 Website Dashboard

@@ -30,7 +30,7 @@ export default function DashboardLayout({ children }: DashboardLayoutProps) {
   };
 
   return (
-    <section className="lg:mx-auto max-w-[1536px] grid grid-cols-1 lg:grid-cols-[20%_80%] h-screen bg-gradient-to-br from-gray-100 to-gray-200 dark:from-gray-950 dark:to-gray-900 transition-colors duration-500">
+    <section className="lg:mx-auto grid grid-cols-1 lg:grid-cols-[20%_80%] h-screen bg-gradient-to-br from-gray-100 to-gray-200 dark:from-gray-950 dark:to-gray-900 transition-colors duration-500">
       {/* Sidebar (Desktop) */}
       <aside className="hidden lg:block h-full border-r border-gray-300 dark:border-gray-800 bg-white dark:bg-gray-900 shadow-lg">
         <Sidebar />
@@ -104,7 +104,7 @@ export default function DashboardLayout({ children }: DashboardLayoutProps) {
         {/* Scrollable Section */}
         <ScrollShadow
           hideScrollBar
-          className="flex-1 overflow-y-auto py-8 px-4 bg-gray-50 dark:bg-gray-950"
+          className="flex-1 overflow-y-auto py-8 px-2 bg-gray-50 dark:bg-gray-950"
         >
           <motion.div
             initial={{ opacity: 0, y: 15 }}

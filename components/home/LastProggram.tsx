@@ -5,7 +5,6 @@ import { Heading } from "../Heading";
 import { CheckCircle, Clock } from "lucide-react";
 import { useGetSection } from "@/app/dashboard/Hook/GetData";
 import Background from "../background";
-import { ThreeDButton } from "../ThreeDbutton";
 
 interface Program {
   programName: string;
