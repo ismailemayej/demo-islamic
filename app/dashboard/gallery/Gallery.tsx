@@ -10,6 +10,7 @@ import { Spinner } from "@heroui/spinner";
 import { BsTrash3Fill } from "react-icons/bs";
 import { FaRegEdit } from "react-icons/fa";
 import { IoAddCircleSharp } from "react-icons/io5";
+import { Input } from "@heroui/input";
 
 interface GalleryItem {
   id: string;
@@ -219,18 +220,20 @@ export const GallerySectionDashboard: React.FC = () => {
 
             {/* Heading */}
             <div className="grid sm:grid-cols-2 gap-4">
-              <input
+              <Input
+                size="md"
                 type="text"
-                placeholder="Section Title"
+                label="Section Title"
                 value={formData.heading.title}
                 onChange={(e) =>
                   handleChange("heading", "title", e.target.value)
                 }
                 className="border p-2 rounded-lg dark:bg-gray-700 dark:text-white"
               />
-              <input
+              <Input
+                size="md"
                 type="text"
-                placeholder="Section Subtitle"
+                label="Section Subtitle"
                 value={formData.heading.subTitle}
                 onChange={(e) =>
                   handleChange("heading", "subTitle", e.target.value)
@@ -254,9 +257,10 @@ export const GallerySectionDashboard: React.FC = () => {
                     <BsTrash3Fill className="text-rose-500 cursor-pointer w-5 h-5" />
                   </button>
 
-                  <input
+                  <Input
+                    size="md"
                     type="text"
-                    placeholder="Title"
+                    label="Title"
                     value={item.title}
                     onChange={(e) =>
                       handleChange("data", "title", e.target.value, i)
@@ -273,7 +277,8 @@ export const GallerySectionDashboard: React.FC = () => {
                       {item.image ? "Change Image" : "Upload Image"}
                     </span>
                   </label>
-                  <input
+                  <Input
+                    size="md"
                     id={`file-input-${i}`}
                     type="file"
                     accept="image/*"

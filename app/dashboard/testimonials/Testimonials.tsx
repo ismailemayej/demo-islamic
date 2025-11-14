@@ -8,6 +8,10 @@ import toast from "react-hot-toast";
 import { useGetSection } from "../Hook/GetData";
 import { Button } from "@heroui/button";
 import { OpenModal } from "@/components/Modal";
+import { Input } from "@heroui/input";
+import { BsTrash3Fill } from "react-icons/bs";
+import { IoAddCircleSharp } from "react-icons/io5";
+import { FaRegEdit } from "react-icons/fa";
 
 interface Testimonial {
   id: string;
@@ -159,21 +163,34 @@ export const TestimonialsSectionDashboard: React.FC = () => {
             title={formData.heading.title}
             subTitle={formData.heading.subTitle}
           />
-          <Button
-            onClick={() => {
-              const newTestimonial: Testimonial = {
-                id: Date.now().toString(),
-                name: "",
-                role: "",
-                comment: "",
-                image: "",
-              };
-              setSelectedTestimonial(newTestimonial);
-              setModalOpen(true);
-            }}
-          >
-            <Plus size={18} /> Add Testimonial
-          </Button>
+
+          <div className="flex items-center gap-3">
+            {/* Add New Testimonial */}
+            <button
+              onClick={() => {
+                const newTestimonial: Testimonial = {
+                  id: Date.now().toString(),
+                  name: "",
+                  role: "",
+                  comment: "",
+                  image: "",
+                };
+                setSelectedTestimonial(newTestimonial);
+                setModalOpen(true);
+              }}
+            >
+              <IoAddCircleSharp className="text-green-500 cursor-pointer w-7 h-7" />
+            </button>
+            {/* Heading Edit Button */}
+            <button
+              onClick={() => {
+                setSelectedTestimonial(null);
+                setModalOpen(true);
+              }}
+            >
+              <FaRegEdit className="text-green-500 cursor-pointer w-6 h-6" />
+            </button>
+          </div>
         </div>
 
         {/* Testimonials grid */}
@@ -186,15 +203,14 @@ export const TestimonialsSectionDashboard: React.FC = () => {
               transition={{ duration: 0.6 }}
               className="bg-emerald-50 dark:bg-gray-800 rounded-3xl p-6 shadow-lg hover:shadow-2xl transition-shadow duration-300 flex flex-col h-full relative"
             >
-              <div className="absolute top-2 right-2 flex gap-2">
+              <div className="absolute top-2 right-2 flex gap-1">
                 <button
                   onClick={() => {
                     setSelectedTestimonial(t);
                     setModalOpen(true);
                   }}
-                  className="text-amber-500 hover:text-amber-700"
                 >
-                  <Save size={18} />
+                  <FaRegEdit className="text-yellow-500 cursor-pointer w-6 h-6" />
                 </button>
                 <button
                   onClick={() => handleDelete(t.id)}
@@ -225,56 +241,137 @@ export const TestimonialsSectionDashboard: React.FC = () => {
         </div>
 
         {/* Modal */}
-        {modalOpen && selectedTestimonial && (
+        {modalOpen && (
           <OpenModal
             isOpen={modalOpen}
             onClose={() => setModalOpen(false)}
-            title="Edit Testimonial"
+            title={selectedTestimonial ? "Edit Testimonial" : "Edit Heading"}
           >
+            {/* Modal scroll enabled */}
             <div className="flex flex-col space-y-3 max-h-[70vh] overflow-y-auto">
-              <input
-                type="text"
-                placeholder="Name"
-                value={selectedTestimonial.name}
-                onChange={(e) => handleChange("name", e.target.value)}
-                className="border p-2 rounded-lg dark:bg-gray-700"
-              />
-              <select
-                value={selectedTestimonial.role}
-                onChange={(e) => handleChange("role", e.target.value)}
-                className="border p-2 rounded-lg dark:bg-gray-700"
-              >
-                <option value="">Select Role</option>
-                <option value="Student">Student</option>
-                <option value="Teacher">Teacher</option>
-                <option value="Developer">Developer</option>
-                <option value="Business">Business</option>
-                <option value="Other">Other</option>
-              </select>
-              <textarea
-                placeholder="Comment"
-                value={selectedTestimonial.comment}
-                onChange={(e) => handleChange("comment", e.target.value)}
-                className="border p-2 rounded-lg dark:bg-gray-700"
-              />
-              {selectedTestimonial.image && (
+              {/* If Heading Edit */}
+              {!selectedTestimonial && (
                 <>
-                  <img
-                    src={selectedTestimonial.image}
-                    alt={selectedTestimonial.name}
-                    className="w-32 h-32 rounded-full object-cover border-2 border-amber-500 mb-2"
+                  <Input
+                    size="md"
+                    label="Heading Title"
+                    value={formData.heading.title}
+                    onChange={(e) =>
+                      setFormData({
+                        ...formData,
+                        heading: { ...formData.heading, title: e.target.value },
+                      })
+                    }
                   />
-                  <Button onClick={handleImageDelete}>Delete Image</Button>
+
+                  <Input
+                    size="md"
+                    label="Heading Subtitle"
+                    value={formData.heading.subTitle}
+                    onChange={(e) =>
+                      setFormData({
+                        ...formData,
+                        heading: {
+                          ...formData.heading,
+                          subTitle: e.target.value,
+                        },
+                      })
+                    }
+                  />
+
+                  <Button
+                    onClick={async () => {
+                      setSaving(true);
+                      toast.loading("Saving heading...", { id: "head" });
+
+                      try {
+                        const res = await fetch(
+                          "/api/all-data/testimonialsection/update",
+                          {
+                            method: "PATCH",
+                            headers: { "Content-Type": "application/json" },
+                            body: JSON.stringify(formData),
+                          }
+                        );
+
+                        const json = await res.json();
+                        if (!json.success) throw new Error(json.error);
+
+                        toast.dismiss("head");
+                        toast.success("Heading updated!");
+                        setModalOpen(false);
+                      } catch (err: any) {
+                        toast.dismiss("head");
+                        toast.error(err.message);
+                      } finally {
+                        setSaving(false);
+                      }
+                    }}
+                  >
+                    Save Heading
+                  </Button>
                 </>
               )}
-              <input
-                type="file"
-                accept="image/*"
-                onChange={handleImageUpload}
-              />
-              <Button onClick={handleModalSave} disabled={saving}>
-                {saving ? "Saving..." : "Save Changes"}
-              </Button>
+
+              {/* If Testimonial Edit */}
+              {selectedTestimonial && (
+                <>
+                  {selectedTestimonial.image && (
+                    <span className="relative">
+                      <img
+                        src={selectedTestimonial.image}
+                        alt={selectedTestimonial.name}
+                        className="w-32 h-32 rounded-full object-cover border-2 border-amber-500 mb-2"
+                      />
+                      <button
+                        className="absolute top-0 left-24 border rounded-full p-1 bg-white"
+                        onClick={handleImageDelete}
+                      >
+                        <BsTrash3Fill className="text-rose-500 w-3 h-3" />
+                      </button>
+                    </span>
+                  )}
+
+                  <Input
+                    size="md"
+                    type="text"
+                    label="Name"
+                    value={selectedTestimonial.name}
+                    onChange={(e) => handleChange("name", e.target.value)}
+                  />
+
+                  <select
+                    value={selectedTestimonial.role}
+                    onChange={(e) => handleChange("role", e.target.value)}
+                    className="border p-2 rounded-lg dark:bg-gray-700"
+                  >
+                    <option value="">Select Role</option>
+                    <option value="Student">Student</option>
+                    <option value="Teacher">Teacher</option>
+                    <option value="Developer">Developer</option>
+                    <option value="Business">Business</option>
+                    <option value="Other">Other</option>
+                  </select>
+
+                  <textarea
+                    placeholder="Comment"
+                    value={selectedTestimonial.comment}
+                    onChange={(e) => handleChange("comment", e.target.value)}
+                    className="border p-2 rounded-lg dark:bg-gray-700"
+                  />
+
+                  <Input
+                    size="md"
+                    type="file"
+                    accept="image/*"
+                    onChange={handleImageUpload}
+                  />
+
+                  <Button onClick={handleModalSave} disabled={saving}>
+                    {saving ? "Saving..." : "Save Changes"}
+                  </Button>
+                </>
+              )}
             </div>
           </OpenModal>
         )}

@@ -4,7 +4,7 @@ import React, { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import { Heading } from "@/components/Heading";
 import { useGetSection } from "../Hook/GetData";
-import { Plus, Trash2, Save } from "lucide-react";
+import { Plus, Trash2, Save, XCircle } from "lucide-react";
 import toast from "react-hot-toast";
 import {
   FaFacebookF,
@@ -17,7 +17,11 @@ import {
   FaRedditAlien,
   FaTiktok,
   FaWhatsapp,
+  FaRegEdit,
 } from "react-icons/fa";
+import { BsTrash3Fill } from "react-icons/bs";
+import { Input } from "@heroui/input";
+import { IoAddCircleSharp } from "react-icons/io5";
 
 interface SocialLink {
   id: string;
@@ -185,35 +189,52 @@ export const SocialMediaSectionDashboard: React.FC = () => {
             title={formData.heading.title}
             subTitle={formData.heading.subTitle}
           />
-          <button
-            onClick={() => setEditing(!editing)}
-            className="px-4 py-2 rounded-lg bg-amber-500 text-white hover:bg-amber-600 transition"
-          >
-            {editing ? "Cancel" : "Edit"}
-          </button>
+          <span className="flex justify-center gap-3">
+            <button onClick={handleAdd}>
+              <IoAddCircleSharp className="text-green-500 cursor-pointer w-7 h-7" />
+            </button>
+            <button onClick={() => setEditing(!editing)}>
+              {editing ? (
+                <XCircle size={25} className="text-yellow-500" />
+              ) : (
+                <FaRegEdit className="text-yellow-500 cursor-pointer w-7 h-6" />
+              )}
+            </button>
+          </span>
         </div>
 
         {/* Edit Form */}
         {editing && (
           <div className="bg-white dark:bg-gray-800 p-6 rounded-2xl shadow-lg border border-amber-100 dark:border-gray-700 mb-10 space-y-4">
-            <h3 className="text-lg font-semibold text-amber-700">
-              ✏️ Edit Social Media Section
-            </h3>
+            <span className="flex justify-between items-center">
+              <h3 className="text-lg font-semibold text-amber-700 lg:block hidden">
+                ✏️ Edit Social Media Section
+              </h3>
+              <button
+                onClick={handleSave}
+                disabled={saving}
+                className="flex items-center gap-2 bg-amber-500 text-white px-6 py-2 rounded-lg hover:bg-amber-600"
+              >
+                <Save size={18} /> {saving ? "Saving..." : "Save Changes"}
+              </button>
+            </span>
 
             {/* Heading Inputs */}
             <div className="grid sm:grid-cols-2 gap-4 mb-4">
-              <input
+              <Input
+                size="md"
                 type="text"
-                placeholder="Section Title"
+                label="Section Title"
                 value={formData.heading.title}
                 onChange={(e) =>
                   handleChange("heading", "title", e.target.value)
                 }
                 className="border p-2 rounded-lg dark:bg-gray-700"
               />
-              <input
+              <Input
+                size="md"
                 type="text"
-                placeholder="Section Subtitle"
+                label="Section Subtitle"
                 value={formData.heading.subTitle}
                 onChange={(e) =>
                   handleChange("heading", "subTitle", e.target.value)
@@ -223,30 +244,29 @@ export const SocialMediaSectionDashboard: React.FC = () => {
             </div>
 
             {/* Social Links */}
-            <div className="grid grid-cols-1 lg:grid-cols-4 space-y-4 max-h-[60vh] overflow-y-auto">
+            <div className="grid grid-cols-1 lg:grid-cols-4 gap-3 space-y-4 max-h-[60vh] overflow-y-auto">
               {formData.data.map((social, i) => (
                 <motion.div
                   key={social.id}
                   whileHover={{ scale: 1.01 }}
                   className="relative bg-gradient-to-r from-amber-50 to-white dark:from-gray-700 dark:to-gray-800 p-4 rounded-xl shadow-sm border border-gray-200 dark:border-gray-700 grid grid-cols-1 gap-2"
                 >
-                  <button
-                    onClick={() => handleDelete(i)}
-                    className=" border p-2 rounded-2xl bg-amber-50 absolute top-2 right-2 text-red-500 hover:text-red-700"
-                  >
-                    <BsTrash3Fill className="text-rose-500 cursor-pointer w-5 h-5" />
+                  <button onClick={() => handleDelete(i)}>
+                    <BsTrash3Fill className="dark:text-rose-300 text-rose-500 cursor-pointer w-6 h-5" />
                   </button>
 
-                  <input
+                  <Input
+                    size="md"
                     type="text"
-                    placeholder="Name"
+                    label="Name"
                     value={social.name}
                     disabled
                     className="border p-2 rounded-lg dark:bg-gray-700 flex-1 cursor-not-allowed"
                   />
-                  <input
+                  <Input
+                    size="md"
                     type="text"
-                    placeholder="URL"
+                    label="URL"
                     value={social.url}
                     onChange={(e) =>
                       handleChange("data", "url", e.target.value, i)
@@ -258,33 +278,20 @@ export const SocialMediaSectionDashboard: React.FC = () => {
                     onChange={(e) =>
                       handleChange("data", "iconName", e.target.value, i)
                     }
-                    className="border p-2 rounded-lg dark:bg-gray-700"
+                    className="border p-2 rounded-lg dark:bg-gray-700 dark:text-white "
                   >
                     {SOCIAL_OPTIONS.map((option) => (
-                      <option key={option} value={option}>
+                      <option
+                        className="dark:text-white"
+                        key={option}
+                        value={option}
+                      >
                         {option}
                       </option>
                     ))}
                   </select>
                 </motion.div>
               ))}
-            </div>
-
-            {/* Buttons */}
-            <div className="mt-5 flex justify-between items-center">
-              <button
-                onClick={handleAdd}
-                className="flex items-center gap-2 px-4 py-2 bg-emerald-600 text-white rounded-lg hover:bg-emerald-700"
-              >
-                <Plus size={18} /> Add Social Link
-              </button>
-              <button
-                onClick={handleSave}
-                disabled={saving}
-                className="flex items-center gap-2 bg-amber-500 text-white px-6 py-2 rounded-lg hover:bg-amber-600"
-              >
-                <Save size={18} /> {saving ? "Saving..." : "Save Changes"}
-              </button>
             </div>
           </div>
         )}

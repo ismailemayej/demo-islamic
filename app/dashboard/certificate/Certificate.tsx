@@ -109,6 +109,7 @@ export const CertificateSectionDashboard = () => {
           {editingHeading ? (
             <div className="flex flex-col md:flex-row gap-3 items-center w-full md:w-auto">
               <Input
+                size="md"
                 label="Title"
                 variant="bordered"
                 value={formData.heading.title}
@@ -120,6 +121,7 @@ export const CertificateSectionDashboard = () => {
                 }
               />
               <Input
+                size="md"
                 label="Sub Title"
                 variant="bordered"
                 value={formData.heading.subTitle}
@@ -228,6 +230,7 @@ export const CertificateSectionDashboard = () => {
         >
           <div className="max-h-[80vh] overflow-y-auto space-y-4 p-3">
             <Input
+              size="md"
               label="Degree"
               value={selectedItem.degree}
               onChange={(e) =>
@@ -235,6 +238,7 @@ export const CertificateSectionDashboard = () => {
               }
             />
             <Input
+              size="md"
               label="Institution"
               value={selectedItem.institution}
               onChange={(e) =>
@@ -245,6 +249,7 @@ export const CertificateSectionDashboard = () => {
               }
             />
             <Input
+              size="md"
               label="Board"
               value={selectedItem.board}
               onChange={(e) =>
@@ -252,6 +257,7 @@ export const CertificateSectionDashboard = () => {
               }
             />
             <Input
+              size="md"
               label="Year"
               value={selectedItem.year}
               onChange={(e) =>
@@ -259,6 +265,7 @@ export const CertificateSectionDashboard = () => {
               }
             />
             <Input
+              size="md"
               label="GPA"
               value={selectedItem.gpa}
               onChange={(e) =>

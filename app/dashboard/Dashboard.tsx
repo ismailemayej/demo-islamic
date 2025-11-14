@@ -1,7 +1,8 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { Input, Textarea, Button, Spinner, Card } from "@heroui/react";
+import { Textarea, Button, Spinner, Card } from "@heroui/react";
+import { Input } from "@heroui/input";
 import { toast } from "sonner";
 import Image from "next/image";
 import { useGetSection } from "./Hook/GetData";
@@ -178,10 +179,10 @@ export default function DashboardPage() {
         {isEditing && (
           <div className="space-y-5 mt-4">
             <Input
+              size="md"
               label="Website Title"
               value={formData.sitetitle}
               onChange={(e) => handleChange("sitetitle", e.target.value)}
-              placeholder="Enter your website title"
               className="dark:text-gray-100"
             />
 
@@ -190,14 +191,12 @@ export default function DashboardPage() {
               value={formData.description}
               onChange={(e) => handleChange("description", e.target.value)}
               minRows={4}
-              placeholder="Write a short description..."
             />
             <Textarea
               label="Website keywords"
               value={formData.keywords}
               onChange={(e) => handleChange("keywords", e.target.value)}
               minRows={1}
-              placeholder="Write all keywords..."
             />
 
             {/* Image Upload */}
@@ -222,7 +221,8 @@ export default function DashboardPage() {
                 </div>
               ) : (
                 <div className="border-2 border-dashed border-gray-400 rounded-lg p-4 text-center hover:border-indigo-400 transition">
-                  <input
+                  <Input
+                    size="md"
                     type="file"
                     accept="image/*"
                     onChange={handleImageUpload}

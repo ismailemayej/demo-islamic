@@ -220,18 +220,20 @@ export const OrganizationSectionDashboard = () => {
             size="md"
           >
             <div className="space-y-3 max-h-[70vh] overflow-y-auto p-2">
-              <input
+              <Input
+                size="md"
                 type="text"
-                placeholder="Section Title"
+                label="Section Title"
                 value={formData.heading.title}
                 onChange={(e) =>
                   handleChange("heading", "title", e.target.value)
                 }
                 className="w-full border p-2 rounded-lg dark:bg-gray-700"
               />
-              <input
+              <Input
+                size="md"
                 type="text"
-                placeholder="Section Subtitle"
+                label="Section Subtitle"
                 value={formData.heading.subTitle}
                 onChange={(e) =>
                   handleChange("heading", "subTitle", e.target.value)
@@ -258,9 +260,10 @@ export const OrganizationSectionDashboard = () => {
             size="lg"
           >
             <div className="space-y-3 max-h-[75vh] overflow-y-auto p-2">
-              <input
+              <Input
+                size="md"
                 type="text"
-                placeholder="Organization Name"
+                label="Organization Name"
                 value={editOrgModal.name}
                 onChange={(e) => {
                   const value = e.target.value;
@@ -271,9 +274,10 @@ export const OrganizationSectionDashboard = () => {
                 }}
                 className="w-full border p-2 rounded-lg dark:bg-gray-700"
               />
-              <input
+              <Input
+                size="md"
                 type="text"
-                placeholder="Position"
+                label="Position"
                 value={editOrgModal.possition}
                 onChange={(e) => {
                   const value = e.target.value;
@@ -284,9 +288,10 @@ export const OrganizationSectionDashboard = () => {
                 }}
                 className="w-full border p-2 rounded-lg dark:bg-gray-700"
               />
-              <input
+              <Input
+                size="md"
                 type="text"
-                placeholder="Address"
+                label="Address"
                 value={editOrgModal.address}
                 onChange={(e) => {
                   const value = e.target.value;
@@ -297,7 +302,6 @@ export const OrganizationSectionDashboard = () => {
                 }}
                 className="w-full border p-2 rounded-lg dark:bg-gray-700"
               />
-              <Input label="Email" size="md" type="email" />
 
               <textarea
                 placeholder="Details"

@@ -6,6 +6,7 @@ import Background from "@/components/background";
 import { Heading } from "@/components/Heading";
 import toast from "react-hot-toast";
 import { useGetSection } from "../Hook/GetData";
+import { Input } from "@heroui/input";
 
 export const AppointmentSectionDashboard: React.FC = () => {
   const [formData, setFormData] = useState({
@@ -86,7 +87,8 @@ export const AppointmentSectionDashboard: React.FC = () => {
               <label className="block font-semibold mb-1 text-gray-800 dark:text-gray-200">
                 প্রোগ্রামের নাম
               </label>
-              <input
+              <Input
+                size="md"
                 type="text"
                 name="programName"
                 value={formData.programName}
@@ -100,7 +102,8 @@ export const AppointmentSectionDashboard: React.FC = () => {
               <label className="block font-semibold mb-1 text-gray-800 dark:text-gray-200">
                 কত দিন
               </label>
-              <input
+              <Input
+                size="md"
                 type="text"
                 name="duration"
                 value={formData.duration}
@@ -116,7 +119,8 @@ export const AppointmentSectionDashboard: React.FC = () => {
               <label className="block font-semibold mb-1 text-gray-800 dark:text-gray-200">
                 তারিখ-সাল-মাস
               </label>
-              <input
+              <Input
+                size="md"
                 type="date"
                 name="date"
                 value={formData.date}
@@ -130,12 +134,13 @@ export const AppointmentSectionDashboard: React.FC = () => {
               <label className="block font-semibold mb-1 text-gray-800 dark:text-gray-200">
                 যোগাযোগের মাধ্যম
               </label>
-              <input
+              <Input
+                size="md"
                 type="text"
                 name="contact"
                 value={formData.contact}
                 onChange={handleChange}
-                placeholder="মোবাইল / ইমেইল"
+                label="মোবাইল / ইমেইল"
                 required
                 className="w-full border border-gray-300 dark:border-gray-600 rounded-lg p-2 text-gray-800 dark:text-gray-200 placeholder-gray-400 dark:placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-emerald-400"
               />

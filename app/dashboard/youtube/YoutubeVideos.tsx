@@ -5,7 +5,10 @@ import { motion } from "framer-motion";
 import { Heading } from "@/components/Heading";
 import toast from "react-hot-toast";
 import { useGetSection } from "../Hook/GetData";
-import { Trash2 } from "lucide-react";
+import { Trash2, XCircle } from "lucide-react";
+import { Input } from "@heroui/input";
+import { IoAddCircleSharp } from "react-icons/io5";
+import { FaRegEdit } from "react-icons/fa";
 
 interface VideoItem {
   id: string;
@@ -123,12 +126,18 @@ export const YouTubeVideosSectionDashboard: React.FC = () => {
             subTitle={formData.heading.subTitle}
             center
           />
-          <button
-            onClick={() => setEditing(!editing)}
-            className="px-4 py-2 rounded-lg bg-amber-500 text-white hover:bg-amber-600 transition"
-          >
-            {editing ? "Cancel" : "Edit"}
-          </button>
+          <span className="flex justify-center gap-3">
+            <button onClick={handleAdd}>
+              <IoAddCircleSharp className="text-green-500 cursor-pointer w-7 h-7" />
+            </button>
+            <button onClick={() => setEditing(!editing)}>
+              {editing ? (
+                <XCircle size={25} className="text-yellow-500" />
+              ) : (
+                <FaRegEdit className="text-yellow-500 cursor-pointer w-7 h-6" />
+              )}
+            </button>
+          </span>
         </div>
 
         {/* Edit Panel */}
@@ -138,42 +147,52 @@ export const YouTubeVideosSectionDashboard: React.FC = () => {
             animate={{ opacity: 1, y: 0 }}
             className="mb-10 bg-white dark:bg-gray-800 p-6 rounded-2xl shadow-lg border border-amber-100 dark:border-gray-700"
           >
-            <h3 className="text-lg font-semibold mb-4 text-amber-700">
-              ✏️ Edit YouTube Videos Section
-            </h3>
+            <span className="flex justify-between items-center">
+              <h3 className="text-lg font-semibold mb-4 text-amber-700 lg:block hidden">
+                ✏️ Edit YouTube Videos Section
+              </h3>
+              <button
+                onClick={handleSave}
+                disabled={saving}
+                className="mb-2 flex items-center gap-2 bg-amber-500 text-white px-6 py-2 rounded-lg hover:bg-amber-600"
+              >
+                {saving ? "Saving..." : "Save Changes"}
+              </button>
+            </span>
 
             {/* Heading Inputs */}
-            <div className="grid sm:grid-cols-2 gap-4 mb-6">
-              <input
+            <div className="grid lg:grid-cols-3 sm:grid-cols-1 gap-2 mb-3 dark:bg-gray-700 p-2 rounded-lg">
+              <Input
+                size="md"
                 type="text"
-                placeholder="Section Title"
+                label="Section Title"
                 value={formData.heading.title}
                 onChange={(e) =>
                   handleChange("heading", "title", e.target.value)
                 }
-                className="border p-2 rounded-lg dark:bg-gray-700"
+                className="border p-2 rounded-lg dark:bg-gray-700 w-full lg:mb-4"
               />
-              <input
+              <Input
+                size="md"
                 type="text"
-                placeholder="Section Subtitle"
+                label="Section Subtitle"
                 value={formData.heading.subTitle}
                 onChange={(e) =>
                   handleChange("heading", "subTitle", e.target.value)
                 }
-                className="border p-2 rounded-lg dark:bg-gray-700"
+                className="border p-2 rounded-lg dark:bg-gray-700 w-full lg:mb-4"
+              />
+              <Input
+                size="md"
+                type="text"
+                label="More Videos URL"
+                value={formData.moreVideosUrl}
+                onChange={(e) =>
+                  handleChange("moreVideosUrl", "", e.target.value)
+                }
+                className="border p-2 rounded-lg dark:bg-gray-700 w-full lg:mb-4"
               />
             </div>
-
-            {/* More Videos URL */}
-            <input
-              type="text"
-              placeholder="More Videos URL"
-              value={formData.moreVideosUrl}
-              onChange={(e) =>
-                handleChange("moreVideosUrl", "", e.target.value)
-              }
-              className="border p-2 rounded-lg dark:bg-gray-700 w-full mb-4"
-            />
 
             {/* Videos Inputs */}
             <div className="grid grid-cols-1 lg:grid-cols-4 gap-4">
@@ -193,18 +212,20 @@ export const YouTubeVideosSectionDashboard: React.FC = () => {
                   </button>
 
                   <div className="grid grid-cols-1  gap-3">
-                    <input
+                    <Input
+                      size="md"
                       type="text"
-                      placeholder="Video Title"
+                      label="Video Title"
                       value={video.title}
                       onChange={(e) =>
                         handleChange("data", "title", e.target.value, index)
                       }
                       className="border p-2 rounded-md dark:bg-gray-700 w-full"
                     />
-                    <input
+                    <Input
+                      size="md"
                       type="text"
-                      placeholder="Video URL"
+                      label="Video URL"
                       value={video.url}
                       onChange={(e) =>
                         handleChange("data", "url", e.target.value, index)
@@ -214,22 +235,6 @@ export const YouTubeVideosSectionDashboard: React.FC = () => {
                   </div>
                 </motion.div>
               ))}
-            </div>
-
-            <div className="mt-5 flex justify-between items-center">
-              <button
-                onClick={handleAdd}
-                className="flex items-center gap-2 px-4 py-2 bg-emerald-600 text-white rounded-lg hover:bg-emerald-700"
-              >
-                + Add Video
-              </button>
-              <button
-                onClick={handleSave}
-                disabled={saving}
-                className="flex items-center gap-2 bg-amber-500 text-white px-6 py-2 rounded-lg hover:bg-amber-600"
-              >
-                {saving ? "Saving..." : "Save Changes"}
-              </button>
             </div>
           </motion.div>
         )}

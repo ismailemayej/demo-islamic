@@ -5,6 +5,8 @@ import { Spinner, Input, Textarea, Button } from "@heroui/react";
 import toast from "react-hot-toast";
 import { useGetSection } from "@/app/dashboard/Hook/GetData";
 import { OpenModal } from "@/components/Modal";
+import { FaRegEdit } from "react-icons/fa";
+import { BsTrash3Fill } from "react-icons/bs";
 
 interface Book {
   id: string;
@@ -147,6 +149,7 @@ export const BookSectionDashboard = () => {
       {/* Heading Inputs */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-8">
         <Input
+          size="md"
           label="Section Title"
           value={formData.heading.title}
           onChange={(e) =>
@@ -157,6 +160,7 @@ export const BookSectionDashboard = () => {
           }
         />
         <Input
+          size="md"
           label="Section Subtitle"
           value={formData.heading.subTitle}
           onChange={(e) =>
@@ -198,28 +202,21 @@ export const BookSectionDashboard = () => {
         {formData.data.map((book) => (
           <div
             key={book.id}
-            className="p-4 border rounded-lg relative shadow-sm"
+            className="p-4 border rounded-lg relative shadow-xl bg-white dark:bg-gray-800"
           >
             <div className="absolute top-2 right-2 flex gap-2">
-              <Button
+              <button
                 color="warning"
-                size="sm"
-                variant="flat"
-                onPress={() => {
+                onClick={() => {
                   setSelectedBook(book);
                   setModalOpen(true);
                 }}
               >
-                ✏️ Edit
-              </Button>
-              <Button
-                color="danger"
-                size="sm"
-                variant="flat"
-                onPress={() => handleDeleteBook(book.id)}
-              >
-                🗑️ Delete
-              </Button>
+                <FaRegEdit className="text-yellow-500 cursor-pointer w-7 h-6" />
+              </button>
+              <button color="danger" onClick={() => handleDeleteBook(book.id)}>
+                <BsTrash3Fill className="text-rose-500 cursor-pointer w-6 h-5" />
+              </button>
             </div>
 
             <img
@@ -247,11 +244,13 @@ export const BookSectionDashboard = () => {
         >
           <div className="flex flex-col space-y-3 max-h-[70vh] overflow-y-auto">
             <Input
+              size="md"
               label="Book Name"
               value={selectedBook.bookname}
               onChange={(e) => handleChange("bookname", e.target.value)}
             />
             <Input
+              size="md"
               label="Writer"
               value={selectedBook.writer}
               onChange={(e) => handleChange("writer", e.target.value)}
@@ -277,7 +276,12 @@ export const BookSectionDashboard = () => {
                 </Button>
               </>
             )}
-            <input type="file" accept="image/*" onChange={handleImageUpload} />
+            <Input
+              size="md"
+              type="file"
+              accept="image/*"
+              onChange={handleImageUpload}
+            />
 
             <div className="flex justify-end gap-3 mt-4">
               {/* Close Button */}

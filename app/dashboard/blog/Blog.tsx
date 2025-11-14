@@ -146,6 +146,7 @@ export const ArticlesSectionDashboard: React.FC = () => {
           >
             <div className="space-y-4">
               <Input
+                size="md"
                 label="Title"
                 value={formData.heading.title}
                 onChange={(e) =>
@@ -156,6 +157,7 @@ export const ArticlesSectionDashboard: React.FC = () => {
                 }
               />
               <Input
+                size="md"
                 label="Sub Title"
                 value={formData.heading.subTitle}
                 onChange={(e) =>
@@ -235,6 +237,7 @@ export const ArticlesSectionDashboard: React.FC = () => {
           >
             <div className="max-h-[80vh] overflow-y-auto space-y-4 p-4">
               <Input
+                size="md"
                 label="Title"
                 value={selectedArticle.blogtitle}
                 onChange={(e) =>
@@ -242,6 +245,7 @@ export const ArticlesSectionDashboard: React.FC = () => {
                 }
               />
               <Input
+                size="md"
                 label="Writer"
                 value={selectedArticle.blogwriter}
                 onChange={(e) =>
@@ -257,6 +261,7 @@ export const ArticlesSectionDashboard: React.FC = () => {
                 className="w-full border p-3 rounded-lg dark:bg-gray-800 dark:text-white"
               />
               <Input
+                size="md"
                 label="Date"
                 type="date"
                 value={selectedArticle.date}

@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import { Heading } from "@/components/Heading";
 import { Button } from "@heroui/button";
 import { Loader2 } from "lucide-react";
+import { Input } from "@heroui/input";
 
 interface SectionHeadingProps {
   section: string;
@@ -60,7 +61,8 @@ export const SectionHeading: React.FC<SectionHeadingProps> = ({ section }) => {
       <Heading
         title={
           editMode ? (
-            <input
+            <Input
+              size="md"
               className="border rounded-lg p-2 w-full text-center dark:bg-gray-800 dark:text-gray-200"
               value={heading.title}
               onChange={(e) =>
@@ -74,7 +76,8 @@ export const SectionHeading: React.FC<SectionHeadingProps> = ({ section }) => {
         }
         subTitle={
           editMode ? (
-            <input
+            <Input
+              size="md"
               className="border rounded-lg p-2 w-full text-center dark:bg-gray-800 dark:text-gray-200"
               value={heading.subTitle}
               onChange={(e) =>

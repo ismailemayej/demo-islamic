@@ -11,6 +11,7 @@ import { ThemeSwitch } from "@/components/theme-switch";
 import { Alert } from "@heroui/alert";
 
 import { RiLogoutBoxRFill } from "react-icons/ri";
+import { Button } from "@heroui/button";
 
 interface DashboardLayoutProps {
   children: React.ReactNode;
@@ -88,27 +89,15 @@ export default function DashboardLayout({ children }: DashboardLayoutProps) {
           </span>
           <div className="flex items-center gap-3">
             <ThemeSwitch />
-            <button
+            <Button
+              variant="shadow"
+              size="md"
               onClick={handleLogout}
-              className="
-    relative
-    rounded-lg
-    bg-gradient-to-br from-amber-400 to-amber-300
-    text-green-600
-    flex items-center gap-2 px-4 py-2
-    shadow-md
-    hover:shadow-xl
-    hover:translate-y-[-2px]
-    transition-all duration-300
-    active:translate-y-0 active:shadow-md
-  "
+              className="border rounded-xl"
             >
-              {/* Mobile: Icon only */}
-              <RiLogoutBoxRFill className="block lg:hidden w-5 h-5" />
-
               {/* Desktop/Laptop: Text only */}
-              <span className="hidden lg:inline font-semibold">logOut</span>
-            </button>
+              <span className="">Logout</span>
+            </Button>
           </div>
         </header>
 

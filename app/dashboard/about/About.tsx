@@ -238,6 +238,7 @@ export const AboutSectionDashboard = () => {
               <ModalBody className="max-h-[70vh] overflow-y-auto">
                 <div className="space-y-3">
                   <Input
+                    size="md"
                     label="Heading Title"
                     value={formData.heading.title}
                     onChange={(e) =>
@@ -245,6 +246,7 @@ export const AboutSectionDashboard = () => {
                     }
                   />
                   <Input
+                    size="md"
                     label="Sub Title"
                     value={formData.heading.subTitle}
                     onChange={(e) =>
@@ -252,6 +254,7 @@ export const AboutSectionDashboard = () => {
                     }
                   />
                   <Input
+                    size="md"
                     label="About Title"
                     value={formData.data.title}
                     onChange={(e) =>
@@ -294,7 +297,8 @@ export const AboutSectionDashboard = () => {
                         <span className="text-sm text-gray-600">
                           {uploading ? "Uploading..." : "Upload Image"}
                         </span>
-                        <input
+                        <Input
+                          size="md"
                           type="file"
                           className="hidden"
                           onChange={handleImageUpload}

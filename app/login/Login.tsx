@@ -54,6 +54,7 @@ export default function LoginPage() {
         )}
 
         <Input
+          size="md"
           type="text"
           label="Email or Mobile"
           value={mobile}
@@ -63,6 +64,7 @@ export default function LoginPage() {
         />
 
         <Input
+          size="md"
           type="password"
           label="Password"
           value={password}

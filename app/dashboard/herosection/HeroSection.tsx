@@ -16,6 +16,7 @@ import { useGetSection } from "../Hook/GetData";
 import profile from "@/public/images/profile.png";
 import { FaRegEdit } from "react-icons/fa";
 import { CiSquareRemove } from "react-icons/ci";
+import { Input } from "@heroui/input";
 
 export const HeroSectionDashboard: React.FC = () => {
   const { section, loading, error } = useGetSection<any>("herosection");
@@ -168,7 +169,8 @@ export const HeroSectionDashboard: React.FC = () => {
                 <label className="flex items-center justify-center gap-2 p-3 bg-emerald-500 hover:bg-emerald-600 text-white rounded cursor-pointer transition w-full max-w-md">
                   <UploadCloud className="w-5 h-5" />
                   {uploading ? "Processing..." : "Upload Image"}
-                  <input
+                  <Input
+                    size="md"
                     type="file"
                     className="hidden"
                     accept="image/*"
@@ -215,12 +217,13 @@ export const HeroSectionDashboard: React.FC = () => {
           <div className="">
             <div className="space-y-2 w-full">
               <span className="flex items-start justify-between-center">
-                <input
+                <Input
+                  size="md"
                   value={formData.title}
                   onChange={(e) =>
                     setFormData({ ...formData, title: e.target.value })
                   }
-                  placeholder="Title"
+                  label="Title"
                   disabled={!isEditing}
                   className={`w-full p-2 rounded text-3xl font-semibold dark:text-emerald-400 text-emerald-700 ${
                     isEditing
@@ -237,12 +240,13 @@ export const HeroSectionDashboard: React.FC = () => {
                 </button>
               </span>
 
-              <input
+              <Input
+                size="md"
                 value={formData.subTitle}
                 onChange={(e) =>
                   setFormData({ ...formData, subTitle: e.target.value })
                 }
-                placeholder="SubTitle"
+                label="SubTitle"
                 disabled={!isEditing}
                 className={`w-full p-2 rounded text-4xl font-bold dark:text-white ${
                   isEditing

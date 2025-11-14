@@ -11,6 +11,7 @@ import { Spinner } from "@heroui/spinner";
 import { FaRegEdit } from "react-icons/fa";
 import { BsTrash3Fill } from "react-icons/bs";
 import { IoAddCircleSharp } from "react-icons/io5";
+import { Input } from "@heroui/input";
 
 interface Program {
   id: number | string;
@@ -161,7 +162,8 @@ export const ProgramsSectionDashboard: React.FC = () => {
 
         {isEditingHeading && (
           <div className="bg-white dark:bg-gray-800 p-4 rounded-lg shadow-md mb-6">
-            <input
+            <Input
+              size="md"
               type="text"
               value={formData.heading.title}
               onChange={(e) =>
@@ -170,10 +172,11 @@ export const ProgramsSectionDashboard: React.FC = () => {
                   heading: { ...formData.heading, title: e.target.value },
                 })
               }
-              placeholder="Section Title"
+              label="Section Title"
               className="border p-2 rounded-lg w-full mb-2 dark:bg-gray-700"
             />
-            <input
+            <Input
+              size="md"
               type="text"
               value={formData.heading.subTitle}
               onChange={(e) =>
@@ -182,7 +185,7 @@ export const ProgramsSectionDashboard: React.FC = () => {
                   heading: { ...formData.heading, subTitle: e.target.value },
                 })
               }
-              placeholder="Section Subtitle"
+              label="Section Subtitle"
               className="border p-2 rounded-lg w-full dark:bg-gray-700"
             />
             <button
@@ -274,9 +277,10 @@ export const ProgramsSectionDashboard: React.FC = () => {
                 {selectedProgram.id ? "Edit Program" : "Add Program"}
               </h3>
               <div className="space-y-3 max-h-[70vh] overflow-y-auto dark:text-white">
-                <input
+                <Input
+                  size="md"
                   type="text"
-                  placeholder="Program Name"
+                  label="Program Name"
                   value={selectedProgram.programName}
                   onChange={(e) =>
                     setSelectedProgram({
@@ -286,9 +290,10 @@ export const ProgramsSectionDashboard: React.FC = () => {
                   }
                   className=" border p-2 rounded-lg w-full dark:bg-gray-700"
                 />
-                <input
+                <Input
+                  size="md"
                   type="text"
-                  placeholder="Name"
+                  label="Name"
                   value={selectedProgram.name}
                   onChange={(e) =>
                     setSelectedProgram({
@@ -298,9 +303,10 @@ export const ProgramsSectionDashboard: React.FC = () => {
                   }
                   className="dark:text-white border p-2 rounded-lg w-full dark:bg-gray-700"
                 />
-                <input
+                <Input
+                  size="md"
                   type="text"
-                  placeholder="Location"
+                  label="Location"
                   value={selectedProgram.location}
                   onChange={(e) =>
                     setSelectedProgram({
@@ -310,9 +316,10 @@ export const ProgramsSectionDashboard: React.FC = () => {
                   }
                   className="border p-2 dark:text-white rounded-lg w-full dark:bg-gray-700"
                 />
-                <input
+                <Input
+                  size="md"
                   type="date"
-                  placeholder="Date"
+                  label="Date"
                   value={selectedProgram.date}
                   onChange={(e) =>
                     setSelectedProgram({
@@ -322,9 +329,10 @@ export const ProgramsSectionDashboard: React.FC = () => {
                   }
                   className="dark:text-white border p-2 rounded-lg w-full dark:bg-gray-700"
                 />
-                <input
+                <Input
+                  size="md"
                   type="text"
-                  placeholder="Day"
+                  label="Day"
                   value={selectedProgram.day}
                   onChange={(e) =>
                     setSelectedProgram({

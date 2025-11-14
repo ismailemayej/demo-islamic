@@ -14,6 +14,7 @@ import Background from "@/components/background";
 import { Heading } from "@/components/Heading";
 import { useGetSection } from "../Hook/GetData";
 import { Button } from "@heroui/button";
+import { Input } from "@heroui/input";
 
 interface ContactData {
   email: string;
@@ -103,23 +104,25 @@ export const ContactSectionDashboard: React.FC = () => {
         <div className="flex justify-between items-center mb-5">
           {isEditing ? (
             <div className="flex flex-col w-full space-y-2">
-              <input
+              <Input
+                size="md"
                 type="text"
                 value={formData.heading.title}
                 onChange={(e) =>
                   handleChange("heading", "title", e.target.value)
                 }
                 className="w-full p-2 border rounded-md text-center dark:bg-gray-800 dark:text-white"
-                placeholder="Heading Title"
+                label="Heading Title"
               />
-              <input
+              <Input
+                size="md"
                 type="text"
                 value={formData.heading.subTitle}
                 onChange={(e) =>
                   handleChange("heading", "subTitle", e.target.value)
                 }
                 className="w-full p-2 border rounded-md text-center dark:bg-gray-800 dark:text-white"
-                placeholder="Heading Subtitle"
+                label="Heading Subtitle"
               />
             </div>
           ) : (
@@ -145,7 +148,8 @@ export const ContactSectionDashboard: React.FC = () => {
             title="Phone"
             value={
               isEditing ? (
-                <input
+                <Input
+                  size="md"
                   type="text"
                   value={formData.data.phone}
                   onChange={(e) =>
@@ -186,7 +190,8 @@ export const ContactSectionDashboard: React.FC = () => {
             title="Email"
             value={
               isEditing ? (
-                <input
+                <Input
+                  size="md"
                   type="email"
                   value={formData.data.email}
                   onChange={(e) =>
@@ -211,7 +216,8 @@ export const ContactSectionDashboard: React.FC = () => {
             title="Address"
             value={
               isEditing ? (
-                <input
+                <Input
+                  size="md"
                   type="text"
                   value={formData.data.address}
                   onChange={(e) =>

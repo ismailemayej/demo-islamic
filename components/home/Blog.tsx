@@ -49,7 +49,7 @@ export const ArticlesSection: React.FC = () => {
                 <p className="bangla text-gray-600 dark:text-gray-300 text-sm">
                   Writer: {article.blogwriter}
                 </p>
-                <p className="bnagla text-gray-700 dark:text-gray-300 transition-colors duration-500 truncate">
+                <p className="bnagla line-clamp-4 text-gray-700 dark:text-gray-300 transition-colors duration-500 truncate">
                   {article.blogdescription}
                 </p>
               </div>

@@ -16,6 +16,7 @@ import { useState, useEffect } from "react";
 import toast from "react-hot-toast";
 import { FaRegEdit } from "react-icons/fa";
 import { BsTrash3Fill } from "react-icons/bs";
+import { Input } from "@heroui/input";
 
 interface Education {
   examName: string;
@@ -152,20 +153,22 @@ export const EducationSectionDashboard: React.FC = () => {
       {editingSection && (
         <div className="bg-white dark:bg-gray-800 p-6 rounded-xl shadow-lg my-6">
           <div className="grid sm:grid-cols-2 gap-4 mb-5">
-            <input
+            <Input
+              size="md"
               type="text"
               value={formData.heading.title}
               onChange={(e) => handleChange("heading", "title", e.target.value)}
-              placeholder="Title"
+              label="Title"
               className="w-full border rounded-lg p-2 bg-gray-50 dark:bg-gray-700 dark:text-white focus:ring-2 focus:ring-amber-400"
             />
-            <input
+            <Input
+              size="md"
               type="text"
               value={formData.heading.subTitle}
               onChange={(e) =>
                 handleChange("heading", "subTitle", e.target.value)
               }
-              placeholder="Subtitle"
+              label="Subtitle"
               className="w-full border rounded-lg p-2 bg-gray-50 dark:bg-gray-700 dark:text-white focus:ring-2 focus:ring-amber-400"
             />
           </div>
@@ -212,7 +215,8 @@ export const EducationSectionDashboard: React.FC = () => {
               <div className="flex items-center gap-3 mb-4">
                 <GraduationCap className="text-amber-600 dark:text-amber-400 w-6 h-6" />
                 {isEditingCard ? (
-                  <input
+                  <Input
+                    size="md"
                     type="text"
                     value={edu.examName}
                     onChange={(e) =>
@@ -243,7 +247,8 @@ export const EducationSectionDashboard: React.FC = () => {
                                 : "সময়:"}
                       </span>{" "}
                       {isEditingCard ? (
-                        <input
+                        <Input
+                          size="md"
                           type="text"
                           value={(edu as any)[field]}
                           onChange={(e) =>

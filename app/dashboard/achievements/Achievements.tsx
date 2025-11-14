@@ -193,6 +193,7 @@ export const AchievementsDashboard = () => {
         >
           <div className="max-h-[80vh] overflow-y-auto space-y-4 p-3">
             <Input
+              size="md"
               label="Title"
               value={selectedAchievement.title}
               onChange={(e) =>
@@ -203,6 +204,7 @@ export const AchievementsDashboard = () => {
               }
             />
             <Input
+              size="md"
               label="Count"
               type="number"
               value={String(selectedAchievement.count)}
@@ -214,6 +216,7 @@ export const AchievementsDashboard = () => {
               }
             />
             <Input
+              size="md"
               label="Icon"
               value={selectedAchievement.icon}
               onChange={(e) =>
@@ -250,6 +253,7 @@ export const AchievementsDashboard = () => {
         >
           <div className="max-h-[70vh] overflow-y-auto space-y-4 p-4">
             <Input
+              size="md"
               label="Title"
               value={formData.heading.title}
               onChange={(e) =>
@@ -260,6 +264,7 @@ export const AchievementsDashboard = () => {
               }
             />
             <Input
+              size="md"
               label="Sub Title"
               value={formData.heading.subTitle}
               onChange={(e) =>
