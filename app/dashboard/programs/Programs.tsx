@@ -5,9 +5,12 @@ import { useGetSection } from "../Hook/GetData";
 import { useState, useEffect } from "react";
 import toast from "react-hot-toast";
 
-import { Plus, Trash2, Save, Edit3, X } from "lucide-react";
+import { Plus, Trash2, Save, Edit3, X, XCircle } from "lucide-react";
 import { Button } from "@heroui/button";
 import { Spinner } from "@heroui/spinner";
+import { FaRegEdit } from "react-icons/fa";
+import { BsTrash3Fill } from "react-icons/bs";
+import { IoAddCircleSharp } from "react-icons/io5";
 
 interface Program {
   id: number | string;
@@ -138,20 +141,22 @@ export const ProgramsSectionDashboard: React.FC = () => {
             title={formData.heading.title}
             subTitle={formData.heading.subTitle}
           />
-          <button
-            onClick={() => setIsEditingHeading(!isEditingHeading)}
-            className="px-4 py-2 rounded-lg bg-amber-500 text-white hover:bg-amber-600 transition flex items-center gap-2"
-          >
-            {isEditingHeading ? (
-              <>
-                <X size={18} /> Cancel
-              </>
-            ) : (
-              <>
-                <Edit3 size={18} /> Edit
-              </>
-            )}
-          </button>
+          <span className="flex justify-center gap-3">
+            <button onClick={handleAdd}>
+              <IoAddCircleSharp className="text-green-500 cursor-pointer w-7 h-7" />
+            </button>
+            <button onClick={() => setIsEditingHeading(!isEditingHeading)}>
+              {isEditingHeading ? (
+                <>
+                  <XCircle size={25} className="text-yellow-500" />
+                </>
+              ) : (
+                <>
+                  <FaRegEdit className="text-yellow-500 cursor-pointer w-7 h-6" />
+                </>
+              )}
+            </button>
+          </span>
         </div>
 
         {isEditingHeading && (
@@ -190,16 +195,6 @@ export const ProgramsSectionDashboard: React.FC = () => {
           </div>
         )}
 
-        {/* ---------- Add Program Button ---------- */}
-        <div className="flex justify-end mb-4">
-          <button
-            onClick={handleAdd}
-            className="flex items-center gap-2 px-4 py-2 bg-emerald-600 text-white rounded-lg hover:bg-emerald-700"
-          >
-            <Plus size={18} /> Add Program
-          </button>
-        </div>
-
         {/* ---------- Programs List ---------- */}
         <div className="grid gap-6 md:grid-cols-4 mt-4">
           {formData.data.map((program) => {
@@ -219,9 +214,9 @@ export const ProgramsSectionDashboard: React.FC = () => {
             return (
               <div
                 key={program.id}
-                className="bg-white dark:bg-gray-800 rounded-3xl shadow-xl p-6 flex flex-col justify-between h-full hover:shadow-2xl transition-all duration-300 relative"
+                className="dark:text-white bg-white dark:bg-gray-800 rounded-3xl shadow-xl p-6 flex flex-col justify-between h-full hover:shadow-2xl transition-all duration-300 relative"
               >
-                <div className="flex justify-between items-start mb-2">
+                <div className="flex justify-between items-start mb-2 ">
                   <h3 className="text-xl font-bold text-emerald-700 dark:text-emerald-400">
                     {program.programName || "নতুন প্রোগ্রাম"}
                   </h3>
@@ -231,33 +226,32 @@ export const ProgramsSectionDashboard: React.FC = () => {
                         setSelectedProgram(program);
                         setModalOpen(true);
                       }}
-                      className="text-blue-500 hover:text-blue-700"
                     >
-                      <Edit3 size={18} />
+                      <FaRegEdit className="text-yellow-500 cursor-pointer w-6 h-6" />
                     </button>
-                    <button
-                      onClick={() => handleDelete(program.id)}
-                      className="text-red-500 hover:text-red-700"
-                    >
-                      <Trash2 size={18} />
+                    <button onClick={() => handleDelete(program.id)}>
+                      <BsTrash3Fill className="text-rose-500 cursor-pointer w-5 h-5" />
                     </button>
                   </div>
                 </div>
                 <p>
-                  <span className="font-semibold">নামঃ</span> {program.name}
+                  <span className="font-semibold dark:text-white">নামঃ</span>{" "}
+                  {program.name}
                 </p>
                 <p>
-                  <span className="font-semibold">স্থানঃ</span>{" "}
+                  <span className="font-semibold dark:text-white">স্থানঃ</span>{" "}
                   {program.location}
                 </p>
                 <p>
-                  <span className="font-semibold">তারিখঃ</span> {program.date}
+                  <span className="font-semibold dark:text-white">তারিখঃ</span>{" "}
+                  {program.date}
                 </p>
                 <p>
-                  <span className="font-semibold">বারঃ</span> {program.day}
+                  <span className="font-semibold dark:text-white">বারঃ</span>{" "}
+                  {program.day}
                 </p>
                 <div
-                  className={`mt-3 w-full py-2 rounded-lg shadow-md flex items-center justify-center gap-2 text-sm font-semibold ${isUpcoming ? "bg-emerald-600 text-white dark:bg-emerald-500" : "bg-gray-400 text-white dark:bg-gray-600"}`}
+                  className={`mt-3 w-full py-2 rounded-lg shadow-md flex items-center justify-center gap-2 text-md font-semibold ${isUpcoming ? "bg-emerald-700 text-white dark:bg-emerald-700" : "bg-gray-400 text-white dark:bg-gray-600"}`}
                 >
                   {isUpcoming ? `⏱ ${remainingDays}` : `✅ ${remainingDays}`}
                 </div>
@@ -276,10 +270,10 @@ export const ProgramsSectionDashboard: React.FC = () => {
               >
                 <X size={20} />
               </button>
-              <h3 className="text-lg font-bold mb-4">
+              <h3 className="text-lg font-bold mb-4 dark:text-white">
                 {selectedProgram.id ? "Edit Program" : "Add Program"}
               </h3>
-              <div className="space-y-3 max-h-[70vh] overflow-y-auto">
+              <div className="space-y-3 max-h-[70vh] overflow-y-auto dark:text-white">
                 <input
                   type="text"
                   placeholder="Program Name"
@@ -290,7 +284,7 @@ export const ProgramsSectionDashboard: React.FC = () => {
                       programName: e.target.value,
                     })
                   }
-                  className="border p-2 rounded-lg w-full dark:bg-gray-700"
+                  className=" border p-2 rounded-lg w-full dark:bg-gray-700"
                 />
                 <input
                   type="text"
@@ -302,7 +296,7 @@ export const ProgramsSectionDashboard: React.FC = () => {
                       name: e.target.value,
                     })
                   }
-                  className="border p-2 rounded-lg w-full dark:bg-gray-700"
+                  className="dark:text-white border p-2 rounded-lg w-full dark:bg-gray-700"
                 />
                 <input
                   type="text"
@@ -314,7 +308,7 @@ export const ProgramsSectionDashboard: React.FC = () => {
                       location: e.target.value,
                     })
                   }
-                  className="border p-2 rounded-lg w-full dark:bg-gray-700"
+                  className="border p-2 dark:text-white rounded-lg w-full dark:bg-gray-700"
                 />
                 <input
                   type="date"
@@ -326,7 +320,7 @@ export const ProgramsSectionDashboard: React.FC = () => {
                       date: e.target.value,
                     })
                   }
-                  className="border p-2 rounded-lg w-full dark:bg-gray-700"
+                  className="dark:text-white border p-2 rounded-lg w-full dark:bg-gray-700"
                 />
                 <input
                   type="text"
@@ -338,7 +332,7 @@ export const ProgramsSectionDashboard: React.FC = () => {
                       day: e.target.value,
                     })
                   }
-                  className="border p-2 rounded-lg w-full dark:bg-gray-700"
+                  className="dark:text-white border p-2 rounded-lg w-full dark:bg-gray-700"
                 />
               </div>
               <button

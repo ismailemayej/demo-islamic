@@ -234,7 +234,7 @@ export const SocialMediaSectionDashboard: React.FC = () => {
                     onClick={() => handleDelete(i)}
                     className=" border p-2 rounded-2xl bg-amber-50 absolute top-2 right-2 text-red-500 hover:text-red-700"
                   >
-                    <Trash2 size={18} />
+                    <BsTrash3Fill className="text-rose-500 cursor-pointer w-5 h-5" />
                   </button>
 
                   <input

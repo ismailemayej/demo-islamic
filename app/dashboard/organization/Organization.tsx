@@ -8,6 +8,10 @@ import { OpenModal } from "@/components/Modal";
 import { useGetSection } from "../Hook/GetData";
 import { Plus, Trash2, Save, Edit3, Building2, X } from "lucide-react";
 import toast from "react-hot-toast";
+import { FaRegEdit } from "react-icons/fa";
+import { IoAddCircleSharp } from "react-icons/io5";
+import { BsTrash3Fill } from "react-icons/bs";
+import { Input } from "@heroui/input";
 
 interface Organization {
   id: string;
@@ -142,20 +146,14 @@ export const OrganizationSectionDashboard = () => {
             title={formData.heading.title}
             subTitle={formData.heading.subTitle}
           />
-          <div className="flex gap-3">
-            <button
-              onClick={() => setEditHeadingModal(true)}
-              className="px-4 py-2 rounded-lg bg-amber-500 text-white hover:bg-amber-600 transition"
-            >
-              Edit Heading
+          <span className="flex justify-center gap-3">
+            <button onClick={handleAdd}>
+              <IoAddCircleSharp className="text-green-500 cursor-pointer w-7 h-7" />
             </button>
-            <button
-              onClick={handleAdd}
-              className="flex items-center gap-2 px-4 py-2 bg-emerald-600 text-white rounded-lg hover:bg-emerald-700"
-            >
-              <Plus size={18} /> Add New
+            <button onClick={() => setEditHeadingModal(true)}>
+              <FaRegEdit className="text-yellow-500 cursor-pointer w-7 h-6" />
             </button>
-          </div>
+          </span>
         </div>
 
         {/* Display Organization Cards */}
@@ -200,17 +198,11 @@ export const OrganizationSectionDashboard = () => {
                   </p>
 
                   <div className="flex justify-center gap-3 mt-3">
-                    <button
-                      onClick={() => setEditOrgModal(org)}
-                      className="px-3 py-1 bg-blue-500 text-white rounded-md hover:bg-blue-600"
-                    >
-                      <Edit3 size={16} />
+                    <button onClick={() => setEditOrgModal(org)}>
+                      <FaRegEdit className="text-yellow-500 cursor-pointer w-6 h-6" />
                     </button>
-                    <button
-                      onClick={() => handleDelete(org.id)}
-                      className="px-3 py-1 bg-red-500 text-white rounded-md hover:bg-red-600"
-                    >
-                      <Trash2 size={16} />
+                    <button onClick={() => handleDelete(org.id)}>
+                      <BsTrash3Fill className="text-rose-500 cursor-pointer w-6 h-5" />
                     </button>
                   </div>
                 </CardBody>
@@ -305,19 +297,8 @@ export const OrganizationSectionDashboard = () => {
                 }}
                 className="w-full border p-2 rounded-lg dark:bg-gray-700"
               />
-              <input
-                type="text"
-                placeholder="Director"
-                value={editOrgModal.director}
-                onChange={(e) => {
-                  const value = e.target.value;
-                  handleChange("org", "director", value, editOrgModal.id);
-                  setEditOrgModal((prev) =>
-                    prev ? { ...prev, director: value } : prev
-                  );
-                }}
-                className="w-full border p-2 rounded-lg dark:bg-gray-700"
-              />
+              <Input label="Email" size="md" type="email" />
+
               <textarea
                 placeholder="Details"
                 value={editOrgModal.details}
@@ -329,6 +310,7 @@ export const OrganizationSectionDashboard = () => {
                   );
                 }}
                 className="w-full border p-2 rounded-lg dark:bg-gray-700"
+                rows={6}
               />
               <button
                 onClick={handleSave}

@@ -2,11 +2,14 @@
 
 import { Heading } from "@/components/Heading";
 import { motion } from "framer-motion";
-import { Trash2, Plus, Save } from "lucide-react";
+import { Trash2, Plus, Save, XCircle } from "lucide-react";
 import { useGetSection } from "../Hook/GetData";
 import { useState, useEffect } from "react";
 import toast from "react-hot-toast";
 import { Spinner } from "@heroui/spinner";
+import { BsTrash3Fill } from "react-icons/bs";
+import { FaRegEdit } from "react-icons/fa";
+import { IoAddCircleSharp } from "react-icons/io5";
 
 interface GalleryItem {
   id: string;
@@ -186,16 +189,30 @@ export const GallerySectionDashboard: React.FC = () => {
             title={formData.heading.title}
             subTitle={formData.heading.subTitle}
           />
-          <button
-            onClick={() => setEditing(!editing)}
-            className="px-4 py-2 rounded-lg bg-amber-500 text-white hover:bg-amber-600 transition"
-          >
-            {editing ? "Cancel" : "Edit"}
-          </button>
+          <span className="flex gap-2 items-center">
+            <button onClick={handleAdd}>
+              <IoAddCircleSharp className="text-green-500 cursor-pointer w-7 h-7" />
+            </button>
+            <button onClick={() => setEditing(!editing)} className="transition">
+              {editing ? (
+                <XCircle size={25} className="text-yellow-500" />
+              ) : (
+                <FaRegEdit className="text-yellow-500 cursor-pointer w-7 h-6" />
+              )}
+            </button>
+          </span>
         </div>
 
         {editing && (
           <div className="bg-white dark:bg-gray-800 p-6 rounded-2xl shadow-lg border border-amber-100 dark:border-gray-700 mb-10 space-y-4">
+            <button
+              onClick={handleSave}
+              disabled={saving || uploading}
+              className="flex items-center gap-2 bg-amber-500 text-white px-6 py-2 rounded-lg hover:bg-amber-600"
+            >
+              <Save size={18} /> {saving ? "Saving..." : "Save Changes"}
+            </button>
+
             <h3 className="text-lg font-semibold text-amber-700">
               ✏️ Edit Gallery Section
             </h3>
@@ -209,7 +226,7 @@ export const GallerySectionDashboard: React.FC = () => {
                 onChange={(e) =>
                   handleChange("heading", "title", e.target.value)
                 }
-                className="border p-2 rounded-lg dark:bg-gray-700"
+                className="border p-2 rounded-lg dark:bg-gray-700 dark:text-white"
               />
               <input
                 type="text"
@@ -218,7 +235,7 @@ export const GallerySectionDashboard: React.FC = () => {
                 onChange={(e) =>
                   handleChange("heading", "subTitle", e.target.value)
                 }
-                className="border p-2 rounded-lg dark:bg-gray-700"
+                className="border p-2 rounded-lg dark:text-white dark:bg-gray-700"
               />
             </div>
 
@@ -234,7 +251,7 @@ export const GallerySectionDashboard: React.FC = () => {
                     onClick={() => handleDeleteItem(i)}
                     className="absolute top-2 right-2 text-red-500 hover:text-red-700"
                   >
-                    <Trash2 size={18} />
+                    <BsTrash3Fill className="text-rose-500 cursor-pointer w-5 h-5" />
                   </button>
 
                   <input
@@ -276,28 +293,12 @@ export const GallerySectionDashboard: React.FC = () => {
                         onClick={() => handleImageDelete(i)}
                         className="absolute top-2 right-2 bg-red-500 text-white p-1 rounded-full hover:bg-red-600"
                       >
-                        <Trash2 size={18} />
+                        <BsTrash3Fill className="text-rose-500 cursor-pointer w-5 h-5" />
                       </button>
                     </div>
                   )}
                 </motion.div>
               ))}
-            </div>
-
-            <div className="mt-5 flex justify-between items-center">
-              <button
-                onClick={handleAdd}
-                className="flex items-center gap-2 px-4 py-2 bg-emerald-600 text-white rounded-lg hover:bg-emerald-700"
-              >
-                <Plus size={18} /> Add New Image
-              </button>
-              <button
-                onClick={handleSave}
-                disabled={saving || uploading}
-                className="flex items-center gap-2 bg-amber-500 text-white px-6 py-2 rounded-lg hover:bg-amber-600"
-              >
-                <Save size={18} /> {saving ? "Saving..." : "Save Changes"}
-              </button>
             </div>
           </div>
         )}

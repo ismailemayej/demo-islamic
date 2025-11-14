@@ -61,7 +61,7 @@ export default function DashboardLayout({ children }: DashboardLayoutProps) {
                 onClick={() => setOpen(false)}
                 className="rounded-md hover:bg-gray-200 dark:hover:bg-gray-800"
               >
-                <X size={22} />
+                <X size={22} className="text-gray-700 dark:text-white" />
               </button>
             </div>
             <Sidebar onLinkClick={() => setOpen(false)} />
@@ -75,7 +75,7 @@ export default function DashboardLayout({ children }: DashboardLayoutProps) {
           onClick={() => setOpen(true)}
           className="p-2 bg-white dark:bg-gray-800 rounded-md shadow-lg hover:scale-105 hover:shadow-2xl active:scale-95 transition-all duration-200"
         >
-          <Menu size={20} />
+          <Menu size={20} className="text-gray-700 dark:text-white" />
         </button>
       </div>
 

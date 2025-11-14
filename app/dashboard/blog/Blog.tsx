@@ -10,6 +10,8 @@ import { useGetSection } from "../Hook/GetData";
 import Background from "@/components/background";
 import { OpenModal } from "@/components/Modal";
 import { Edit3, Trash2, Save, X } from "lucide-react";
+import { FaRegEdit } from "react-icons/fa";
+import { BsTrash3Fill } from "react-icons/bs";
 
 interface Article {
   id: string;
@@ -121,19 +123,17 @@ export const ArticlesSectionDashboard: React.FC = () => {
     <Background id="blog">
       <div className="container mx-auto">
         {/* ---------- Heading ---------- */}
-        <div className="flex justify-center items-center mb-6">
+        <div className="flex justify-center items-center gap-6 mb-6">
           <Heading
             title={formData.heading.title}
             subTitle={formData.heading.subTitle}
           />
-          <Button
-            isIconOnly
-            variant="light"
+          <button
             onClick={() => setEditingHeading(true)}
             className="hover:scale-110 transition-transform"
           >
-            <Edit3 className="w-6 h-6 text-yellow-500 border p-1 rounded" />
-          </Button>
+            <FaRegEdit className="text-yellow-500 cursor-pointer w-7 h-6 justify-end" />
+          </button>
         </div>
 
         {/* ---------- Edit Heading Modal ---------- */}
@@ -205,25 +205,21 @@ export const ArticlesSectionDashboard: React.FC = () => {
               </p>
 
               <div className="absolute top-4 right-4 flex gap-3">
-                <Button
-                  isIconOnly
-                  variant="light"
+                <button
                   className="hover:scale-110 transition-transform"
                   onClick={() => {
                     setSelectedArticle(article);
                     setModalOpen(true);
                   }}
                 >
-                  <Edit3 className="w-5 h-5 text-blue-600" />
-                </Button>
-                <Button
-                  isIconOnly
-                  variant="light"
+                  <FaRegEdit className="text-yellow-500 cursor-pointer w-6 h-5" />
+                </button>
+                <button
                   className="hover:scale-110 transition-transform"
                   onClick={() => handleDelete(article.id)}
                 >
-                  <Trash2 className="w-5 h-5 text-red-600" />
-                </Button>
+                  <BsTrash3Fill className="text-rose-500 cursor-pointer w-6 h-5" />
+                </button>
               </div>
             </motion.div>
           ))}

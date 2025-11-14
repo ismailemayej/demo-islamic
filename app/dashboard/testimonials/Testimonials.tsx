@@ -200,7 +200,7 @@ export const TestimonialsSectionDashboard: React.FC = () => {
                   onClick={() => handleDelete(t.id)}
                   className="text-red-500 hover:text-red-700"
                 >
-                  <Trash2 size={18} />
+                  <BsTrash3Fill className="text-rose-500 cursor-pointer w-5 h-5" />
                 </button>
               </div>
 

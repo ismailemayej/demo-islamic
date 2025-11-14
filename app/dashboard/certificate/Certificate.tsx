@@ -197,16 +197,16 @@ export const CertificateSectionDashboard = () => {
                   />
                 </div>
               </div>
-              <p className="text-sm">
+              <p className="text-sm dark:text-white">
                 <strong>Institution:</strong> {item.institution}
               </p>
-              <p className="text-sm">
+              <p className="text-sm dark:text-white">
                 <strong>Board:</strong> {item.board}
               </p>
-              <p className="text-sm">
+              <p className="text-sm dark:text-white">
                 <strong>Year:</strong> {item.year}
               </p>
-              <p className="text-sm">
+              <p className="text-sm dark:text-white">
                 <strong>GPA:</strong> {item.gpa}
               </p>
 

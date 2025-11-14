@@ -2,10 +2,20 @@
 
 import { Heading } from "@/components/Heading";
 import { motion } from "framer-motion";
-import { GraduationCap, Trash2, Plus, Save, Edit3, X } from "lucide-react";
+import {
+  GraduationCap,
+  Trash2,
+  Plus,
+  Save,
+  Edit3,
+  X,
+  XCircle,
+} from "lucide-react";
 import { useGetSection } from "../Hook/GetData";
 import { useState, useEffect } from "react";
 import toast from "react-hot-toast";
+import { FaRegEdit } from "react-icons/fa";
+import { BsTrash3Fill } from "react-icons/bs";
 
 interface Education {
   examName: string;
@@ -125,21 +135,14 @@ export const EducationSectionDashboard: React.FC = () => {
           subTitle={formData.heading.subTitle}
           center
         />
-        <button
-          onClick={() => setEditingSection(!editingSection)}
-          className={`flex items-center gap-2 px-4 py-2 rounded-lg transition ${
-            editingSection
-              ? "bg-red-500 hover:bg-red-600 text-white"
-              : "bg-amber-500 hover:bg-amber-600 text-white"
-          }`}
-        >
+        <button onClick={() => setEditingSection(!editingSection)}>
           {editingSection ? (
             <>
-              <X size={18} /> Cancel
+              <XCircle size={25} className="text-yellow-500" />
             </>
           ) : (
             <>
-              <Edit3 size={18} /> Edit
+              <FaRegEdit className="text-yellow-500 cursor-pointer w-7 h-6" />
             </>
           )}
         </button>
@@ -170,7 +173,8 @@ export const EducationSectionDashboard: React.FC = () => {
             onClick={handleAdd}
             className="flex items-center gap-2 bg-emerald-600 text-white px-4 py-2 rounded-lg hover:bg-emerald-700 transition"
           >
-            <Plus size={16} /> Add New Education
+            <Plus size={16} />
+            Add New Education
           </button>
         </div>
       )}
@@ -195,13 +199,13 @@ export const EducationSectionDashboard: React.FC = () => {
                   }
                   className="text-blue-500 hover:text-blue-700 transition"
                 >
-                  <Edit3 size={18} />
+                  <FaRegEdit className="text-yellow-500 cursor-pointer w-6 h-6" />
                 </button>
                 <button
                   onClick={() => handleDelete(index)}
                   className="text-red-500 hover:text-red-700 transition"
                 >
-                  <Trash2 size={18} />
+                  <BsTrash3Fill className="text-rose-500 cursor-pointer w-5 h-5" />
                 </button>
               </div>
 

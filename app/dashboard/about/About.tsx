@@ -20,6 +20,7 @@ import {
 import { toast } from "sonner";
 import { Upload, Trash2, Edit3, Check, X } from "lucide-react";
 import { useGetSection } from "../Hook/GetData";
+import { FaRegEdit } from "react-icons/fa";
 
 export const AboutSectionDashboard = () => {
   const { section, loading, error } = useGetSection<any>("aboutsection");
@@ -162,66 +163,64 @@ export const AboutSectionDashboard = () => {
 
   return (
     <Background id="about-dashboard">
-      {/* 🔹 Header Buttons */}
-      <div className="flex justify-between items-center mb-6">
-        <Button color="secondary" onPress={() => setIsEditing(true)}>
-          <Edit3 size={16} /> Edit
-        </Button>
-      </div>
-
       {/* 🔹 Preview Section */}
-      <Card className="border border-gray-300 dark:border-gray-700 shadow-lg">
-        <CardBody>
-          <Background id="about-preview">
+      <div>
+        <Background id="about-preview">
+          <div className="flex justify-between items-center mb-4">
+            .
             <Heading
               title={formData.heading.title || "আমাদের সম্পর্কে"}
               subTitle={
                 formData.heading.subTitle || "মাওলানা মিজানুর রহমান আল-আযহারী"
               }
             />
+            <FaRegEdit
+              onClick={() => setIsEditing(true)}
+              className="text-yellow-500 cursor-pointer w-7 h-6"
+            />
+          </div>
 
-            <div className="flex flex-col lg:flex-row items-center gap-8 mt-8">
-              {/* Image */}
-              <motion.div
-                initial={{ opacity: 0, x: -60 }}
-                whileInView={{ opacity: 1, x: 0 }}
-                transition={{ duration: 1 }}
-                className="w-full lg:w-1/3 flex justify-center lg:justify-start"
-              >
-                <div className="shadow-lg rounded-3xl overflow-hidden w-64 sm:w-72 md:w-80 border border-gray-200 dark:border-gray-700 transition-colors duration-500">
-                  {formData.data.image ? (
-                    <img
-                      src={formData.data.image}
-                      alt="About"
-                      className="w-full h-auto object-cover"
-                    />
-                  ) : (
-                    <div className="flex items-center justify-center h-64 text-gray-400">
-                      No Image
-                    </div>
-                  )}
-                </div>
-              </motion.div>
+          <div className="flex flex-col lg:flex-row items-center gap-8 mt-8">
+            {/* Image */}
+            <motion.div
+              initial={{ opacity: 0, x: -60 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              transition={{ duration: 1 }}
+              className="w-full lg:w-1/3 flex justify-center lg:justify-start"
+            >
+              <div className="shadow-lg rounded-3xl overflow-hidden w-64 sm:w-72 md:w-80 border border-gray-200 dark:border-gray-700 transition-colors duration-500">
+                {formData.data.image ? (
+                  <img
+                    src={formData.data.image}
+                    alt="About"
+                    className="w-full h-auto object-cover"
+                  />
+                ) : (
+                  <div className="flex items-center justify-center h-64 text-gray-400">
+                    No Image
+                  </div>
+                )}
+              </div>
+            </motion.div>
 
-              {/* Text */}
-              <motion.div
-                initial={{ opacity: 0, x: 60 }}
-                whileInView={{ opacity: 1, x: 0 }}
-                transition={{ duration: 1 }}
-                className="w-full lg:w-2/3 space-y-4"
-              >
-                <h3 className="text-2xl font-semibold dark:text-white bangla">
-                  {formData.data.title || "Who I Am"}
-                </h3>
-                <p className="text-lg text-gray-700 dark:text-gray-300 leading-relaxed bangla">
-                  {formData.data.description ||
-                    "I am a passionate Islamic scholar dedicated to spreading the message of Islam with wisdom and understanding."}
-                </p>
-              </motion.div>
-            </div>
-          </Background>
-        </CardBody>
-      </Card>
+            {/* Text */}
+            <motion.div
+              initial={{ opacity: 0, x: 60 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              transition={{ duration: 1 }}
+              className="w-full lg:w-2/3 space-y-4"
+            >
+              <h3 className="text-2xl font-semibold dark:text-white bangla">
+                {formData.data.title || "Who I Am"}
+              </h3>
+              <p className="text-lg text-gray-700 dark:text-gray-300 leading-relaxed bangla">
+                {formData.data.description ||
+                  "I am a passionate Islamic scholar dedicated to spreading the message of Islam with wisdom and understanding."}
+              </p>
+            </motion.div>
+          </div>
+        </Background>
+      </div>
 
       {/* 🔹 Edit Modal */}
       <Modal

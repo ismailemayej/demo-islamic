@@ -8,6 +8,9 @@ import { toast } from "sonner";
 import { Edit3, Trash2, Plus } from "lucide-react";
 import { useGetSection } from "../Hook/GetData";
 import { OpenModal } from "@/components/Modal";
+import { FaRegEdit } from "react-icons/fa";
+import { IoAddCircleSharp } from "react-icons/io5";
+import { BsTrash3Fill } from "react-icons/bs";
 
 interface Achievement {
   id: string;
@@ -121,13 +124,15 @@ export const AchievementsDashboard = () => {
           title={formData.heading.title || "Achievements"}
           subTitle={formData.heading.subTitle || "Our proud moments"}
         />
-        <div className="flex gap-3">
-          <Button color="secondary" onClick={() => setIsEditingHeading(true)}>
-            <Edit3 size={16} /> Edit Heading
-          </Button>
-          <Button color="success" onClick={handleAdd}>
-            <Plus size={16} /> Add
-          </Button>
+        <div className="flex align-bottom gap-3">
+          <IoAddCircleSharp
+            className="text-green-500 cursor-pointer w-7 h-7"
+            onClick={handleAdd}
+          />
+          <FaRegEdit
+            className="text-yellow-500 cursor-pointer w-7 h-6"
+            onClick={() => setIsEditingHeading(true)}
+          />
         </div>
       </div>
 
@@ -160,20 +165,18 @@ export const AchievementsDashboard = () => {
             </p>
 
             {/* Edit/Delete 3D buttons */}
-            <div className="absolute top-3 right-3 flex gap-2 opacity-0 group-hover:opacity-100 transition">
+            <div className="absolute top-3 right-3 flex gap-2   transition">
               <motion.button
                 onClick={() => setSelectedAchievement(achievement)}
                 whileHover={{ scale: 1.2 }}
-                className="bg-emerald-100 text-emerald-600 rounded-full p-2 shadow-md"
               >
-                <Edit3 className="w-4 h-4" />
+                <FaRegEdit className="text-yellow-500 cursor-pointer w-6 h-6" />
               </motion.button>
               <motion.button
                 onClick={() => handleDelete(achievement.id)}
                 whileHover={{ scale: 1.2 }}
-                className="bg-red-100 text-red-600 rounded-full p-2 shadow-md"
               >
-                <Trash2 className="w-4 h-4" />
+                <BsTrash3Fill className="text-rose-500 cursor-pointer w-6 h-5" />
               </motion.button>
             </div>
           </motion.div>

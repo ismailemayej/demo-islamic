@@ -5,6 +5,8 @@ import { Input, Textarea, Button, Spinner, Card } from "@heroui/react";
 import { toast } from "sonner";
 import Image from "next/image";
 import { useGetSection } from "./Hook/GetData";
+import { CiSquareRemove } from "react-icons/ci";
+import { FaRegEdit } from "react-icons/fa";
 
 export default function DashboardPage() {
   const { section, loading, error } = useGetSection("websitesection");
@@ -134,21 +136,15 @@ export default function DashboardPage() {
           </h2>
 
           {!isEditing ? (
-            <Button
+            <FaRegEdit
+              className="text-yellow-500 cursor-pointer w-7 h-6"
               onClick={() => setIsEditing(true)}
-              color="primary"
-              className="font-semibold"
-            >
-              ✏️ Edit Info
-            </Button>
+            />
           ) : (
-            <Button
+            <CiSquareRemove
+              className="bg-yellow-500 text-black rounded cursor-pointer w-7 h-8"
               onClick={() => setIsEditing(false)}
-              color="danger"
-              className="font-semibold"
-            >
-              ❌ Cancel
-            </Button>
+            />
           )}
         </div>
 
@@ -173,10 +169,6 @@ export default function DashboardPage() {
             </h3>
             <p className="bangla text-gray-600 dark:text-gray-300 max-w-md">
               {formData.description ||
-                "This is where your website description will appear."}
-            </p>
-            <p className="bangla text-gray-600 dark:text-gray-300 max-w-md">
-              {formData.keywords ||
                 "This is where your website description will appear."}
             </p>
           </div>

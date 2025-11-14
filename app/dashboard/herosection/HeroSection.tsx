@@ -8,11 +8,14 @@ import {
   Edit2,
   XCircle,
   CheckCircle,
+  X,
 } from "lucide-react";
 import { Button } from "@heroui/button";
 import { Alert } from "@heroui/alert";
 import { useGetSection } from "../Hook/GetData";
 import profile from "@/public/images/profile.png";
+import { FaRegEdit } from "react-icons/fa";
+import { CiSquareRemove } from "react-icons/ci";
 
 export const HeroSectionDashboard: React.FC = () => {
   const { section, loading, error } = useGetSection<any>("herosection");
@@ -209,21 +212,30 @@ export const HeroSectionDashboard: React.FC = () => {
           transition={{ duration: 1 }}
           className="w-full lg:w-1/2 text-center lg:text-left space-y-4"
         >
-          <div className="flex justify-between items-start">
+          <div className="">
             <div className="space-y-2 w-full">
-              <input
-                value={formData.title}
-                onChange={(e) =>
-                  setFormData({ ...formData, title: e.target.value })
-                }
-                placeholder="Title"
-                disabled={!isEditing}
-                className={`w-full p-2 rounded text-3xl font-semibold text-emerald-700 ${
-                  isEditing
-                    ? "border border-gray-400"
-                    : "bg-transparent border-0"
-                }`}
-              />
+              <span className="flex items-start justify-between-center">
+                <input
+                  value={formData.title}
+                  onChange={(e) =>
+                    setFormData({ ...formData, title: e.target.value })
+                  }
+                  placeholder="Title"
+                  disabled={!isEditing}
+                  className={`w-full p-2 rounded text-3xl font-semibold dark:text-emerald-400 text-emerald-700 ${
+                    isEditing
+                      ? "border border-gray-400"
+                      : "bg-transparent border-0"
+                  }`}
+                />
+                <button onClick={() => setIsEditing(!isEditing)}>
+                  {isEditing ? (
+                    <XCircle size={25} className="text-yellow-500" />
+                  ) : (
+                    <FaRegEdit className="text-yellow-500 cursor-pointer w-6 h-6" />
+                  )}
+                </button>
+              </span>
 
               <input
                 value={formData.subTitle}
@@ -232,7 +244,7 @@ export const HeroSectionDashboard: React.FC = () => {
                 }
                 placeholder="SubTitle"
                 disabled={!isEditing}
-                className={`w-full p-2 rounded text-4xl font-bold ${
+                className={`w-full p-2 rounded text-4xl font-bold dark:text-white ${
                   isEditing
                     ? "border border-gray-400"
                     : "bg-transparent border-0"
@@ -246,7 +258,7 @@ export const HeroSectionDashboard: React.FC = () => {
                 }
                 placeholder="Description"
                 disabled={!isEditing}
-                className={`w-full p-4 rounded-lg text-lg md:text-xl lg:text-xl ${
+                className={`w-full dark:text-white p-4 rounded-lg text-lg md:text-xl lg:text-xl ${
                   isEditing
                     ? "border border-gray-400 bg-white dark:bg-gray-700"
                     : "bg-transparent border-0"
@@ -254,14 +266,6 @@ export const HeroSectionDashboard: React.FC = () => {
                 style={{ minHeight: "10rem" }} // optional inline for extra height
               />
             </div>
-
-            <Button
-              size="sm"
-              className="bg-blue-600 text-white flex items-center gap-1"
-              onClick={() => setIsEditing(!isEditing)}
-            >
-              <Edit2 className="w-4 h-4" /> {isEditing ? "Cancel" : "Edit"}
-            </Button>
           </div>
 
           {isEditing && (
