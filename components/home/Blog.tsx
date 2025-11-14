@@ -49,11 +49,11 @@ export const ArticlesSection: React.FC = () => {
                 <p className="bangla text-gray-600 dark:text-gray-300 text-sm">
                   Writer: {article.blogwriter}
                 </p>
-                <p className="bnagla line-clamp-4 text-gray-700 dark:text-gray-300 transition-colors duration-500 truncate">
+                <p className="bnagla line-clamp-3 text-gray-700 dark:text-gray-300 transition-colors duration-500">
                   {article.blogdescription}
                 </p>
               </div>
-              <p className="text-gray-500 dark:text-gray-400 text-sm mt-4 transition-colors duration-500">
+              <p className="text-gray-500 dark:text-gray-400 text-sm transition-colors duration-500">
                 {article.date}
               </p>
             </motion.div>

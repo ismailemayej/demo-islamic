@@ -49,7 +49,7 @@ export const BookSection = () => {
       <Heading title={heading.title} subTitle={heading.subTitle} />
 
       {/* 🔹 Books Grid */}
-      <div className="px-4 mx-auto grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+      <div className="px-4 mx-auto grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-4 gap-2">
         {books.length > 0 ? (
           books.map((book: any) => (
             <motion.div key={book._id || book.id} whileHover={{ scale: 1.03 }}>
