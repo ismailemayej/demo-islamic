@@ -4,7 +4,6 @@ import { useState } from "react";
 import { motion } from "framer-motion";
 import { Video, X } from "lucide-react";
 import { Heading } from "../Heading";
-import Link from "next/link";
 import { useGetSection } from "@/app/dashboard/Hook/GetData";
 import Background from "../background";
 
@@ -16,7 +15,7 @@ interface VideoItem {
 export const YouTubeVideosSection: React.FC = () => {
   const { section, loading } = useGetSection("youtubevideosection");
   const [activeVideo, setActiveVideo] = useState<VideoItem | null>(null);
-  const MOCK_VIDEOS = section?.data || [];
+  const Videos_Section = section?.data || [];
 
   if (loading) {
     return (
@@ -40,8 +39,8 @@ export const YouTubeVideosSection: React.FC = () => {
   // Responsive video limit
   const isMobile = typeof window !== "undefined" && window.innerWidth < 640;
   const displayVideos = isMobile
-    ? MOCK_VIDEOS.slice(0, 5)
-    : MOCK_VIDEOS.slice(0, 8);
+    ? Videos_Section.slice(0, 5)
+    : Videos_Section.slice(0, 8);
 
   return (
     <Background id="youtubevideos">
@@ -53,7 +52,7 @@ export const YouTubeVideosSection: React.FC = () => {
 
         {/* Videos Grid */}
         <div
-          className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 py-6"
+          className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 py-6"
           style={{ perspective: "1000px" }}
         >
           {displayVideos.map((video: VideoItem, index: number) => {
@@ -112,7 +111,10 @@ export const YouTubeVideosSection: React.FC = () => {
         {/* More Videos Button */}
         <div className="mt-6 flex justify-center">
           <motion.a
-            href="https://www.youtube.com/@mizanurrahmanalazhari"
+            href={
+              section?.moreVideosUrl ||
+              "https://mizanur-rahman-azhari.vercel.app/"
+            }
             target="_blank"
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.95 }}

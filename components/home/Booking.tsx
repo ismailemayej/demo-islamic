@@ -5,7 +5,9 @@ import { motion } from "framer-motion";
 import Background from "@/components/background";
 import { Heading } from "@/components/Heading";
 import toast from "react-hot-toast";
-import { Input } from "@heroui/input";
+import { Input, Textarea } from "@heroui/input";
+import { DatePicker } from "@heroui/react";
+import { parseDate } from "@internationalized/date";
 
 export const AppointmentSection: React.FC = () => {
   const [formData, setFormData] = useState({
@@ -83,25 +85,20 @@ export const AppointmentSection: React.FC = () => {
         >
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <div className="mb-4 sm:mb-0">
-              <label className="block font-semibold mb-1 text-gray-800 dark:text-gray-200">
-                প্রোগ্রামের নাম
-              </label>
               <Input
+                label="প্রোগ্রামের নাম"
                 size="md"
                 type="text"
                 name="programName"
                 value={formData.programName}
                 onChange={handleChange}
                 required
-                className="w-full border border-gray-300 dark:border-gray-600 rounded-lg p-2 text-gray-800 dark:text-gray-200 placeholder-gray-400 dark:placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-emerald-400"
               />
             </div>
 
             <div className="mb-4 sm:mb-0">
-              <label className="block font-semibold mb-1 text-gray-800 dark:text-gray-200">
-                কত দিন
-              </label>
               <Input
+                label="কত দিন"
                 size="md"
                 type="text"
                 name="duration"
@@ -115,31 +112,28 @@ export const AppointmentSection: React.FC = () => {
 
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mt-4">
             <div>
-              <label className="block font-semibold mb-1 text-gray-800 dark:text-gray-200">
-                তারিখ-সাল-মাস
-              </label>
-              <Input
-                size="md"
-                type="date"
+              <DatePicker
+                label="তারিখ"
                 name="date"
-                value={formData.date}
-                onChange={handleChange}
-                required
-                className="w-full border border-gray-300 dark:border-gray-600 rounded-lg p-2 text-gray-800 dark:text-gray-200 placeholder-gray-400 dark:placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-emerald-400"
+                value={formData.date ? parseDate(formData.date) : null}
+                onChange={(value) =>
+                  setFormData((prev) => ({
+                    ...prev,
+                    date: value?.toString() || "", // Convert DateValue → string
+                  }))
+                }
+                className="border border-gray-300 dark:border-gray-600 rounded-lg p-2"
               />
             </div>
 
             <div>
-              <label className="block font-semibold mb-1 text-gray-800 dark:text-gray-200">
-                যোগাযোগের মাধ্যম
-              </label>
               <Input
+                label="মোবাইল / ইমেইল"
                 size="md"
                 type="text"
                 name="contact"
                 value={formData.contact}
                 onChange={handleChange}
-                label="মোবাইল / ইমেইল"
                 required
                 className="w-full border border-gray-300 dark:border-gray-600 rounded-lg p-2 text-gray-800 dark:text-gray-200 placeholder-gray-400 dark:placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-emerald-400"
               />
@@ -147,10 +141,9 @@ export const AppointmentSection: React.FC = () => {
           </div>
 
           <div className="mt-4">
-            <label className="block font-semibold mb-1 text-gray-800 dark:text-gray-200">
-              প্রোগ্রামের বিস্তারিত
-            </label>
-            <textarea
+            <Textarea
+              label="প্রোগ্রামের বিস্তারিত"
+              size="lg"
               name="details"
               value={formData.details}
               onChange={handleChange}

@@ -49,8 +49,8 @@ export const BookSection = () => {
       <Heading title={heading.title} subTitle={heading.subTitle} />
 
       {/* 🔹 Books Grid */}
-      <div className="px-4 py-8 mx-auto max-w-[1200px]">
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 justify-items-center">
+      <div className="px-4 py-8 mx-auto max-w-full">
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-3 justify-items-center">
           {books.length > 0 ? (
             books.map((book: any) => (
               <motion.div

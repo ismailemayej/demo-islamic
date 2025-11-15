@@ -23,10 +23,12 @@ import {
   CalendarCheck,
 } from "lucide-react";
 import { NavLink } from "@/data";
+import { useGetSection } from "@/app/dashboard/Hook/GetData";
 
 export const Navbar: React.FC = () => {
+  const { section } = useGetSection("websitesection");
   const [isOpen, setIsOpen] = useState(false);
-  const MOCK_NAV_LINKS: NavLink[] = [
+  const NAV_LINKS: NavLink[] = [
     { name: "Home", href: "/", icon: <Home className="w-5 h-5" /> },
     { name: "About", href: "#about", icon: <User className="w-5 h-5" /> },
     {
@@ -112,14 +114,14 @@ export const Navbar: React.FC = () => {
                 }}
                 style={{ backgroundSize: "200% auto", display: "inline-block" }}
               >
-                Dr.Mizanur Rahman
+                {section?.data?.sitetitle}
               </motion.span>
             </Link>
           </motion.div>
 
           {/* 🔹 Desktop Menu */}
           <div className="hidden lg:flex items-center space-x-8">
-            {MOCK_NAV_LINKS.slice(0, 7).map((link) => (
+            {NAV_LINKS.slice(0, 7).map((link) => (
               <motion.a
                 key={link.name}
                 href={link.href}
@@ -195,7 +197,7 @@ export const Navbar: React.FC = () => {
                        shadow-md transition-all duration-500"
           >
             <div className="flex flex-col py-4">
-              {MOCK_NAV_LINKS.slice(0, 7).map((link) => (
+              {NAV_LINKS.slice(0, 7).map((link) => (
                 <motion.a
                   key={link.name}
                   href={link.href}

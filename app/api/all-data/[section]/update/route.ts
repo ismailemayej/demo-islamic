@@ -7,13 +7,11 @@ interface Params {
   section: string;
 }
 
-// স্পষ্টভাবে Promise<NextResponse> রিটার্ন টাইপ
 export async function PATCH(
   req: Request,
-  context: { params: Promise<Params> } // ✅ params এখন Promise
+  context: { params: Promise<Params> }
 ): Promise<NextResponse> {
   try {
-    // ⚡ await করে params resolve করা
     const { section } = await context.params;
 
     if (!section) {
@@ -46,11 +44,14 @@ export async function PATCH(
       );
     }
 
-    // Update object
+    // ✅ Update object including moreVideosUrl
     const updateObj: any = { data: body.data };
-    if (body.heading) updateObj.heading = body.heading;
 
-    // MongoDB update (upsert true)
+    if (body.heading) updateObj.heading = body.heading;
+    if (body.moreVideosUrl !== undefined)
+      updateObj.moreVideosUrl = body.moreVideosUrl;
+
+    // MongoDB update
     const updatedSection = await AllData.findOneAndUpdate(
       { section: sectionName },
       { $set: updateObj },
@@ -62,7 +63,11 @@ export async function PATCH(
       success: true,
       message: `Section "${sectionName}" updated successfully`,
       section: updatedSection
-        ? { heading: updatedSection.heading || {}, data: updatedSection.data }
+        ? {
+            heading: updatedSection.heading || {},
+            data: updatedSection.data,
+            moreVideosUrl: updatedSection.moreVideosUrl || null,
+          }
         : null,
     });
   } catch (error) {

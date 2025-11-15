@@ -13,7 +13,7 @@ export default function DashboardPage() {
   const { section, loading, error } = useGetSection("websitesection");
 
   const [formData, setFormData] = useState({
-    sitetitle: "",
+    ownerName: "",
     description: "",
     profileImage: "",
     keywords: "",
@@ -26,7 +26,7 @@ export default function DashboardPage() {
   useEffect(() => {
     if (section?.data) {
       setFormData({
-        sitetitle: section.data.sitetitle || "",
+        ownerName: section.data.ownerName || "",
         description: section.data.description || "",
         profileImage: section.data.profileImage || "",
         keywords: section.data.keywords || "",
@@ -166,7 +166,7 @@ export default function DashboardPage() {
               </div>
             )}
             <h3 className="bangla text-2xl font-bold text-gray-800 dark:text-white">
-              {formData.sitetitle || "Website Title"}
+              {formData.ownerName || "Website Title"}
             </h3>
             <p className="bangla text-gray-600 dark:text-gray-300 max-w-md">
               {formData.description ||
@@ -181,8 +181,8 @@ export default function DashboardPage() {
             <Input
               size="md"
               label="Website Title"
-              value={formData.sitetitle}
-              onChange={(e) => handleChange("sitetitle", e.target.value)}
+              value={formData.ownerName}
+              onChange={(e) => handleChange("ownerName", e.target.value)}
               className="dark:text-gray-100"
             />
 

@@ -46,7 +46,6 @@ export const YouTubeVideosSectionDashboard: React.FC = () => {
       });
     }
   }, [section]);
-  console.log("MoreVideors ", section);
   const handleChange = (
     sectionType: "heading" | "data" | "moreVideosUrl",
     field: string,
@@ -156,7 +155,7 @@ export const YouTubeVideosSectionDashboard: React.FC = () => {
                 disabled={saving}
                 className="mb-2 flex items-center gap-2 bg-amber-500 text-white px-6 py-2 rounded-lg hover:bg-amber-600"
               >
-                {saving ? "Saving..." : "Save Changes"}
+                {saving ? "Saving..." : " Save Changes"}
               </button>
             </span>
 

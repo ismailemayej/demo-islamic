@@ -85,7 +85,7 @@ export default function DashboardLayout({ children }: DashboardLayoutProps) {
         {/* Header */}
         <header className="w-full bangla text-xl border-b border-gray-200 dark:border-gray-800 flex justify-end lg:justify-between items-center px-6 py-4 bg-white dark:bg-gray-900 shadow-md rounded-tl-3xl">
           <span className="lg:block hidden font-semibold text-gray-700 dark:text-gray-200 tracking-wide">
-            {section?.data?.sitetitle || "Dashboard"}
+            {section?.data?.ownerName || "Dashboard"}
           </span>
           <div className="flex items-center gap-3">
             <ThemeSwitch />

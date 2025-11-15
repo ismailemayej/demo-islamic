@@ -7,7 +7,7 @@ export const Footer: React.FC = () => {
       <div className="container mx-auto px-4 text-center space-y-4">
         {/* Copyright */}
         <p className="text-gray-500 dark:text-gray-400 text-md mt-4 bangla">
-          &copy; {new Date().getFullYear()} {section?.data?.sitetitle} All
+          &copy; {new Date().getFullYear()} {section?.data?.ownerName} All
           rights reserved.
         </p>
 

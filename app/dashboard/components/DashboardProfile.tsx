@@ -5,7 +5,7 @@ import { useGetSection } from "../Hook/GetData";
 export const SidebarProfile = () => {
   const { section } = useGetSection("websitesection");
   const imageUrl = section?.data?.profileImage;
-  const name = section?.data?.sitetitle;
+  const name = section?.data?.ownerName;
 
   return (
     <div className="px-3 flex items-center justify-between p-4 border-b border-gray-200 dark:border-gray-800">

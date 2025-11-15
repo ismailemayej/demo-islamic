@@ -59,7 +59,7 @@ export interface GallerySection {
 
 // Website Section
 export interface WebsiteData {
-  sitetitle: string;
+  ownerName: string;
   description: string;
   profileImage: string;
 }

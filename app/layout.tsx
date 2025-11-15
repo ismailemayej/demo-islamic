@@ -6,7 +6,7 @@ import clsx from "clsx";
 import { Metadata } from "next";
 interface WebsiteSection {
   id: string;
-  sitetitle: string;
+  ownerName: string;
   description: string;
   keywords?: string;
   profileImage?: string;
@@ -36,7 +36,7 @@ export async function generateMetadata(): Promise<Metadata> {
   const section = await getWebsiteSection();
 
   const title =
-    section?.sitetitle || "Md Ismail Hossain | MERN Stack Developer";
+    section?.ownerName || "Md Ismail Hossain | MERN Stack Developer";
   const description =
     section?.description ||
     "Personal portfolio website of Md Ismail Hossain — a passionate MERN Stack Developer from Bangladesh specializing in modern web applications.";
