@@ -206,17 +206,18 @@ export const GallerySectionDashboard: React.FC = () => {
 
         {editing && (
           <div className="bg-white dark:bg-gray-800 p-6 rounded-2xl shadow-lg border border-amber-100 dark:border-gray-700 mb-10 space-y-4">
-            <button
-              onClick={handleSave}
-              disabled={saving || uploading}
-              className="flex items-center gap-2 bg-amber-500 text-white px-6 py-2 rounded-lg hover:bg-amber-600"
-            >
-              <Save size={18} /> {saving ? "Saving..." : "Save Changes"}
-            </button>
-
-            <h3 className="text-lg font-semibold text-amber-700">
-              ✏️ Edit Gallery Section
-            </h3>
+            <span className="flex justify-between">
+              <h3 className="text-lg font-semibold text-amber-700 lg:block hidden">
+                ✏️ Edit Gallery Section
+              </h3>
+              <button
+                onClick={handleSave}
+                disabled={saving || uploading}
+                className="flex items-center gap-2 bg-amber-500 text-white px-6 py-2 rounded-lg hover:bg-amber-600"
+              >
+                <Save size={18} /> {saving ? "Saving..." : "Save Changes"}
+              </button>
+            </span>
 
             {/* Heading */}
             <div className="grid sm:grid-cols-2 gap-4">
@@ -254,7 +255,7 @@ export const GallerySectionDashboard: React.FC = () => {
                     onClick={() => handleDeleteItem(i)}
                     className="absolute top-2 right-2 text-red-500 hover:text-red-700"
                   >
-                    <BsTrash3Fill className="text-rose-500 cursor-pointer w-5 h-5" />
+                    <BsTrash3Fill className="text-rose-500 cursor-pointer w-5 h-5 z-10" />
                   </button>
 
                   <Input
@@ -296,9 +297,9 @@ export const GallerySectionDashboard: React.FC = () => {
                       <button
                         type="button"
                         onClick={() => handleImageDelete(i)}
-                        className="absolute top-2 right-2 bg-red-500 text-white p-1 rounded-full hover:bg-red-600"
+                        className="absolute top-2 right-2 bg-red-500 text-white p-1 rounded-full z-10"
                       >
-                        <BsTrash3Fill className="text-rose-500 cursor-pointer w-5 h-5" />
+                        <BsTrash3Fill className="text-white cursor-pointer w-5 h-5 " />
                       </button>
                     </div>
                   )}
