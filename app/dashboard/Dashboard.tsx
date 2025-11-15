@@ -236,6 +236,20 @@ export default function DashboardPage() {
         {/* Preview */}
         {!isEditing && (
           <div className="flex flex-col items-center text-center space-y-4">
+            {/* Menu Links Preview */}
+            <div className="mt-4">
+              <div className="flex flex-wrap gap-2">
+                {formData.NavLinks.map((link) => (
+                  <button
+                    key={link.id}
+                    className="bg-indigo-600 text-white px-4 py-2 rounded-lg hover:bg-indigo-700 transition-colors text-sm sm:text-base"
+                  >
+                    {link.name}
+                  </button>
+                ))}
+              </div>
+            </div>
+
             {formData.profileImage ? (
               <Image
                 src={formData.profileImage}
@@ -255,25 +269,6 @@ export default function DashboardPage() {
             <p className="bangla text-gray-600 dark:text-gray-300 max-w-md">
               {formData.description || "Website description will appear here."}
             </p>
-
-            {/* Menu Links Preview */}
-            <div className="mt-4">
-              <h4 className="font-semibold text-lg">Menu Links</h4>
-              <ul className="space-y-2">
-                {formData.NavLinks.map((link) => (
-                  <li key={link.id}>
-                    <a
-                      href={link.url}
-                      className="text-indigo-600 hover:underline"
-                      target="_blank"
-                      rel="noreferrer"
-                    >
-                      {link.name}
-                    </a>
-                  </li>
-                ))}
-              </ul>
-            </div>
           </div>
         )}
 
@@ -350,14 +345,14 @@ export default function DashboardPage() {
                   onClick={handleAddNavLink}
                 />
               </h4>
-              <div className="grid lg:grid-cols-2 grid-cols-1">
+              <div className="flex flex-wrap gap-2">
                 {formData.NavLinks.map((link, index) => (
                   <div
                     key={link.id}
                     className="flex items-center space-x-2 mt-2"
                   >
                     <select
-                      className="border rounded p-2 w-48"
+                      className="border rounded p-2 w-40"
                       value={link.name}
                       onChange={(e) =>
                         handleNavLinkChange(index, "name", e.target.value)
@@ -379,14 +374,14 @@ export default function DashboardPage() {
                     </select>
 
                     <Input
-                      className=" lg:max-w-[240px]"
+                      className=" lg:max-w-[140px]"
                       placeholder="URL (auto)"
                       value={link.url}
                       disabled
                     />
 
                     <BsTrash3Fill
-                      className="text-rose-500 cursor-pointer w-6 h-5"
+                      className="text-rose-500 cursor-pointer w-7 h-5"
                       onClick={() => handleDeleteNavLink(link.id)}
                     />
                   </div>
