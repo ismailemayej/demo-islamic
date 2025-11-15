@@ -1,9 +1,3 @@
-export type NavLink = {
-  name: string;
-  href: string;
-  icon?: ReactNode;
-};
-
 export type Sermon = {
   title: string;
   speaker: string;
@@ -74,4 +68,23 @@ export const MOCK_TESTIMONIALS: Testimonial[] = [
     author: "আহমেদ এম.",
     imageSrc: "https://placehold.co/50x50/d1e7dd/155724?text=AM",
   },
+];
+// FIXED MASTER NAV MENU
+export const MASTER_NAV_LINKS = [
+  { id: 1, name: "Home", href: "/" },
+  { id: 2, name: "About", href: "#about" },
+  { id: 3, name: "Videos", href: "#youtubevideos" },
+  { id: 4, name: "Gallary", href: "#gallery" },
+  { id: 5, name: "Proggams", href: "#programs" },
+  { id: 6, name: "Social", href: "#social" },
+  { id: 7, name: "Contact", href: "#contact" },
+  { id: 8, name: "Organizations", href: "#organizations" },
+  { id: 9, name: "Books", href: "#books" },
+  { id: 10, name: "Testimonials", href: "#testimonials" },
+  { id: 11, name: "Education", href: "#education" },
+  { id: 12, name: "Achivments", href: "#achievements" },
+  { id: 13, name: "Blogs", href: "#blog" },
+  { id: 14, name: "Certificate", href: "#certificates" },
+  { id: 15, name: "Team", href: "#teams" },
+  { id: 16, name: "Appoinment", href: "#booking" },
 ];
