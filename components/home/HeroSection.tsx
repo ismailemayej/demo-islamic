@@ -85,14 +85,15 @@ export const HeroSection: React.FC = () => {
             {section?.data?.description ||
               "This is the hero section description placeholder."}
           </p>
-
-          <motion.button
-            whileHover={{ scale: 1.1, rotate: 2 }}
-            whileTap={{ scale: 0.95 }}
-            className="mt-5 px-6 py-3 bg-emerald-600 text-white font-semibold rounded-full shadow-lg hover:bg-emerald-700 transition"
-          >
-            Explore More
-          </motion.button>
+          <a href="#programs">
+            <motion.button
+              whileHover={{ scale: 1.1, rotate: 2 }}
+              whileTap={{ scale: 0.95 }}
+              className="mt-5 px-6 py-3 bg-emerald-600 text-white font-semibold rounded-full shadow-lg hover:bg-emerald-700 transition"
+            >
+              Our Program
+            </motion.button>
+          </a>
         </motion.div>
       </div>
     </section>

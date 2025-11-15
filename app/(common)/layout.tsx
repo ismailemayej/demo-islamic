@@ -2,6 +2,7 @@ import { Navbar } from "@/components/navbar/Navbar";
 import { Container } from "@/components/container";
 import TopAdBanner from "@/components/advesment";
 import { Footer } from "@/components/footer/Footer";
+import OfferToast from "@/components/offer-toast/OfferToast";
 
 export default function HomeLayout({
   children,
@@ -10,6 +11,7 @@ export default function HomeLayout({
 }) {
   return (
     <div className="relative flex flex-col h-screen">
+      <OfferToast />
       <TopAdBanner />
       <Navbar />
       <Container>{children}</Container>

@@ -1,50 +1,49 @@
 "use client";
 
-import { useEffect } from "react";
-import toast, { Toaster } from "react-hot-toast";
+import { useState, useEffect } from "react";
+import { Button } from "@heroui/button";
 
-export default function HomePage() {
+export default function OfferPopup() {
+  const [visible, setVisible] = useState(false);
+
   useEffect(() => {
-    // Check if user has already dismissed
-    const dismissed = localStorage.getItem("promoToastDismissed");
-    if (dismissed) return;
-
-    toast.custom(
-      (t) => (
-        <div
-          className={`${
-            t.visible ? "animate-enter" : "animate-leave"
-          } max-w-md w-full bg-indigo-600 text-white px-6 py-3 rounded-lg shadow-lg flex items-center justify-between`}
-        >
-          <span>
-            অল্প খরচে এমন একটি ওয়েব সাইট বানিয়ে নিন। যোগাযোগঃ
-            <a
-              href="https://wa.me/01858226967"
-              target="_blank"
-              className="underline ml-1"
-            >
-              ০১৮৫৮২২৬৯৬৭
-            </a>
-          </span>
-          <button
-            onClick={() => {
-              toast.dismiss(t.id);
-              localStorage.setItem("promoToastDismissed", "true"); // Save dismissal
-            }}
-            className="ml-4 font-bold text-white hover:text-gray-200"
-          >
-            ✕
-          </button>
-        </div>
-      ),
-      { duration: Infinity } // নিজেরে বন্ধ হবে না, শুধু cross থেকে বন্ধ হবে
-    );
+    const dismissed = localStorage.getItem("offerPopupDismissed");
+    if (!dismissed) {
+      setVisible(true);
+    }
   }, []);
 
+  const handleClose = () => {
+    setVisible(false);
+    localStorage.setItem("offerPopupDismissed", "true");
+  };
+
+  if (!visible) return null;
+
   return (
-    <div>
-      <Toaster position="top-right" />
-      <h1 className="text-center text-2xl mt-20">ওয়েলকাম টু মাই ওয়েবসাইট</h1>
+    <div className="fixed inset-0 z-50 flex items-center justify-center">
+      {/* Background overlay */}
+      <div
+        className="absolute inset-0 bg-black bg-opacity-50 dark:bg-black/60 backdrop-blur-sm"
+        onClick={handleClose}
+      ></div>
+
+      {/* Popup content */}
+      <div className="relative bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100 p-6 rounded-2xl shadow-2xl w-80 md:w-96 flex flex-col items-center space-y-4 animate-fadeIn border border-gray-200 dark:border-gray-700">
+        <h3 className="text-lg md:text-xl font-bold text-center">
+          Special Offer!
+        </h3>
+        <p className="text-sm md:text-base text-center">
+          অল্প খরচে এমন একটি ওয়েব সাইট বানিয়ে নিন। যোগাযোগ:{" "}
+          <a
+            href="https://wa.me/01858226967"
+            target="_blank"
+            className="underline text-indigo-600 dark:text-indigo-400"
+          >
+            01858226967
+          </a>
+        </p>
+      </div>
     </div>
   );
 }
