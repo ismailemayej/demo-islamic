@@ -27,7 +27,6 @@ export async function GET(
     // ✅ MongoDB সংযোগ
     await connectDB();
 
-    // 🔍 নির্দিষ্ট section ডকুমেন্ট বের করা
     const sectionDoc = await AllData.findOne({ section: sectionName });
 
     // ❌ যদি section না পাওয়া যায়
@@ -46,6 +45,7 @@ export async function GET(
         [sectionName]: {
           heading: sectionDoc.heading,
           data: sectionDoc.data,
+          moreVideosUrl: sectionDoc.moreVideosUrl,
         },
       },
     });

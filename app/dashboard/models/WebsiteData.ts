@@ -7,7 +7,8 @@ const websiteDataSchema = new mongoose.Schema(
       title: String,
       subTitle: String,
     },
-    data: mongoose.Schema.Types.Mixed, // any object or array
+    data: mongoose.Schema.Types.Mixed,
+    moreVideosUrl: String,
   },
   { timestamps: true }
 );

@@ -10,6 +10,7 @@ export interface WebsiteData {
   heading: Heading;
   data: any;
   _id?: string;
+  moreVideosUrl: string;
   createdAt?: string;
   updatedAt?: string;
 }

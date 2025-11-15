@@ -49,41 +49,51 @@ export const BookSection = () => {
       <Heading title={heading.title} subTitle={heading.subTitle} />
 
       {/* 🔹 Books Grid */}
-      <div className="px-4 mx-auto grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-4 gap-2">
-        {books.length > 0 ? (
-          books.map((book: any) => (
-            <motion.div key={book._id || book.id} whileHover={{ scale: 1.03 }}>
-              <Card
-                isPressable
-                onPress={() => setSelectedBook(book)}
-                className="shadow-lg rounded-2xl border border-emerald-100 dark:border-gray-700 overflow-hidden bg-white dark:bg-gray-800"
+      <div className="px-4 py-8 mx-auto max-w-[1200px]">
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 justify-items-center">
+          {books.length > 0 ? (
+            books.map((book: any) => (
+              <motion.div
+                key={book._id || book.id}
+                whileHover={{ scale: 1.05 }}
+                className="w-full sm:w-auto"
               >
-                <CardBody className="p-0 flex justify-center">
-                  <img
-                    src={book.bookimage}
-                    alt={book.bookname}
-                    className="object-cover w-[200px] h-[250px] sm:h-[250px] object-top"
-                  />
-                </CardBody>
-                <CardFooter className="flex flex-col items-center text-center py-3">
-                  <h3
-                    onClick={() => setSelectedBook(book)}
-                    className="text-base sm:text-lg font-semibold text-emerald-700 dark:text-emerald-400 hover:underline cursor-pointer bangla"
-                  >
-                    {book.bookname}
-                  </h3>
-                  <p className="bangla text-sm text-gray-500 dark:text-gray-400">
-                    {book.writer}
-                  </p>
-                </CardFooter>
-              </Card>
-            </motion.div>
-          ))
-        ) : (
-          <p className="text-center text-gray-500 dark:text-gray-400 col-span-full">
-            কোনো বই পাওয়া যায়নি।
-          </p>
-        )}
+                <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-lg overflow-hidden flex flex-col items-center">
+                  <div className="w-[180px] h-[250px] mt-4 relative">
+                    <img
+                      src={book.bookimage}
+                      alt={book.bookname}
+                      className="w-full h-full object-cover rounded-lg"
+                    />
+                  </div>
+                  <div className="p-4 flex flex-col items-center text-center">
+                    <h3 className="text-base sm:text-lg font-semibold text-emerald-700 dark:text-emerald-400 hover:underline cursor-pointer">
+                      {book.bookname}
+                    </h3>
+                    <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">
+                      {book.writer}
+                    </p>
+                    {book.price && (
+                      <p className="text-sm font-medium text-gray-900 dark:text-gray-200 mt-2">
+                        ৳{book.price}
+                      </p>
+                    )}
+                    <button
+                      className="mt-3 px-4 py-2 bg-emerald-600 text-white rounded-lg hover:bg-emerald-700 transition"
+                      onClick={() => setSelectedBook(book)}
+                    >
+                      View Details
+                    </button>
+                  </div>
+                </div>
+              </motion.div>
+            ))
+          ) : (
+            <p className="text-center text-gray-500 dark:text-gray-400 col-span-full">
+              কোনো বই পাওয়া যায়নি।
+            </p>
+          )}
+        </div>
       </div>
 
       {/* 🔹 Scrollable Modal */}

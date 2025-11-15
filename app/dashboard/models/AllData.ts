@@ -3,7 +3,6 @@ import mongoose, { Schema, Document, Model } from "mongoose";
 
 // Avoid _id clash by omitting it from WebsiteData
 interface IAllData extends Omit<WebsiteData, "_id">, Document {}
-
 const allDataSchema = new Schema<IAllData>(
   {
     section: { type: String, required: true },
@@ -11,11 +10,12 @@ const allDataSchema = new Schema<IAllData>(
       title: String,
       subTitle: String,
     },
+    moreVideosUrl: String,
     data: Schema.Types.Mixed,
   },
   {
     timestamps: true,
-    collection: "all-data",
+    collection: process.env.NEXT_PUBLIC_MONGODB_DB_COLLECTION_NAME,
   }
 );
 

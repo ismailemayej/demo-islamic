@@ -70,7 +70,6 @@ export function useGetSection<T = any>(sectionName: string) {
 
     fetchSection();
 
-    // ✅ cleanup function (যদি component unmount হয়)
     return () => {
       isMounted = false;
     };

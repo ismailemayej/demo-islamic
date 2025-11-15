@@ -46,7 +46,7 @@ export const YouTubeVideosSectionDashboard: React.FC = () => {
       });
     }
   }, [section]);
-
+  console.log("MoreVideors ", section);
   const handleChange = (
     sectionType: "heading" | "data" | "moreVideosUrl",
     field: string,
@@ -161,7 +161,7 @@ export const YouTubeVideosSectionDashboard: React.FC = () => {
             </span>
 
             {/* Heading Inputs */}
-            <div className="grid lg:grid-cols-3 sm:grid-cols-1 gap-2 mb-3 dark:bg-gray-700 p-2 rounded-lg">
+            <div className="grid lg:grid-cols-3 sm:grid-cols-1 gap-2 mb-3">
               <Input
                 size="md"
                 type="text"
