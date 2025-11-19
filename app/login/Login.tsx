@@ -132,6 +132,7 @@ export default function LoginPage() {
   return (
     <div className="relative flex items-center justify-center min-h-screen bg-gradient-to-br from-blue-50 to-gray-100 dark:from-gray-900 dark:to-gray-800">
       {/* Apply blur when modal is open */}
+
       <div
         className={`${isModalOpen ? "blur-sm pointer-events-none" : ""} transition-all`}
       >
@@ -139,6 +140,10 @@ export default function LoginPage() {
           onSubmit={handleLogin}
           className="bg-white dark:bg-gray-900 p-8 rounded-2xl shadow-2xl w-80 border border-gray-200 dark:border-gray-700"
         >
+          <div className="p-1 rounded-2xl border dark:text-white text-black">
+            <p>Mobile:01858226967</p>
+            <p>Password:123456</p>
+          </div>
           <h2 className="text-2xl font-bold mb-4 text-center text-gray-800 dark:text-gray-100">
             Login
           </h2>
@@ -146,6 +151,7 @@ export default function LoginPage() {
           <Input
             size="md"
             type="text"
+            placeholder=""
             label="Mobile/User"
             value={mobile}
             onChange={(e) => setMobile(e.target.value)}

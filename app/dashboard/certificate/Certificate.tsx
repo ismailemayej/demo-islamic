@@ -109,6 +109,7 @@ export const CertificateSectionDashboard = () => {
           {editingHeading ? (
             <div className="flex flex-col md:flex-row gap-3 items-center w-full md:w-auto">
               <Input
+                className="dark:text-white"
                 size="md"
                 label="Title"
                 variant="bordered"
@@ -121,6 +122,7 @@ export const CertificateSectionDashboard = () => {
                 }
               />
               <Input
+                className="dark:text-white"
                 size="md"
                 label="Sub Title"
                 variant="bordered"

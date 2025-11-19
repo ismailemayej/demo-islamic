@@ -307,10 +307,9 @@ export default function DashboardPage() {
               </label>
               {formData.profileImage ? (
                 <div className="relative w-44 h-44 rounded-xl overflow-hidden border-2 border-indigo-400 shadow-lg">
-                  <Image
+                  <img
                     src={formData.profileImage}
                     alt="Profile"
-                    fill
                     className="object-cover"
                   />
                   <button

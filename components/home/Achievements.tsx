@@ -1,5 +1,4 @@
 "use client";
-
 import { motion } from "framer-motion";
 import { Heading } from "../Heading";
 import Background from "../background";
@@ -23,7 +22,6 @@ export const AchievementsSection: React.FC = () => {
   }
   // console.log("Achievement section:", section);
   const ACHIEVEMENTS = section?.data || [];
-  console.log("all Achievements:", ACHIEVEMENTS);
 
   return (
     <Background id="achievenents">

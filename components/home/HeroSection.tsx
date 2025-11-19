@@ -20,17 +20,10 @@ export const HeroSection: React.FC = () => {
       bg-gradient-to-br from-amber-50 via-white to-emerald-50 
       dark:from-gray-800 dark:via-gray-900 dark:to-gray-950 
       overflow-hidden transition-all duration-700"
-      style={{ perspective: "1000px" }}
     >
       <div className="container mx-auto flex flex-col lg:flex-row items-center justify-between gap-12">
         {/* Left: Image with 3D tilt effect */}
-        <motion.div
-          initial={{ opacity: 0, x: -80, rotateY: -15 }}
-          whileInView={{ opacity: 1, x: 0, rotateY: 0 }}
-          transition={{ duration: 1 }}
-          whileHover={{ rotateY: 8, rotateX: 4, scale: 1.03 }} // 👈 3D hover effect
-          className="relative w-full lg:w-1/2 flex justify-center lg:justify-start"
-        >
+        <div className="relative w-full lg:w-1/2 flex justify-center lg:justify-start">
           <motion.div
             className="relative w-full max-w-md rounded-3xl overflow-hidden"
             whileHover={{ y: -10, boxShadow: "0px 20px 50px rgba(0,0,0,0.3)" }}
@@ -54,7 +47,7 @@ export const HeroSection: React.FC = () => {
               ease: "easeInOut",
             }}
           />
-        </motion.div>
+        </div>
 
         {/* Right: Text Content */}
         <motion.div

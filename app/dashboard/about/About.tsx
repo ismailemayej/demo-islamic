@@ -140,7 +140,6 @@ export const AboutSectionDashboard = () => {
 
       const json = await res.json();
       if (!json.success) throw new Error(json.error || "Save failed");
-
       toast.dismiss("save");
       toast.success("✅ Saved successfully!");
       setIsEditing(false);
