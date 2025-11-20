@@ -3,7 +3,6 @@
 import { useState } from "react";
 import { motion } from "framer-motion";
 import { Card, CardBody } from "@heroui/card";
-import { Skeleton } from "@heroui/skeleton"; // ✅ HeroUI Skeleton import
 import { Heading } from "../Heading";
 import { OpenModal } from "../Modal";
 import { useGetSection } from "@/app/dashboard/Hook/GetData";

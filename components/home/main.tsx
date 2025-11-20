@@ -1,4 +1,5 @@
 "use client";
+
 import { AboutSection } from "./About";
 import { AchievementsSection } from "./Achievements";
 import { ArticlesSection } from "./Blog";
@@ -41,7 +42,7 @@ export default function Main() {
       <section className="w-full transition-colors duration-500">
         <SocialMediaSection />
       </section>
-      {/* Secvies */}
+      {/* Service */}
       <section className="w-full transition-colors duration-500">
         <ServiceSection />
       </section>

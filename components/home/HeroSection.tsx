@@ -82,9 +82,9 @@ export const HeroSection: React.FC = () => {
             <motion.button
               whileHover={{ scale: 1.1, rotate: 2 }}
               whileTap={{ scale: 0.95 }}
-              className="mt-5 px-6 py-3 bg-emerald-600 text-white font-semibold rounded-full shadow-lg hover:bg-emerald-700 transition"
+              className="mt-5 px-6 py-3 bg-green-900 text-white font-semibold rounded-full shadow-lg hover:bg-emerald-700 transition"
             >
-              Our Program
+              Our Books
             </motion.button>
           </a>
         </motion.div>

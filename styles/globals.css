@@ -7,11 +7,11 @@
 }
 
 body {
-  font-family: "Roboto", "Tiro Bangla", sans-serif;
+  font-family: "Roboto", "Tiro Bangla";
   @apply bg-white dark:bg-gray-900 text-gray-900 dark:text-gray-100;
 }
 
 .bangla {
-  font-family: "Tiro Bangla", "Roboto", sans-serif;
+  font-family: "Tiro Bangla", "Roboto";
   font-weight: 400;
 }

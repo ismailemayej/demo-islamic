@@ -87,7 +87,7 @@ export const ServiceSection: React.FC = () => {
           onClose={() => setOpenModal(false)}
           size="md"
         >
-          <div className=" space-y-4">
+          <div className="max-h-[70vh] overflow-y-auto p-4 space-y-4">
             <div className="text-[90px] text-center text-emerald-600 dark:text-emerald-400">
               <i className={`fas ${selectedService.icon}`}></i>
             </div>
