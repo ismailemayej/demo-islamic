@@ -22,6 +22,7 @@ import {
   FaTv,
   FaBookReader,
   FaMedal,
+  FaServicestack,
 } from "react-icons/fa";
 import { Divider } from "@heroui/divider";
 
@@ -119,6 +120,12 @@ export const Sidebar = ({ onLinkClick }: { onLinkClick?: () => void }) => {
       name: "Teams",
       icon: <FaUsers className="text-emerald-500 text-lg" />,
       href: "/dashboard/teams",
+    },
+    {
+      id: "18",
+      name: "Services",
+      icon: <FaServicestack className="text-emerald-500 text-lg" />,
+      href: "/dashboard/services",
     },
     {
       id: "15",

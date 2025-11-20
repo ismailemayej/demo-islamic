@@ -18,24 +18,22 @@ import {
 import { useGetSection } from "@/app/dashboard/Hook/GetData";
 import Background from "../background";
 
-// 3D Card Component
 const ThreeDCard: React.FC<React.PropsWithChildren<{ href: string }>> = ({
   href,
   children,
-}) => {
-  return (
-    <motion.a
-      href={href}
-      target="_blank"
-      rel="noopener noreferrer"
-      whileHover={{ scale: 1.05, rotateX: -5, rotateY: 5 }}
-      whileTap={{ scale: 0.95, rotateX: 0, rotateY: 0 }}
-      className="flex flex-col items-center justify-center p-6 bg-white dark:bg-gray-800 rounded-2xl shadow-lg hover:shadow-2xl transition-transform duration-300 perspective-1000"
-    >
-      {children}
-    </motion.a>
-  );
-};
+}) => (
+  <motion.a
+    href={href}
+    target="_blank"
+    rel="noopener noreferrer"
+    whileHover={{ scale: 1.07, rotateX: -5, rotateY: 5 }}
+    whileTap={{ scale: 0.95, rotateX: 0, rotateY: 0 }}
+    className="flex flex-col items-center justify-center p-6 rounded-3xl bg-white/70 dark:bg-gray-800/50
+      backdrop-blur-md shadow-lg hover:shadow-2xl transition-transform duration-300 perspective-1000"
+  >
+    {children}
+  </motion.a>
+);
 
 interface SocialLink {
   name: string;
@@ -56,7 +54,7 @@ const SOCIAL_OPTIONS = [
 ];
 
 export const SocialMediaSection: React.FC = () => {
-  const { section, loading, error } = useGetSection<any>("socialmediasection");
+  const { section, loading } = useGetSection<any>("socialmediasection");
   const SOCIAL_LINKS = section?.data || [];
 
   if (loading) {
@@ -70,27 +68,37 @@ export const SocialMediaSection: React.FC = () => {
   const getIcon = (name: string) => {
     switch (name) {
       case "Facebook":
-        return <FaFacebookF />;
+        return (
+          <FaFacebookF className="text-emerald-600 dark:text-emerald-400" />
+        );
       case "Twitter":
-        return <FaTwitter />;
+        return <FaTwitter className="text-emerald-600 dark:text-emerald-400" />;
       case "Instagram":
-        return <FaInstagram />;
+        return (
+          <FaInstagram className="text-emerald-600 dark:text-emerald-400" />
+        );
       case "YouTube":
-        return <FaYoutube />;
+        return <FaYoutube className="text-red-500 dark:text-red-400" />;
       case "LinkedIn":
-        return <FaLinkedinIn />;
+        return <FaLinkedinIn className="text-blue-600 dark:text-blue-400" />;
       case "Pinterest":
-        return <FaPinterestP />;
+        return <FaPinterestP className="text-red-600 dark:text-red-400" />;
       case "Snapchat":
-        return <FaSnapchatGhost />;
+        return (
+          <FaSnapchatGhost className="text-yellow-400 dark:text-yellow-300" />
+        );
       case "Reddit":
-        return <FaRedditAlien />;
+        return (
+          <FaRedditAlien className="text-orange-500 dark:text-orange-400" />
+        );
       case "TikTok":
-        return <FaTiktok />;
+        return <FaTiktok className="text-black dark:text-white" />;
       case "WhatsApp":
-        return <FaWhatsapp />;
+        return <FaWhatsapp className="text-green-600 dark:text-green-400" />;
       default:
-        return <FaFacebookF />;
+        return (
+          <FaFacebookF className="text-emerald-600 dark:text-emerald-400" />
+        );
     }
   };
 
@@ -110,17 +118,25 @@ export const SocialMediaSection: React.FC = () => {
             const icon = SOCIAL_OPTIONS.includes(social.name) ? (
               getIcon(social.name)
             ) : (
-              <FaFacebookF />
+              <FaFacebookF className="text-emerald-600 dark:text-emerald-400" />
             );
 
             return (
               <ThreeDCard key={index} href={social.url}>
-                <div className="text-5xl text-emerald-700 dark:text-emerald-400 mb-3 group-hover:text-amber-500 transition-colors">
+                <motion.div
+                  className="text-5xl mb-3"
+                  whileHover={{ scale: 1.2, rotateY: 10, rotateX: -5 }}
+                  transition={{ type: "spring", stiffness: 200 }}
+                >
                   {icon}
-                </div>
-                <span className="font-semibold text-gray-700 dark:text-gray-200 group-hover:text-emerald-700 dark:group-hover:text-amber-400 transition-colors">
+                </motion.div>
+                <motion.span
+                  className="font-semibold text-gray-700 dark:text-gray-200 text-center"
+                  whileHover={{ scale: 1.05 }}
+                  transition={{ duration: 0.3 }}
+                >
                   {social.name}
-                </span>
+                </motion.span>
               </ThreeDCard>
             );
           })}

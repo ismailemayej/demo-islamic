@@ -11,6 +11,7 @@ import { GallerySection } from "./Gellery";
 import { HeroSection } from "./HeroSection";
 import { RecentProgramsSection } from "./LastProggram";
 import { OrganizationSection } from "./Organization";
+import { ServiceSection } from "./Services";
 import { SocialMediaSection } from "./SocialMedia";
 import { TeamSection } from "./Team";
 import { TestimonialsSection } from "./Testimonials";
@@ -39,6 +40,10 @@ export default function Main() {
       {/* Social Media */}
       <section className="w-full transition-colors duration-500">
         <SocialMediaSection />
+      </section>
+      {/* Secvies */}
+      <section className="w-full transition-colors duration-500">
+        <ServiceSection />
       </section>
 
       {/* Gallery */}

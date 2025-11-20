@@ -9,10 +9,14 @@ const Background: React.FC<BackgroundProps> = ({ children, id }) => {
   return (
     <section
       id={id}
-      className="py-10 px-3 rounded-xl 
-                 bg-gradient-to-b from-amber-100 to-amber-50 
-                 dark:bg-gradient-to-b dark:from-gray-700 dark:to-gray-900 
-                 transition-colors duration-500"
+      className="
+        py-10 px-4 rounded-xl 
+        bg-white/70 backdrop-blur-sm 
+        dark:bg-gray-900/60 
+        border border-gray-300/40 dark:border-gray-800/40
+        shadow-xl 
+        transition-all duration-300
+      "
     >
       {children}
     </section>

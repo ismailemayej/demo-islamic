@@ -4,6 +4,7 @@ import { fontSans } from "@/config/fonts";
 import { Toaster } from "react-hot-toast";
 import clsx from "clsx";
 import { Metadata } from "next";
+
 interface WebsiteSection {
   id: string;
   ownerName: string;
@@ -16,7 +17,6 @@ interface WebsiteSection {
   updatedAt?: string;
 }
 
-// ✅ server-side fetch function
 async function getWebsiteSection(): Promise<WebsiteSection | null> {
   try {
     const res = await fetch(
@@ -82,24 +82,33 @@ export async function generateMetadata(): Promise<Metadata> {
     },
   };
 }
+
 export default function RootLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
   return (
-    <html suppressHydrationWarning lang="en">
+    <html suppressHydrationWarning lang="bn">
       <head>
-        {/* Google verification static */}
+        {/* Google verification */}
         <meta
           name="google-site-verification"
           content={process.env.NEXT_PUBLIC_GOOGLE_VERIFICATION}
         />
+
+        {/* ⬇️ Google Font: Tiro Bangla */}
+        <link
+          href="https://fonts.googleapis.com/css2?family=Tiro+Bangla:ital,wght@0,400;0,700;1,400;1,700&display=swap"
+          rel="stylesheet"
+        />
       </head>
+
       <body
         className={clsx(
           "min-h-screen text-foreground bg-background font-sans antialiased",
-          fontSans.variable
+          fontSans.variable,
+          "font-[var(--font-bangla)]"
         )}
       >
         <Providers themeProps={{ attribute: "class", defaultTheme: "dark" }}>

@@ -28,6 +28,7 @@ const MASTER_NAV_LINKS = [
   { id: 14, name: "Certificate", href: "#certificates" },
   { id: 15, name: "Team", href: "#teams" },
   { id: 16, name: "Appoinment", href: "#booking" },
+  { id: 17, name: "Services", href: "#services" },
 ];
 
 interface NavLink {

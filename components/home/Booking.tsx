@@ -105,7 +105,6 @@ export const AppointmentSection: React.FC = () => {
                 value={formData.duration}
                 onChange={handleChange}
                 required
-                className="w-full border border-gray-300 dark:border-gray-600 rounded-lg p-2 text-gray-800 dark:text-gray-200 placeholder-gray-400 dark:placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-emerald-400"
               />
             </div>
           </div>
@@ -122,7 +121,6 @@ export const AppointmentSection: React.FC = () => {
                     date: value?.toString() || "", // Convert DateValue → string
                   }))
                 }
-                className="border border-gray-300 dark:border-gray-600 rounded-lg p-2"
               />
             </div>
 
@@ -135,7 +133,6 @@ export const AppointmentSection: React.FC = () => {
                 value={formData.contact}
                 onChange={handleChange}
                 required
-                className="w-full border border-gray-300 dark:border-gray-600 rounded-lg p-2 text-gray-800 dark:text-gray-200 placeholder-gray-400 dark:placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-emerald-400"
               />
             </div>
           </div>
@@ -149,7 +146,6 @@ export const AppointmentSection: React.FC = () => {
               onChange={handleChange}
               required
               rows={4}
-              className="w-full border border-gray-300 dark:border-gray-600 rounded-lg p-2 text-gray-800 dark:text-gray-200 placeholder-gray-400 dark:placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-emerald-400"
             />
           </div>
 
