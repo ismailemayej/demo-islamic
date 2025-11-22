@@ -70,93 +70,91 @@ export const AppointmentSection: React.FC = () => {
 
   return (
     <Background id="booking">
-      <div className="container mx-auto lg:px-8 bangla">
-        <Heading
-          title="অ্যাপয়েন্টমেন্ট"
-          subTitle="নিচের ফর্মটি পূরণ করে আমাদের প্রোগ্রাম বুক করুন"
-        />
+      <Heading
+        title="অ্যাপয়েন্টমেন্ট"
+        subTitle="নিচের ফর্মটি পূরণ করে আমাদের প্রোগ্রাম বুক করুন"
+      />
 
-        <motion.form
-          onSubmit={handleSubmit}
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6 }}
-          className="mt-10 bg-white dark:bg-gray-800 p-6 sm:p-8 md:p-10 rounded-2xl shadow-lg max-w-3xl mx-auto"
-        >
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-            <div className="mb-4 sm:mb-0">
-              <Input
-                label="প্রোগ্রামের নাম"
-                size="md"
-                type="text"
-                name="programName"
-                value={formData.programName}
-                onChange={handleChange}
-                required
-              />
-            </div>
-
-            <div className="mb-4 sm:mb-0">
-              <Input
-                label="কত দিন"
-                size="md"
-                type="text"
-                name="duration"
-                value={formData.duration}
-                onChange={handleChange}
-                required
-              />
-            </div>
-          </div>
-
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mt-4">
-            <div>
-              <DatePicker
-                label="তারিখ"
-                name="date"
-                value={formData.date ? parseDate(formData.date) : null}
-                onChange={(value) =>
-                  setFormData((prev) => ({
-                    ...prev,
-                    date: value?.toString() || "", // Convert DateValue → string
-                  }))
-                }
-              />
-            </div>
-
-            <div>
-              <Input
-                label="মোবাইল / ইমেইল"
-                size="md"
-                type="text"
-                name="contact"
-                value={formData.contact}
-                onChange={handleChange}
-                required
-              />
-            </div>
-          </div>
-
-          <div className="mt-4">
-            <Textarea
-              label="প্রোগ্রামের বিস্তারিত"
-              size="lg"
-              name="details"
-              value={formData.details}
+      <motion.form
+        onSubmit={handleSubmit}
+        initial={{ opacity: 0, y: 20 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.6 }}
+        className="mt-10 bg-white dark:bg-gray-800 p-6 sm:p-8 md:p-10 rounded-2xl shadow-lg max-w-3xl mx-auto"
+      >
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          <div className="mb-4 sm:mb-0">
+            <Input
+              label="প্রোগ্রামের নাম"
+              size="md"
+              type="text"
+              name="programName"
+              value={formData.programName}
               onChange={handleChange}
               required
-              rows={4}
             />
           </div>
 
-          <button
-            type="submit"
-            className="w-full mt-6 bg-emerald-600 dark:bg-emerald-500 text-white py-3 rounded-lg font-semibold hover:bg-emerald-700 dark:hover:bg-emerald-600 transition-colors"
-          >
-            সাবমিট
-          </button>
-        </motion.form>
-      </div>
+          <div className="mb-4 sm:mb-0">
+            <Input
+              label="কত দিন"
+              size="md"
+              type="text"
+              name="duration"
+              value={formData.duration}
+              onChange={handleChange}
+              required
+            />
+          </div>
+        </div>
+
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mt-4">
+          <div>
+            <DatePicker
+              label="তারিখ"
+              name="date"
+              value={formData.date ? parseDate(formData.date) : null}
+              onChange={(value) =>
+                setFormData((prev) => ({
+                  ...prev,
+                  date: value?.toString() || "", // Convert DateValue → string
+                }))
+              }
+            />
+          </div>
+
+          <div>
+            <Input
+              label="মোবাইল / ইমেইল"
+              size="md"
+              type="text"
+              name="contact"
+              value={formData.contact}
+              onChange={handleChange}
+              required
+            />
+          </div>
+        </div>
+
+        <div className="mt-4">
+          <Textarea
+            label="প্রোগ্রামের বিস্তারিত"
+            size="lg"
+            name="details"
+            value={formData.details}
+            onChange={handleChange}
+            required
+            rows={4}
+          />
+        </div>
+
+        <button
+          type="submit"
+          className="w-full mt-6 bg-emerald-600 dark:bg-emerald-500 text-white py-3 rounded-lg font-semibold hover:bg-emerald-700 dark:hover:bg-emerald-600 transition-colors"
+        >
+          সাবমিট
+        </button>
+      </motion.form>
     </Background>
   );
 };

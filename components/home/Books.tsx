@@ -2,18 +2,12 @@
 
 import { useState } from "react";
 import { motion } from "framer-motion";
-import {
-  Card,
-  CardBody,
-  CardFooter,
-  Image as HeroImage,
-  Button,
-  Skeleton,
-} from "@heroui/react";
+import { Card, Image as HeroImage, Button, Skeleton } from "@heroui/react";
 import { useGetSection } from "@/app/dashboard/Hook/GetData";
 import { Heading } from "../Heading";
 import Background from "../background";
 import { OpenModal } from "../Modal";
+import Loader from "../loader";
 
 export const BookSection = () => {
   const { section, loading } = useGetSection("booksection");
@@ -21,19 +15,7 @@ export const BookSection = () => {
   const [selectedBook, setSelectedBook] = useState<any>(null);
 
   if (loading) {
-    return (
-      <div className="grid grid-cols-1 lg:grid-cols-4 gap-4 p-4">
-        {[1, 2, 3, 4].map((i) => (
-          <Card key={i} className="p-4 rounded-2xl shadow-md">
-            <Skeleton className="h-72 w-full rounded-lg" />
-            <div className="mt-4 space-y-2">
-              <Skeleton className="h-4 w-3/4" />
-              <Skeleton className="h-4 w-1/2" />
-            </div>
-          </Card>
-        ))}
-      </div>
-    );
+    return <Loader />;
   }
 
   const heading = section?.heading || {
@@ -47,53 +29,50 @@ export const BookSection = () => {
   return (
     <Background id="books">
       <Heading title={heading.title} subTitle={heading.subTitle} />
-
       {/* 🔹 Books Grid */}
-      <div className="px-4 py-8 mx-auto max-w-full">
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-3 justify-items-center">
-          {books.length > 0 ? (
-            books.map((book: any) => (
-              <motion.div
-                key={book._id || book.id}
-                whileHover={{ scale: 1.05 }}
-                className="w-full sm:w-auto"
-              >
-                <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-lg overflow-hidden flex flex-col items-center">
-                  <div className="w-[180px] h-[250px] mt-4 relative">
-                    <img
-                      src={book.bookimage}
-                      alt={book.bookname}
-                      className="w-full h-full object-cover rounded-lg"
-                    />
-                  </div>
-                  <div className="p-4 flex flex-col items-center text-center">
-                    <h3 className="text-base sm:text-lg font-semibold text-emerald-700 dark:text-emerald-400 hover:underline cursor-pointer">
-                      {book.bookname}
-                    </h3>
-                    <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">
-                      {book.writer}
-                    </p>
-                    {book.price && (
-                      <p className="text-sm font-medium text-gray-900 dark:text-gray-200 mt-2">
-                        ৳{book.price}
-                      </p>
-                    )}
-                    <button
-                      className="mt-3 px-4 py-2 bg-emerald-600 text-white rounded-lg hover:bg-emerald-700 transition"
-                      onClick={() => setSelectedBook(book)}
-                    >
-                      View Details
-                    </button>
-                  </div>
+      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-3 justify-items-center">
+        {books.length > 0 ? (
+          books.map((book: any) => (
+            <motion.div
+              key={book._id || book.id}
+              whileHover={{ scale: 1.05 }}
+              className="w-full sm:w-auto"
+            >
+              <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-lg overflow-hidden flex flex-col items-center">
+                <div className="w-[180px] h-[250px] mt-4 relative">
+                  <img
+                    src={book.bookimage}
+                    alt={book.bookname}
+                    className="w-full h-full object-cover rounded-lg"
+                  />
                 </div>
-              </motion.div>
-            ))
-          ) : (
-            <p className="text-center text-gray-500 dark:text-gray-400 col-span-full">
-              কোনো বই পাওয়া যায়নি।
-            </p>
-          )}
-        </div>
+                <div className="p-4 flex flex-col items-center text-center">
+                  <h3 className="text-base sm:text-lg font-semibold text-emerald-700 dark:text-emerald-400 hover:underline cursor-pointer">
+                    {book.bookname}
+                  </h3>
+                  <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">
+                    {book.writer}
+                  </p>
+                  {book.price && (
+                    <p className="text-sm font-medium text-gray-900 dark:text-gray-200 mt-2">
+                      ৳{book.price}
+                    </p>
+                  )}
+                  <button
+                    className="mt-3 px-4 py-2 bg-emerald-600 text-white rounded-lg hover:bg-emerald-700 transition"
+                    onClick={() => setSelectedBook(book)}
+                  >
+                    View Details
+                  </button>
+                </div>
+              </div>
+            </motion.div>
+          ))
+        ) : (
+          <p className="text-center text-gray-500 dark:text-gray-400 col-span-full">
+            কোনো বই পাওয়া যায়নি।
+          </p>
+        )}
       </div>
 
       {/* 🔹 Scrollable Modal */}

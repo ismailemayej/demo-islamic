@@ -31,7 +31,6 @@ export function useGetSection<T = any>(sectionName: string) {
       try {
         setLoading(true);
         setError(null);
-
         const res = await fetch(`/api/all-data/${sectionName}`, {
           cache: "no-store",
         });

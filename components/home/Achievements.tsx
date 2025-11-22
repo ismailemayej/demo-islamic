@@ -3,6 +3,7 @@ import { motion } from "framer-motion";
 import { Heading } from "../Heading";
 import Background from "../background";
 import { useGetSection } from "@/app/dashboard/Hook/GetData";
+import Loader from "../loader";
 
 interface Achievement {
   id: string;
@@ -14,11 +15,7 @@ interface Achievement {
 export const AchievementsSection: React.FC = () => {
   const { section, loading, error } = useGetSection("achievementsection");
   if (loading) {
-    return (
-      <div className="flex items-center justify-center py-20">
-        <div className="h-10 w-10 border-4 border-emerald-500 border-t-transparent rounded-full animate-spin"></div>
-      </div>
-    );
+    return <Loader />;
   }
   // console.log("Achievement section:", section);
   const ACHIEVEMENTS = section?.data || [];

@@ -4,6 +4,7 @@ import { motion } from "framer-motion";
 import { Heading } from "../Heading";
 import { useGetSection } from "@/app/dashboard/Hook/GetData";
 import Background from "../background";
+import Loader from "../loader";
 
 interface Testimonial {
   id: string;
@@ -17,59 +18,53 @@ export const TestimonialsSection: React.FC = () => {
   const { section, loading, error } = useGetSection("testimonialsection");
   const TESTIMONIALS = section?.data || [];
   if (loading) {
-    return (
-      <div className="flex items-center justify-center py-20">
-        <div className="h-10 w-10 border-4 border-emerald-500 border-t-transparent rounded-full animate-spin"></div>
-      </div>
-    );
+    return <Loader />;
   }
 
   return (
     <Background id="testimonials">
-      <div className="container mx-auto px-0">
-        <Heading
-          title={section?.heading?.title || "জনপ্রিয় মতামত"}
-          subTitle={
-            section?.heading?.subTitle ||
-            "আমাদের প্রতিষ্ঠানের ছাত্র ও সম্প্রদায়ের সদস্যদের কাছ থেকে"
-          }
-        />
+      <Heading
+        title={section?.heading?.title || "জনপ্রিয় মতামত"}
+        subTitle={
+          section?.heading?.subTitle ||
+          "আমাদের প্রতিষ্ঠানের ছাত্র ও সম্প্রদায়ের সদস্যদের কাছ থেকে"
+        }
+      />
 
-        <div className="mt-3 grid gap-8 md:grid-cols-4">
-          {TESTIMONIALS.slice(0, 4).map(
-            (testimonial: Testimonial, index: number) => (
-              <motion.div
-                key={testimonial.id}
-                initial={{ opacity: 0, y: 30 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.6, delay: index * 0.2 }}
-                className="bg-emerald-50 dark:bg-gray-800 rounded-3xl p-6 shadow-lg hover:shadow-2xl transition-shadow duration-300 flex flex-col h-full"
-              >
-                <div className="flex items-center gap-4 mb-4">
-                  {testimonial.image && (
-                    <img
-                      src={testimonial.image}
-                      alt={testimonial.name}
-                      className="w-16 h-16 rounded-full object-cover border-2 border-amber-500"
-                    />
-                  )}
-                  <div>
-                    <h3 className="bangla text-xl font-semibold text-emerald-700 dark:text-emerald-400">
-                      {testimonial.name}
-                    </h3>
-                    <p className="text-gray-600 dark:text-gray-300 text-sm">
-                      {testimonial.role}
-                    </p>
-                  </div>
+      <div className="mt-3 grid gap-8 md:grid-cols-4">
+        {TESTIMONIALS.slice(0, 4).map(
+          (testimonial: Testimonial, index: number) => (
+            <motion.div
+              key={testimonial.id}
+              initial={{ opacity: 0, y: 30 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6, delay: index * 0.2 }}
+              className="bg-emerald-50 dark:bg-gray-800 rounded-3xl p-6 shadow-lg hover:shadow-2xl transition-shadow duration-300 flex flex-col h-full"
+            >
+              <div className="flex items-center gap-4 mb-4">
+                {testimonial.image && (
+                  <img
+                    src={testimonial.image}
+                    alt={testimonial.name}
+                    className="w-16 h-16 rounded-full object-cover border-2 border-amber-500"
+                  />
+                )}
+                <div>
+                  <h3 className="bangla text-xl font-semibold text-emerald-700 dark:text-emerald-400">
+                    {testimonial.name}
+                  </h3>
+                  <p className="text-gray-600 dark:text-gray-300 text-sm">
+                    {testimonial.role}
+                  </p>
                 </div>
-                <p className="text-gray-700 dark:text-gray-200 flex-1 line-clamp-5">
-                  {testimonial.comment}
-                </p>
-                <div className="mt-4 text-amber-500 text-2xl self-end">🕌</div>
-              </motion.div>
-            )
-          )}
-        </div>
+              </div>
+              <p className="text-gray-700 dark:text-gray-200 flex-1 line-clamp-5">
+                {testimonial.comment}
+              </p>
+              <div className="mt-4 text-amber-500 text-2xl self-end">🕌</div>
+            </motion.div>
+          )
+        )}
       </div>
     </Background>
   );
