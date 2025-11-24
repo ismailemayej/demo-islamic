@@ -36,31 +36,33 @@ export const ArticlesSection: React.FC = () => {
       />
 
       <div className="mt-12 grid gap-4 md:grid-cols-4">
-        {MOCK_ARTICLES.map((article: Article, index: number) => (
-          <motion.div
-            key={article.id}
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, delay: index * 0.2 }}
-            className="bg-white dark:bg-gray-800 rounded-3xl shadow-xl p-6 hover:shadow-2xl transition-shadow duration-300 flex flex-col justify-between cursor-pointer"
-            onClick={() => setActiveArticle(article)}
-          >
-            <div className="mb-4">
-              <h3 className="bangla text-2xl font-bold text-emerald-700 dark:text-emerald-400 mb-2 transition-colors duration-500">
-                {article.blogtitle}
-              </h3>
-              <p className="bangla text-gray-600 dark:text-gray-300 text-sm">
-                Writer: {article.blogwriter}
+        {MOCK_ARTICLES?.slice(0, 4)
+          ?.reverse()
+          ?.map((article: Article, index: number) => (
+            <motion.div
+              key={article.id}
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6, delay: index * 0.2 }}
+              className="bg-white dark:bg-gray-800 rounded-3xl shadow-xl p-6 hover:shadow-2xl transition-shadow duration-300 flex flex-col justify-between cursor-pointer"
+              onClick={() => setActiveArticle(article)}
+            >
+              <div className="mb-4">
+                <h3 className="bangla text-2xl font-bold text-emerald-700 dark:text-emerald-400 mb-2 transition-colors duration-500">
+                  {article.blogtitle}
+                </h3>
+                <p className="bangla text-gray-600 dark:text-gray-300 text-sm">
+                  Writer: {article.blogwriter}
+                </p>
+                <p className="bnagla line-clamp-3 text-gray-700 dark:text-gray-300 transition-colors duration-500">
+                  {article.blogdescription}
+                </p>
+              </div>
+              <p className="text-gray-500 dark:text-gray-400 text-sm transition-colors duration-500">
+                {article.date}
               </p>
-              <p className="bnagla line-clamp-3 text-gray-700 dark:text-gray-300 transition-colors duration-500">
-                {article.blogdescription}
-              </p>
-            </div>
-            <p className="text-gray-500 dark:text-gray-400 text-sm transition-colors duration-500">
-              {article.date}
-            </p>
-          </motion.div>
-        ))}
+            </motion.div>
+          ))}
       </div>
 
       {/* Modal */}

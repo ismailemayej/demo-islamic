@@ -32,8 +32,9 @@ export const TestimonialsSection: React.FC = () => {
       />
 
       <div className="mt-3 grid gap-8 md:grid-cols-4">
-        {TESTIMONIALS.slice(0, 4).map(
-          (testimonial: Testimonial, index: number) => (
+        {TESTIMONIALS?.slice(0, 4)
+          ?.reverse()
+          ?.map((testimonial: Testimonial, index: number) => (
             <motion.div
               key={testimonial.id}
               initial={{ opacity: 0, y: 30 }}
@@ -63,8 +64,7 @@ export const TestimonialsSection: React.FC = () => {
               </p>
               <div className="mt-4 text-amber-500 text-2xl self-end">🕌</div>
             </motion.div>
-          )
-        )}
+          ))}
       </div>
     </Background>
   );

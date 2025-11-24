@@ -42,38 +42,40 @@ export const ServiceSection: React.FC = () => {
           />
 
           <div className="grid gap-6 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
-            {SERVICES.map((service, index) => (
-              <motion.div
-                key={service.id}
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.6, delay: index * 0.2 }}
-                className="
+            {SERVICES?.slice(0, 8)
+              ?.reverse()
+              ?.map((service, index) => (
+                <motion.div
+                  key={service.id}
+                  initial={{ opacity: 0, y: 20 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.6, delay: index * 0.2 }}
+                  className="
               bg-white dark:bg-gray-800 
               rounded-3xl shadow-lg p-6 
               hover:shadow-2xl transition-all duration-300 
               flex flex-col items-center text-left cursor-pointer
             "
-              >
-                {/* ICON */}
-                <div className="text-5xl text-emerald-600 dark:text-emerald-400 mb-4">
-                  <i className={`fas ${service.icon}`}></i>
-                </div>
-
-                {/* TITLE (Click → Modal) */}
-                <h3
-                  className="text-xl font-semibold text-gray-900 dark:text-gray-100 mb-2 hover:text-emerald-600 transition"
-                  onClick={() => openDetailsModal(service)}
                 >
-                  {service.title}
-                </h3>
+                  {/* ICON */}
+                  <div className="text-5xl text-emerald-600 dark:text-emerald-400 mb-4">
+                    <i className={`fas ${service.icon}`}></i>
+                  </div>
 
-                {/* DESCRIPTION */}
-                <p className="text-gray-600 dark:text-gray-300 text-sm">
-                  {service.shortDescription}
-                </p>
-              </motion.div>
-            ))}
+                  {/* TITLE (Click → Modal) */}
+                  <h3
+                    className="text-xl font-semibold text-gray-900 dark:text-gray-100 mb-2 hover:text-emerald-600 transition"
+                    onClick={() => openDetailsModal(service)}
+                  >
+                    {service.title}
+                  </h3>
+
+                  {/* DESCRIPTION */}
+                  <p className="text-gray-600 dark:text-gray-300 text-sm">
+                    {service.shortDescription}
+                  </p>
+                </motion.div>
+              ))}
           </div>
 
           {/* Modal for details */}

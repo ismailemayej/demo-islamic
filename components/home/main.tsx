@@ -1,5 +1,4 @@
 "use client";
-
 import { AboutSection } from "./About";
 import { AchievementsSection } from "./Achievements";
 import { ArticlesSection } from "./Blog";

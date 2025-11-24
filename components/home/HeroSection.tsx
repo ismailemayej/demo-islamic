@@ -81,7 +81,7 @@ export const HeroSection: React.FC = () => {
                 {section?.data?.description ||
                   "This is the hero section description placeholder."}
               </p>
-              <a href="#programs">
+              <a href="#books">
                 <motion.button
                   whileHover={{ scale: 1.1, rotate: 2 }}
                   whileTap={{ scale: 0.95 }}

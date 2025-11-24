@@ -27,37 +27,40 @@ export const GallerySection: React.FC = () => {
         }
       />
       <div className="grid gap-2 mt-6 lg:grid-cols-6 md:grid-cols-3 sm:grid-cols-2 grid-cols-1 auto-rows-[200px] lg:auto-rows-[300px]">
-        {galleryData?.data?.map((item: any, i: number) => (
-          <motion.div
-            key={i}
-            initial={{ opacity: 0, scale: 0.95 }}
-            whileInView={{ opacity: 1, scale: 1 }}
-            transition={{ duration: 0.5, delay: i * 0.1 }}
-            whileHover={{
-              scale: 1.05,
-              rotateX: 5,
-              rotateY: -5,
-              transition: { type: "spring", stiffness: 300, damping: 20 },
-            }}
-            style={{ perspective: 1000 }}
-            className={`relative overflow-hidden rounded-xl group shadow-md dark:shadow-gray-700 border border-gray-200 dark:border-gray-700 ${
-              i === 0 || i === 1 || i === 5 || i === 2 ? "lg:col-span-2" : ""
-            } ${i === 2 ? "lg:row-span-2" : ""}`}
-            onClick={() => setSelectedImage(item.image)}
-          >
-            <img
-              src={item.image}
-              alt={item.title || "Gallery Image"}
-              className="w-full h-full object-cover transform duration-300 group-hover:scale-105 cursor-pointer"
-            />
+        {galleryData?.data
+          ?.slice(0, 6)
+          ?.reverse()
+          ?.map((item: any, i: number) => (
+            <motion.div
+              key={i}
+              initial={{ opacity: 0, scale: 0.95 }}
+              whileInView={{ opacity: 1, scale: 1 }}
+              transition={{ duration: 0.5, delay: i * 0.1 }}
+              whileHover={{
+                scale: 1.05,
+                rotateX: 5,
+                rotateY: -5,
+                transition: { type: "spring", stiffness: 300, damping: 20 },
+              }}
+              style={{ perspective: 1000 }}
+              className={`relative overflow-hidden rounded-xl group shadow-md dark:shadow-gray-700 border border-gray-200 dark:border-gray-700 ${
+                i === 0 || i === 1 || i === 5 || i === 2 ? "lg:col-span-2" : ""
+              } ${i === 2 ? "lg:row-span-2" : ""}`}
+              onClick={() => setSelectedImage(item.image)}
+            >
+              <img
+                src={item.image}
+                alt={item.title || "Gallery Image"}
+                className="w-full h-full object-cover transform duration-300 group-hover:scale-105 cursor-pointer"
+              />
 
-            {item.title && (
-              <div className="absolute bottom-2 left-2 bg-amber-600/80 dark:bg-amber-500/80 text-white dark:text-gray-900 text-sm font-medium px-3 py-1 rounded-lg backdrop-blur-sm">
-                {item.title}
-              </div>
-            )}
-          </motion.div>
-        ))}
+              {item.title && (
+                <div className="absolute bottom-2 left-2 bg-amber-600/80 dark:bg-amber-500/80 text-white dark:text-gray-900 text-sm font-medium px-3 py-1 rounded-lg backdrop-blur-sm">
+                  {item.title}
+                </div>
+              )}
+            </motion.div>
+          ))}
       </div>
 
       {/* Modal for zoomed image */}

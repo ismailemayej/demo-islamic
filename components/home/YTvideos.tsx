@@ -51,61 +51,64 @@ export const YouTubeVideosSection: React.FC = () => {
             className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 py-6"
             style={{ perspective: "1000px" }}
           >
-            {displayVideos.map((video: VideoItem, index: number) => {
-              const videoId = video.url.split("v=")[1];
-              const thumbnail = `https://img.youtube.com/vi/${videoId}/0.jpg`;
+            {displayVideos
+              ?.slice(0, 8)
+              ?.reverse()
+              ?.map((video: VideoItem, index: number) => {
+                const videoId = video.url.split("v=")[1];
+                const thumbnail = `https://img.youtube.com/vi/${videoId}/0.jpg`;
 
-              return (
-                <motion.div
-                  key={index}
-                  initial={{ opacity: 0, y: 40 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.6, delay: index * 0.1 }}
-                  whileHover={{
-                    rotateY: 10,
-                    rotateX: 5,
-                    scale: 1.07,
-                  }}
-                  className="relative cursor-pointer bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 
-                rounded-2xl shadow-xl overflow-hidden transition-transform duration-500"
-                  onClick={() => setActiveVideo(video)}
-                >
-                  {/* Thumbnail */}
-                  <div className="relative w-full h-44 overflow-hidden rounded-2xl">
-                    <motion.img
-                      src={thumbnail}
-                      alt={video.title}
-                      className="w-full h-full object-cover"
-                      whileHover={{ scale: 1.1 }}
-                      transition={{ duration: 0.4 }}
-                    />
-                    <div className="absolute inset-0 bg-black/30 flex items-center justify-center opacity-0 hover:opacity-100 transition-opacity">
-                      <Video className="w-12 h-12 text-red-600 drop-shadow-lg" />
-                    </div>
-                  </div>
-
-                  {/* Title */}
-                  <div className="p-3 text-center">
-                    <h3 className="text-base font-semibold text-gray-800 dark:text-gray-200 truncate">
-                      {video.title}
-                    </h3>
-                  </div>
-
-                  {/* Glow Border */}
+                return (
                   <motion.div
-                    className="absolute inset-0 rounded-2xl border border-transparent"
+                    key={index}
+                    initial={{ opacity: 0, y: 40 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.6, delay: index * 0.1 }}
                     whileHover={{
-                      boxShadow:
-                        "0 0 25px rgba(34,197,94,0.6), inset 0 0 25px rgba(34,197,94,0.3)",
+                      rotateY: 10,
+                      rotateX: 5,
+                      scale: 1.07,
                     }}
-                  />
-                </motion.div>
-              );
-            })}
+                    className="relative cursor-pointer bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 
+                rounded-2xl shadow-xl overflow-hidden transition-transform duration-500"
+                    onClick={() => setActiveVideo(video)}
+                  >
+                    {/* Thumbnail */}
+                    <div className="relative w-full h-44 overflow-hidden rounded-2xl">
+                      <motion.img
+                        src={thumbnail}
+                        alt={video.title}
+                        className="w-full h-full object-cover"
+                        whileHover={{ scale: 1.1 }}
+                        transition={{ duration: 0.4 }}
+                      />
+                      <div className="absolute inset-0 bg-black/30 flex items-center justify-center opacity-0 hover:opacity-100 transition-opacity">
+                        <Video className="w-12 h-12 text-red-600 drop-shadow-lg" />
+                      </div>
+                    </div>
+
+                    {/* Title */}
+                    <div className="p-3 text-center">
+                      <h3 className="text-base font-semibold text-gray-800 dark:text-gray-200 truncate">
+                        {video.title}
+                      </h3>
+                    </div>
+
+                    {/* Glow Border */}
+                    <motion.div
+                      className="absolute inset-0 rounded-2xl border border-transparent"
+                      whileHover={{
+                        boxShadow:
+                          "0 0 25px rgba(34,197,94,0.6), inset 0 0 25px rgba(34,197,94,0.3)",
+                      }}
+                    />
+                  </motion.div>
+                );
+              })}
           </div>
 
           {/* More Videos Button */}
-          <div className="mt-6 flex justify-center">
+          <div className="flex justify-center">
             <motion.a
               href={
                 section?.moreVideosUrl ||
@@ -114,9 +117,9 @@ export const YouTubeVideosSection: React.FC = () => {
               target="_blank"
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
-              className="bg-gradient-to-r from-emerald-500 to-amber-500 text-white font-semibold py-2 px-6 rounded-full shadow-lg hover:shadow-2xl transition-all duration-300"
+              className="bg-gradient-to-r from-emerald-900 to-amber-800 text-white font-semibold py-2 px-6 rounded-full shadow-lg hover:shadow-2xl transition-all duration-300"
             >
-              Watch More Videos →
+              More Videos →
             </motion.a>
           </div>
 
