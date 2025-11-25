@@ -3,19 +3,13 @@
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Heading } from "../Heading";
-import { useGetSection } from "@/app/dashboard/Hook/GetData";
 import Background from "../background";
-import Loader from "../loader";
-
-export const GallerySection: React.FC = () => {
-  const { section, loading } = useGetSection("gallerysection");
-  const galleryData = section;
-
+import { TPhotoSection } from "@/types/all-types";
+type GallerySectionProps = {
+  section: TPhotoSection | null | undefined;
+};
+export const GallerySection: React.FC<GallerySectionProps> = ({ section }) => {
   const [selectedImage, setSelectedImage] = useState<string | null>(null);
-
-  if (loading) {
-    return <Loader />;
-  }
 
   return (
     <Background id="gallery">
@@ -27,7 +21,7 @@ export const GallerySection: React.FC = () => {
         }
       />
       <div className="grid gap-2 mt-6 lg:grid-cols-6 md:grid-cols-3 sm:grid-cols-2 grid-cols-1 auto-rows-[200px] lg:auto-rows-[300px]">
-        {galleryData?.data
+        {section?.data
           ?.slice(0, 6)
           ?.reverse()
           ?.map((item: any, i: number) => (

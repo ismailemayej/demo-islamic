@@ -15,9 +15,8 @@ import {
   FaTiktok,
   FaWhatsapp,
 } from "react-icons/fa";
-import { useGetSection } from "@/app/dashboard/Hook/GetData";
 import Background from "../background";
-import Loader from "../loader";
+import { TSocialMediaSection } from "@/types/all-types";
 
 const ThreeDCard: React.FC<React.PropsWithChildren<{ href: string }>> = ({
   href,
@@ -53,9 +52,13 @@ const SOCIAL_OPTIONS = [
   "TikTok",
   "WhatsApp",
 ];
+type SocialMediaSectionProps = {
+  section: TSocialMediaSection | undefined;
+};
 
-export const SocialMediaSection: React.FC = () => {
-  const { section, loading } = useGetSection<any>("socialmediasection");
+export const SocialMediaSection: React.FC<SocialMediaSectionProps> = ({
+  section,
+}) => {
   const SOCIAL_LINKS = section?.data || [];
 
   const getIcon = (name: string) => {
@@ -96,49 +99,43 @@ export const SocialMediaSection: React.FC = () => {
   };
 
   return (
-    <>
-      {loading ? (
-        <Loader />
-      ) : (
-        <Background id="social">
-          <Heading
-            title={section?.heading?.title || "সোস্যাল মিডিয়া"}
-            subTitle={
-              section?.heading?.subTitle ||
-              "আমাদের সামাজিক যোগাযোগ মাধ্যমে অনুসরণ করুন এবং সর্বশেষ আপডেট পান"
-            }
-          />
+    <Background id="social">
+      <Heading
+        title={section?.heading?.title || "সোস্যাল মিডিয়া"}
+        subTitle={
+          section?.heading?.subTitle ||
+          "আমাদের সামাজিক যোগাযোগ মাধ্যমে অনুসরণ করুন এবং সর্বশেষ আপডেট পান"
+        }
+      />
 
-          <div className="mt-10 grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-6">
-            {SOCIAL_LINKS?.map((social: SocialLink, index: number) => {
-              const icon = SOCIAL_OPTIONS.includes(social.name) ? (
-                getIcon(social.name)
-              ) : (
-                <FaFacebookF className="text-emerald-600 dark:text-emerald-400" />
-              );
+      <div className="mt-10 grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-6">
+        {SOCIAL_LINKS?.map((social: SocialLink, index: number) => {
+          const icon = SOCIAL_OPTIONS.includes(social.name) ? (
+            getIcon(social.name)
+          ) : (
+            <FaFacebookF className="text-emerald-600 dark:text-emerald-400" />
+          );
 
-              return (
-                <ThreeDCard key={index} href={social.url}>
-                  <motion.div
-                    className="text-5xl mb-3"
-                    whileHover={{ scale: 1.2, rotateY: 10, rotateX: -5 }}
-                    transition={{ type: "spring", stiffness: 200 }}
-                  >
-                    {icon}
-                  </motion.div>
-                  <motion.span
-                    className="font-semibold text-gray-700 dark:text-gray-200 text-center"
-                    whileHover={{ scale: 1.05 }}
-                    transition={{ duration: 0.3 }}
-                  >
-                    {social.name}
-                  </motion.span>
-                </ThreeDCard>
-              );
-            })}
-          </div>
-        </Background>
-      )}
-    </>
+          return (
+            <ThreeDCard key={index} href={social.url}>
+              <motion.div
+                className="text-5xl mb-3"
+                whileHover={{ scale: 1.2, rotateY: 10, rotateX: -5 }}
+                transition={{ type: "spring", stiffness: 200 }}
+              >
+                {icon}
+              </motion.div>
+              <motion.span
+                className="font-semibold text-gray-700 dark:text-gray-200 text-center"
+                whileHover={{ scale: 1.05 }}
+                transition={{ duration: 0.3 }}
+              >
+                {social.name}
+              </motion.span>
+            </ThreeDCard>
+          );
+        })}
+      </div>
+    </Background>
   );
 };

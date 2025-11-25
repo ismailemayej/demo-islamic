@@ -7,16 +7,15 @@ import { Button } from "@heroui/button";
 import { Tooltip } from "@heroui/tooltip";
 import { MessageCircle, PhoneCall } from "lucide-react";
 import { Heading } from "../Heading";
-import { useGetSection } from "@/app/dashboard/Hook/GetData";
 import Background from "../background";
 import Loader from "../loader";
+import { TTeamSection } from "@/types/all-types";
 
-export const TeamSection = () => {
-  const { section, loading, error } = useGetSection("teamsection");
-  const { section: mobilenumber } = useGetSection("contactsection");
-
-  if (loading) return <Loader />;
-  if (error || !section) return <p>Error loading team members</p>;
+type TeamSectionProps = {
+  section: TTeamSection | undefined;
+};
+export const TeamSection: React.FC<TeamSectionProps> = ({ section }) => {
+  if (!section) return <Loader />;
 
   const teamMembers = section.data || [];
 
@@ -83,7 +82,7 @@ export const TeamSection = () => {
                       <Button
                         isIconOnly
                         as="a"
-                        href={`tel:${mobilenumber?.data?.phone}`}
+                        href={`tel:${member.number}`}
                         target="_blank"
                         variant="light"
                       >

@@ -3,21 +3,16 @@
 import { motion } from "framer-motion";
 import { Heading } from "../Heading";
 import { Award } from "lucide-react";
-import { useGetSection } from "@/app/dashboard/Hook/GetData";
 import Background from "../background";
 import Loader from "../loader";
+import { CertificateItem, TCertificateSection } from "@/types/all-types";
 
-interface Certificate {
-  degree?: string;
-  institution?: string;
-  board?: string;
-  year?: string;
-  gpa?: string;
+interface CertificateProps {
+  section: TCertificateSection | undefined;
 }
 
-export const CertificateSection: React.FC = () => {
-  const { section, loading, error } = useGetSection("certificatesection");
-  if (loading) {
+export const CertificateSection: React.FC<CertificateProps> = ({ section }) => {
+  if (!section) {
     return <Loader />;
   }
   const CERTIFICATES = section?.data || [];
@@ -34,7 +29,7 @@ export const CertificateSection: React.FC = () => {
       <div className="grid gap-6 md:grid-cols-3 mt-10">
         {CERTIFICATES?.slice(0, 6)
           ?.reverse()
-          ?.map((cert: Certificate, index: number) => (
+          ?.map((cert: CertificateItem, index: number) => (
             <motion.div
               key={index}
               initial={{ opacity: 0, y: 40 }}

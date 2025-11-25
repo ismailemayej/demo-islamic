@@ -18,7 +18,7 @@ import {
   ModalFooter,
 } from "@heroui/react";
 import { toast } from "sonner";
-import { Upload, Trash2, Edit3, Check, X } from "lucide-react";
+import { Upload, Trash2, Check, X } from "lucide-react";
 import { useGetSection } from "../Hook/GetData";
 import { FaRegEdit } from "react-icons/fa";
 

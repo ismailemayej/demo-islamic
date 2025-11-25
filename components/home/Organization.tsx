@@ -4,15 +4,17 @@ import { motion } from "framer-motion";
 import { Card, CardBody } from "@heroui/card";
 import { Heading } from "../Heading";
 import { OpenModal } from "../Modal";
-import { useGetSection } from "@/app/dashboard/Hook/GetData";
 import Background from "../background";
-import Loader from "../loader";
-
-export const OrganizationSection = () => {
-  const { section, loading, error } = useGetSection("organizationsection");
+import { TOrganizationSection } from "@/types/all-types";
+type OrganizationSectionProps = {
+  section?: TOrganizationSection;
+};
+export const OrganizationSection: React.FC<OrganizationSectionProps> = ({
+  section,
+}) => {
+  // const { section, loading, error } = useGetSection("organizationsection");
   const [selectedOrg, setSelectedOrg] = useState<any>(null);
   const organizations = section?.data || [];
-  if (error || !section) return <Loader />;
 
   return (
     <Background id="organizations">
@@ -24,58 +26,55 @@ export const OrganizationSection = () => {
         }
       />
 
-      {/* ✅ লোডিং চলাকালীন Skeleton দেখাও */}
-      {!loading && (
-        <div className="grid gap-6 mt-8 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3">
-          {organizations
-            ?.slice(0, 6)
-            ?.reverse()
-            ?.map((org: any, index: number) => (
-              <motion.div
-                key={org.id}
-                initial={{ opacity: 0, y: 30 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                whileHover={{
-                  scale: 1.05,
-                  rotateX: 5,
-                  rotateY: -5,
-                  transition: { type: "spring", stiffness: 300, damping: 20 },
-                }}
-                style={{ perspective: 1000 }}
-                transition={{ duration: 0.7, delay: index * 0.2 }}
-                className="w-full cursor-pointer"
+      <div className="grid gap-6 mt-8 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3">
+        {organizations
+          ?.slice(0, 6)
+          ?.reverse()
+          ?.map((org: any, index: number) => (
+            <motion.div
+              key={org.id}
+              initial={{ opacity: 0, y: 30 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              whileHover={{
+                scale: 1.05,
+                rotateX: 5,
+                rotateY: -5,
+                transition: { type: "spring", stiffness: 300, damping: 20 },
+              }}
+              style={{ perspective: 1000 }}
+              transition={{ duration: 0.7, delay: index * 0.2 }}
+              className="w-full cursor-pointer"
+            >
+              <Card
+                isHoverable
+                className="flex flex-col items-center shadow-xl bg-white/80 dark:bg-gray-800/50 border border-amber-100 dark:border-gray-700 backdrop-blur-lg rounded-2xl transition-all duration-300"
               >
-                <Card
-                  isHoverable
-                  className="flex flex-col items-center shadow-xl bg-white/80 dark:bg-gray-800/50 border border-amber-100 dark:border-gray-700 backdrop-blur-lg rounded-2xl transition-all duration-300"
-                >
-                  {org.img && (
-                    <img
-                      src={org.img}
-                      alt={org.name}
-                      className="w-full h-40 object-cover rounded-t-2xl"
-                      onClick={() => setSelectedOrg(org)}
-                    />
-                  )}
-                  <CardBody className="text-center py-4">
-                    <h4
-                      className="bangla text-lg font-semibold text-gray-800 dark:text-gray-100 hover:text-amber-600 dark:hover:text-amber-400 transition-colors duration-300 cursor-pointer"
-                      onClick={() => setSelectedOrg(org)}
-                    >
-                      {org.name}
-                    </h4>
-                    <p className="text-gray-700 dark:text-gray-200 text-sm">
-                      পজিশন: {org.possition}
-                    </p>
-                    <p className="text-gray-600 dark:text-gray-300 text-sm">
-                      ঠিকানা: {org.address}
-                    </p>
-                  </CardBody>
-                </Card>
-              </motion.div>
-            ))}
-        </div>
-      )}
+                {org.img && (
+                  <img
+                    src={org.img}
+                    alt={org.name}
+                    className="w-full h-40 object-cover rounded-t-2xl"
+                    onClick={() => setSelectedOrg(org)}
+                  />
+                )}
+                <CardBody className="text-center py-4">
+                  <h4
+                    className="bangla text-lg font-semibold text-gray-800 dark:text-gray-100 hover:text-amber-600 dark:hover:text-amber-400 transition-colors duration-300 cursor-pointer"
+                    onClick={() => setSelectedOrg(org)}
+                  >
+                    {org.name}
+                  </h4>
+                  <p className="text-gray-700 dark:text-gray-200 text-sm">
+                    পজিশন: {org.possition}
+                  </p>
+                  <p className="text-gray-600 dark:text-gray-300 text-sm">
+                    ঠিকানা: {org.address}
+                  </p>
+                </CardBody>
+              </Card>
+            </motion.div>
+          ))}
+      </div>
 
       {/* ✅ Scrollable Modal */}
       {selectedOrg && (

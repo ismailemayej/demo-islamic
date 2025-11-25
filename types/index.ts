@@ -21,3 +21,29 @@ export interface ApiResponse<T = any> {
   error?: string;
   groupedData?: Record<string, SectionData<T>>;
 }
+export interface HeroSection {
+  heading: string;
+  subheading: string;
+  image: string;
+}
+
+export interface AboutSection {
+  heading: string;
+  description: string;
+  image: string;
+}
+
+export interface WebsiteData {
+  herosection: HeroSection;
+  aboutsection: AboutSection;
+  videosection: any;
+  socialsection: any;
+  educationsection: any;
+  achievementsection: any;
+  photosection: any;
+  testimonialsection: any;
+  certificatesection: any;
+  contactsection: any;
+  teamsection: any;
+  organizationsection: any;
+}

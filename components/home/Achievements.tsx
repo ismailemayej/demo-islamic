@@ -4,17 +4,16 @@ import { Heading } from "../Heading";
 import Background from "../background";
 import { useGetSection } from "@/app/dashboard/Hook/GetData";
 import Loader from "../loader";
+import { AchievementItem, TAchievementsSection } from "@/types/all-types";
 
-interface Achievement {
-  id: string;
-  title: string;
-  count: number;
-  icon: string;
+interface AchievementProps {
+  section: TAchievementsSection | undefined;
 }
 
-export const AchievementsSection: React.FC = () => {
-  const { section, loading, error } = useGetSection("achievementsection");
-  if (loading) {
+export const AchievementsSection: React.FC<AchievementProps> = ({
+  section,
+}) => {
+  if (!section) {
     return <Loader />;
   }
   // console.log("Achievement section:", section);
@@ -30,7 +29,7 @@ export const AchievementsSection: React.FC = () => {
       <div className="grid gap-4 sm:grid-cols-2 md:grid-cols-4">
         {ACHIEVEMENTS?.slice(0, 4)
           ?.reverse()
-          ?.map((achievement: Achievement, index: number) => (
+          ?.map((achievement: AchievementItem, index: number) => (
             <motion.div
               key={achievement.id}
               initial={{ opacity: 0, y: 20 }}

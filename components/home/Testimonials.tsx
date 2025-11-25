@@ -2,22 +2,18 @@
 
 import { motion } from "framer-motion";
 import { Heading } from "../Heading";
-import { useGetSection } from "@/app/dashboard/Hook/GetData";
 import Background from "../background";
 import Loader from "../loader";
+import { TestimonialItem, TTestimonialsSection } from "@/types/all-types";
 
-interface Testimonial {
-  id: string;
-  name: string;
-  role: string;
-  comment: string;
-  image?: string;
-}
-
-export const TestimonialsSection: React.FC = () => {
-  const { section, loading, error } = useGetSection("testimonialsection");
+type TestimonialProps = {
+  section: TTestimonialsSection | undefined;
+};
+export const TestimonialsSection: React.FC<TestimonialProps> = ({
+  section,
+}) => {
   const TESTIMONIALS = section?.data || [];
-  if (loading) {
+  if (!section) {
     return <Loader />;
   }
 
@@ -34,7 +30,7 @@ export const TestimonialsSection: React.FC = () => {
       <div className="mt-3 grid gap-8 md:grid-cols-4">
         {TESTIMONIALS?.slice(0, 4)
           ?.reverse()
-          ?.map((testimonial: Testimonial, index: number) => (
+          ?.map((testimonial: TestimonialItem, index: number) => (
             <motion.div
               key={testimonial.id}
               initial={{ opacity: 0, y: 30 }}

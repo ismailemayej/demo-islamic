@@ -1,4 +1,6 @@
 "use client";
+
+import { WebsiteData } from "@/types/allData";
 import { AboutSection } from "./About";
 import { AchievementsSection } from "./Achievements";
 import { ArticlesSection } from "./Blog";
@@ -17,82 +19,79 @@ import { TeamSection } from "./Team";
 import { TestimonialsSection } from "./Testimonials";
 import { YouTubeVideosSection } from "./YTvideos";
 
-export default function Main() {
+export default function Main({ data }: { data: WebsiteData[] }) {
+  // Helper method → any section data
+  const getSection = (name: string) =>
+    data.find((item) => item.section === name);
+
   return (
-    <main className="flex flex-col lg:gap-5 gap-2 items-center justify-center w-full overflow-hidden transition-colors duration-500 bg-white dark:bg-gray-900 text-gray-900 dark:text-gray-100">
+    <main className="flex flex-col lg:gap-5 gap-2 items-center justify-center w-full">
       {/* Hero */}
-      <section className="w-full transition-colors duration-500">
-        <HeroSection />
+      <section className="w-full">
+        <HeroSection section={getSection("herosection")?.data} />
       </section>
       {/* About */}
-      <section className="w-full transition-colors duration-500">
-        <AboutSection />
+      <section className="w-full">
+        <AboutSection section={getSection("aboutsection")} />
       </section>
       {/* Programs */}
-      <section className="w-full  transition-colors duration-500">
-        <RecentProgramsSection />
+      <section className="w-full">
+        <RecentProgramsSection section={getSection("programsection")} />
       </section>
-      {/* YouTube Videos */}
-      <section className="w-full transition-colors duration-500">
-        <YouTubeVideosSection />
+      {/* YouTube */}
+      <section className="w-full">
+        <YouTubeVideosSection data={getSection("youtubevideosection")} />
       </section>
-
       {/* Social Media */}
-      <section className="w-full transition-colors duration-500">
-        <SocialMediaSection />
+      <section className="w-full">
+        <SocialMediaSection section={getSection("socialmediasection")} />
       </section>
-      {/* Service */}
-      <section className="w-full transition-colors duration-500">
-        <ServiceSection />
+      {/* Services */}
+      <section className="w-full">
+        <ServiceSection section={getSection("servicesection")} />
       </section>
-
       {/* Gallery */}
-      <section className="w-full transition-colors duration-500">
-        <GallerySection />
+      <section className="w-full">
+        <GallerySection section={getSection("gallerysection")} />
       </section>
       {/* Contact */}
-      <section className="w-full transition-colors duration-500">
-        <ContactSection />
+      <section className="w-full">
+        <ContactSection section={getSection("contactsection")} />
       </section>
       {/* Organization */}
-      <section className="w-full transition-colors duration-500">
-        <OrganizationSection />
+      <section className="w-full">
+        <OrganizationSection section={getSection("organizationsection")} />
       </section>
-      {/* Booksection */}
-      <section className="w-full transition-colors duration-500">
-        <BookSection />
+      {/* Books */}
+      <section className="w-full">
+        <BookSection section={getSection("booksection")} />
       </section>
       {/* Testimonials */}
-      <section className="w-full transition-colors duration-500">
-        <TestimonialsSection />
+      <section className="w-full">
+        <TestimonialsSection section={getSection("testimonialsection")} />
       </section>
       {/* Education */}
-      <section className="w-full transition-colors duration-500">
-        <EducationSection />
+      <section className="w-full">
+        <EducationSection section={getSection("educationsection")} />
       </section>
-
       {/* Achievements */}
-      <section className="w-full transition-colors duration-500">
-        <AchievementsSection />
+      <section className="w-full">
+        <AchievementsSection section={getSection("achievementsection")} />
       </section>
-
       {/* Articles */}
-      <section className="w-full transition-colors duration-500">
-        <ArticlesSection />
+      <section className="w-full">
+        <ArticlesSection section={getSection("blogsection")} />
       </section>
-
       {/* Certificates */}
-      <section className="w-full transition-colors duration-500">
-        <CertificateSection />
+      <section className="w-full">
+        <CertificateSection section={getSection("certificatesection")} />
       </section>
-
-      {/* TEAM */}
-      <section className="w-full transition-colors duration-500">
-        <TeamSection />
+      {/* Team */}
+      <section className="w-full">
+        <TeamSection section={getSection("teamsection")} />
       </section>
-
       {/* Booking */}
-      <section className="w-full transition-colors duration-500">
+      <section className="w-full">
         <AppointmentSection />
       </section>
     </main>

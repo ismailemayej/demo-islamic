@@ -3,26 +3,18 @@
 import { motion } from "framer-motion";
 import { GraduationCap } from "lucide-react";
 import { Heading } from "../Heading";
-import { useGetSection } from "@/app/dashboard/Hook/GetData";
 import Background from "../background";
 import Loader from "../loader";
+import { EducationItem, TEducationSection } from "@/types/all-types";
 
-interface Education {
-  id: number;
-  examName: string;
-  institution: string;
-  year: string;
-  result: string;
-  duration: string;
+interface EducationProps {
+  section: TEducationSection | undefined;
 }
-
-export const EducationSection: React.FC = () => {
-  const { section, loading, error } = useGetSection("educationsection");
+export const EducationSection: React.FC<EducationProps> = ({ section }) => {
   const EDUCATION_DATA = section?.data || [];
-  if (loading) {
+  if (!section) {
     return <Loader />;
   }
-
   return (
     <Background id="education">
       <Heading
@@ -36,7 +28,7 @@ export const EducationSection: React.FC = () => {
       <div className="mx-auto grid gap-4 sm:grid-cols-2 lg:grid-cols-5">
         {EDUCATION_DATA?.slice(0, 5)
 
-          ?.map((edu: Education, index: number) => (
+          ?.map((edu: EducationItem, index: number) => (
             <motion.div
               key={index}
               initial={{ opacity: 0, y: 30 }}

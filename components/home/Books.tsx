@@ -8,16 +8,17 @@ import { Heading } from "../Heading";
 import Background from "../background";
 import { OpenModal } from "../Modal";
 import Loader from "../loader";
+import { TBookSection } from "@/types/all-types";
 
-export const BookSection = () => {
-  const { section, loading } = useGetSection("booksection");
+type BookSectionProps = {
+  section: TBookSection | undefined;
+};
+export const BookSection: React.FC<BookSectionProps> = ({ section }) => {
   const { section: contactSection } = useGetSection("contactsection");
   const [selectedBook, setSelectedBook] = useState<any>(null);
-
-  if (loading) {
+  if (!section) {
     return <Loader />;
   }
-
   const heading = section?.heading || {
     title: "Our Books",
     subTitle: "Explore our collection of Islamic and modern books",

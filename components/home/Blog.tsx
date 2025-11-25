@@ -1,28 +1,20 @@
 "use client";
-
 import { motion } from "framer-motion";
 import { Heading } from "../Heading";
 import Background from "../background";
-import { useGetSection } from "@/app/dashboard/Hook/GetData";
 import { useState } from "react";
 import { OpenModal } from "../Modal";
 import Loader from "../loader";
+import { ArticleItem, TArticlesSection } from "@/types/all-types";
 
-interface Article {
-  id: string;
-  blogtitle: string;
-  blogdescription: string;
-  blogwriter: string;
-  date: string;
+interface ArticleProps {
+  section: TArticlesSection | undefined;
 }
 
-export const ArticlesSection: React.FC = () => {
-  const { section, loading } = useGetSection("blogsection");
-  const MOCK_ARTICLES: Article[] = section?.data || [];
-
-  const [activeArticle, setActiveArticle] = useState<Article | null>(null);
-
-  if (loading) {
+export const ArticlesSection: React.FC<ArticleProps> = ({ section }) => {
+  const MOCK_ARTICLES: ArticleItem[] = section?.data || [];
+  const [activeArticle, setActiveArticle] = useState<ArticleItem | null>(null);
+  if (!section) {
     return <Loader />;
   }
   return (
@@ -38,7 +30,7 @@ export const ArticlesSection: React.FC = () => {
       <div className="mt-12 grid gap-4 md:grid-cols-4">
         {MOCK_ARTICLES?.slice(0, 4)
           ?.reverse()
-          ?.map((article: Article, index: number) => (
+          ?.map((article: ArticleItem, index: number) => (
             <motion.div
               key={article.id}
               initial={{ opacity: 0, y: 20 }}

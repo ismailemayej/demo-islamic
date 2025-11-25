@@ -10,8 +10,6 @@ import {
   FaWhatsapp,
 } from "react-icons/fa";
 import Background from "../background";
-import { useGetSection } from "@/app/dashboard/Hook/GetData";
-import Loader from "../loader";
 
 interface ContactItemProps {
   icon: React.ReactNode;
@@ -40,11 +38,22 @@ const ContactCard: React.FC<ContactItemProps> = ({ icon, title, value }) => (
   </motion.div>
 );
 
-export const ContactSection: React.FC = () => {
-  const { section, loading, error } = useGetSection("contactsection");
-
-  if (loading) return <Loader />;
-  if (error || !section) return <p>Error loading contact info</p>;
+interface TContactSection {
+  section?: {
+    heading: {
+      title: string;
+      subTitle: string;
+    };
+    data: {
+      email: string;
+      phone: string;
+      address: string;
+      mapUrl: string;
+    };
+  };
+}
+export const ContactSection: React.FC<TContactSection> = ({ section }) => {
+  if (!section) return null;
 
   const { email, phone, address, mapUrl } = section.data;
 
@@ -78,6 +87,7 @@ export const ContactSection: React.FC = () => {
             <a
               href={`https://wa.me/${phone.replace("+", "")}`}
               target="_blank"
+              rel="noreferrer"
               className="hover:text-green-500"
             >
               Message on WhatsApp
@@ -101,7 +111,12 @@ export const ContactSection: React.FC = () => {
           icon={<FaMapMarkerAlt />}
           title="Address"
           value={
-            <a href={mapUrl} target="_blank" className="hover:text-amber-600">
+            <a
+              href={mapUrl}
+              target="_blank"
+              rel="noreferrer"
+              className="hover:text-amber-600"
+            >
               {address}
             </a>
           }
