@@ -199,7 +199,7 @@ export const BookSectionDashboard = () => {
       </div>
       {/* Books Grid */}
       <div className="grid gap-6 md:grid-cols-3">
-        {formData.data.map((book) => (
+        {formData.data?.reverse()?.map((book) => (
           <div
             key={book.id}
             className="p-4 border rounded-lg relative shadow-xl bg-white dark:bg-gray-800"

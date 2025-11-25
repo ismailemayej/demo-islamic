@@ -35,15 +35,11 @@ export const EducationSectionDashboard: React.FC = () => {
     data: [],
   });
 
-  // Heading edit toggle (restored)
   const [editingSection, setEditingSection] = useState(false);
-
-  // Modal states for add/edit items
   const [isAddModal, setIsAddModal] = useState(false);
   const [isEditModal, setIsEditModal] = useState(false);
   const [editIndex, setEditIndex] = useState<number | null>(null);
 
-  // Temp item for modal form
   const [tempEducation, setTempEducation] = useState<Education>({
     examName: "",
     institution: "",
@@ -54,6 +50,7 @@ export const EducationSectionDashboard: React.FC = () => {
   });
 
   const [saving, setSaving] = useState(false);
+  const [hasUnsavedChanges, setHasUnsavedChanges] = useState(false);
 
   useEffect(() => {
     if (section) {
@@ -73,6 +70,7 @@ export const EducationSectionDashboard: React.FC = () => {
       ...prev,
       heading: { ...prev.heading, [field]: value },
     }));
+    setHasUnsavedChanges(true);
   };
 
   // -------------------- ADD NEW -----------------------
@@ -94,6 +92,7 @@ export const EducationSectionDashboard: React.FC = () => {
       data: [...prev.data, tempEducation],
     }));
     setIsAddModal(false);
+    setHasUnsavedChanges(true);
     toast.success("Added new education item (local).");
   };
 
@@ -113,6 +112,7 @@ export const EducationSectionDashboard: React.FC = () => {
     setFormData((prev) => ({ ...prev, data: newData }));
     setIsEditModal(false);
     setEditIndex(null);
+    setHasUnsavedChanges(true);
     toast.success("Edited item (local).");
   };
 
@@ -121,6 +121,7 @@ export const EducationSectionDashboard: React.FC = () => {
     const newData = [...formData.data];
     newData.splice(index, 1);
     setFormData((prev) => ({ ...prev, data: newData }));
+    setHasUnsavedChanges(true);
     toast.success("Item removed (local).");
   };
 
@@ -142,6 +143,7 @@ export const EducationSectionDashboard: React.FC = () => {
       toast.dismiss("save");
       toast.success("✅ Saved successfully!");
       setEditingSection(false);
+      setHasUnsavedChanges(false);
     } catch (err: any) {
       toast.dismiss("save");
       toast.error(err.message || "Save failed");
@@ -168,7 +170,6 @@ export const EducationSectionDashboard: React.FC = () => {
             <IoAddCircleSharp className="text-green-500 cursor-pointer w-7 h-7" />
           </button>
 
-          {/* Heading Edit Toggle (restored) */}
           <button
             onClick={() => setEditingSection(!editingSection)}
             className="transition"
@@ -183,7 +184,7 @@ export const EducationSectionDashboard: React.FC = () => {
         </span>
       </div>
 
-      {/* Edit Heading (shown when editingSection true) */}
+      {/* Edit Heading */}
       {editingSection && (
         <div className="bg-white dark:bg-gray-800 p-6 rounded-xl shadow-lg my-6">
           <div className="grid sm:grid-cols-2 gap-4 mb-5">
@@ -225,88 +226,87 @@ export const EducationSectionDashboard: React.FC = () => {
 
       {/* Education Cards */}
       <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
-        {formData.data.map((edu, index) => {
-          return (
-            <motion.div
-              key={index}
-              initial={{ opacity: 0, y: 30 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.8, delay: index * 0.05 }}
-              className="relative p-6 bg-white dark:bg-gray-800 shadow-md rounded-2xl border border-amber-100 dark:border-gray-700 hover:shadow-xl transition-all duration-300"
-            >
-              {/* Card Edit/Delete Buttons */}
-              <div className="absolute top-3 right-3 flex gap-2">
-                <button
-                  onClick={() => openEditModal(index)}
-                  className="text-blue-500 hover:text-blue-700 transition"
-                  title="Edit item"
-                >
-                  <FaRegEdit className="text-yellow-500 cursor-pointer w-6 h-6" />
-                </button>
-                <button
-                  onClick={() => handleDelete(index)}
-                  className="text-red-500 hover:text-red-700 transition"
-                  title="Delete item"
-                >
-                  <BsTrash3Fill className="text-rose-500 cursor-pointer w-5 h-5" />
-                </button>
-              </div>
+        {formData.data?.reverse()?.map((edu, index) => (
+          <motion.div
+            key={index}
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8, delay: index * 0.05 }}
+            className="relative p-6 bg-white dark:bg-gray-800 shadow-md rounded-2xl border border-amber-100 dark:border-gray-700 hover:shadow-xl transition-all duration-300"
+          >
+            <div className="absolute top-3 right-3 flex gap-2">
+              <button
+                onClick={() => openEditModal(index)}
+                className="text-blue-500 hover:text-blue-700 transition"
+                title="Edit item"
+              >
+                <FaRegEdit className="text-yellow-500 cursor-pointer w-6 h-6" />
+              </button>
+              <button
+                onClick={() => handleDelete(index)}
+                className="text-red-500 hover:text-red-700 transition"
+                title="Delete item"
+              >
+                <BsTrash3Fill className="text-rose-500 cursor-pointer w-5 h-5" />
+              </button>
+            </div>
 
-              <div className="flex items-center gap-3 mb-4">
-                <GraduationCap className="text-amber-600 dark:text-amber-400 w-6 h-6" />
-                <h3 className="bangla text-lg font-semibold text-amber-800 dark:text-amber-400">
-                  {edu.examName || "—"}
-                </h3>
-              </div>
+            <div className="flex items-center gap-3 mb-4">
+              <GraduationCap className="text-amber-600 dark:text-amber-400 w-6 h-6" />
+              <h3 className="bangla text-lg font-semibold text-amber-800 dark:text-amber-400">
+                {edu.examName || "—"}
+              </h3>
+            </div>
 
-              <div className="space-y-2 text-gray-700 dark:text-gray-300 bangla">
-                <div>
-                  <span className="text-amber-700 dark:text-amber-500 font-semibold">
-                    প্রতিষ্ঠান:
-                  </span>{" "}
-                  {edu.institution || "—"}
-                </div>
-                <div>
-                  <span className="text-amber-700 dark:text-amber-500 font-semibold">
-                    বোর্ড:
-                  </span>{" "}
-                  {edu.board || "—"}
-                </div>
-                <div>
-                  <span className="text-amber-700 dark:text-amber-500 font-semibold">
-                    সাল:
-                  </span>{" "}
-                  {edu.year || "—"}
-                </div>
-                <div>
-                  <span className="text-amber-700 dark:text-amber-500 font-semibold">
-                    রেজাল্ট:
-                  </span>{" "}
-                  {edu.result || "—"}
-                </div>
-                <div>
-                  <span className="text-amber-700 dark:text-amber-500 font-semibold">
-                    সময়:
-                  </span>{" "}
-                  {edu.duration || "—"}
-                </div>
+            <div className="space-y-2 text-gray-700 dark:text-gray-300 bangla">
+              <div>
+                <span className="text-amber-700 dark:text-amber-500 font-semibold">
+                  প্রতিষ্ঠান:
+                </span>{" "}
+                {edu.institution || "—"}
               </div>
-            </motion.div>
-          );
-        })}
+              <div>
+                <span className="text-amber-700 dark:text-amber-500 font-semibold">
+                  বোর্ড:
+                </span>{" "}
+                {edu.board || "—"}
+              </div>
+              <div>
+                <span className="text-amber-700 dark:text-amber-500 font-semibold">
+                  সাল:
+                </span>{" "}
+                {edu.year || "—"}
+              </div>
+              <div>
+                <span className="text-amber-700 dark:text-amber-500 font-semibold">
+                  রেজাল্ট:
+                </span>{" "}
+                {edu.result || "—"}
+              </div>
+              <div>
+                <span className="text-amber-700 dark:text-amber-500 font-semibold">
+                  সময়:
+                </span>{" "}
+                {edu.duration || "—"}
+              </div>
+            </div>
+          </motion.div>
+        ))}
       </div>
 
-      {/* Save Button */}
-      <div className="flex justify-center mt-8">
-        <button
-          onClick={handleSave}
-          disabled={saving}
-          className="flex items-center gap-2 bg-amber-500 text-white px-6 py-3 rounded-lg hover:bg-amber-600 shadow-md hover:shadow-lg transition"
-        >
-          <Save size={18} />
-          {saving ? "Saving..." : "Save Changes"}
-        </button>
-      </div>
+      {/* Save Button (shown only when unsaved changes exist) */}
+      {hasUnsavedChanges && (
+        <div className="flex justify-center mt-8">
+          <button
+            onClick={handleSave}
+            disabled={saving}
+            className="flex items-center gap-2 bg-amber-500 text-white px-6 py-3 rounded-lg hover:bg-amber-600 shadow-md hover:shadow-lg transition"
+          >
+            <Save size={18} />
+            {saving ? "Saving..." : "Save Changes"}
+          </button>
+        </div>
+      )}
 
       {/* ---------------- Add Modal ----------------- */}
       <OpenModal

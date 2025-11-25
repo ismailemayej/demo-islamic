@@ -147,7 +147,7 @@ export const YouTubeVideosSectionDashboard: React.FC = () => {
 
         {/* Video Grid */}
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
-          {formData.data.map((video, index) => {
+          {formData.data?.reverse()?.map((video, index) => {
             const vid = video.url.split("v=")[1];
             const thumb = `https://img.youtube.com/vi/${vid}/0.jpg`;
 

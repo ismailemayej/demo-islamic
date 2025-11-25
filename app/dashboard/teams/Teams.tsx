@@ -179,7 +179,7 @@ export const TeamSectionDashboard = () => {
         </div>
 
         <div className="grid gap-6 grid-cols-1 md:grid-cols-3 lg:grid-cols-4">
-          {formData.data.map((member) => (
+          {formData.data?.reverse()?.map((member) => (
             <motion.div
               key={member.id}
               initial={{ opacity: 0, y: 20 }}

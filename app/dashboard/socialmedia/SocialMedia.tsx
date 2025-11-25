@@ -298,7 +298,7 @@ export const SocialMediaSectionDashboard: React.FC = () => {
 
         {/* Preview */}
         <div className="mt-10 grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-6">
-          {formData.data.map((social, index) => (
+          {formData.data?.reverse()?.map((social, index) => (
             <motion.a
               key={social.id}
               href={social.url || "#"}

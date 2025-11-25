@@ -200,7 +200,7 @@ export const ProgramsSectionDashboard: React.FC = () => {
 
         {/* ---------- Programs List ---------- */}
         <div className="grid gap-6 md:grid-cols-4 mt-4">
-          {formData.data.map((program) => {
+          {formData.data?.reverse()?.map((program) => {
             const programDate = new Date(program.date);
             const diffTime = programDate.getTime() - new Date().getTime();
             const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));

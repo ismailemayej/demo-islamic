@@ -35,6 +35,12 @@ export const GallerySectionDashboard: React.FC = () => {
   const [saving, setSaving] = useState(false);
   const [uploading, setUploading] = useState(false);
 
+  // Modal state
+  const [showUploadModal, setShowUploadModal] = useState(false);
+  const [currentUploadIndex, setCurrentUploadIndex] = useState<number | null>(
+    null
+  );
+
   useEffect(() => {
     if (section) {
       setFormData({
@@ -66,12 +72,15 @@ export const GallerySectionDashboard: React.FC = () => {
     }
   };
 
-  // ---------- ADD NEW ITEM ----------
-  const handleAdd = () => {
+  // ---------- ADD NEW ITEM WITH MODAL ----------
+  const handleAddWithModal = () => {
+    const newItem = { id: Date.now().toString(), title: "", image: "" };
     setFormData((prev) => ({
       ...prev,
-      data: [...prev.data, { id: Date.now().toString(), title: "", image: "" }],
+      data: [...prev.data, newItem],
     }));
+    setCurrentUploadIndex(formData.data.length); // নতুন item's index
+    setShowUploadModal(true);
   };
 
   // ---------- DELETE ITEM ----------
@@ -85,11 +94,11 @@ export const GallerySectionDashboard: React.FC = () => {
     setFormData((prev) => ({ ...prev, data: updated }));
   };
 
-  // ---------- IMAGE UPLOAD ----------
-  const handleImageUpload = async (
-    e: React.ChangeEvent<HTMLInputElement>,
-    index: number
+  // ---------- IMAGE UPLOAD FOR MODAL ----------
+  const handleModalImageUpload = async (
+    e: React.ChangeEvent<HTMLInputElement>
   ) => {
+    if (currentUploadIndex === null) return;
     const file = e.target.files?.[0];
     if (!file) return;
 
@@ -104,9 +113,10 @@ export const GallerySectionDashboard: React.FC = () => {
       const data = await res.json();
 
       if (data?.secure_url) {
-        handleChange("data", "image", data.secure_url, index);
+        handleChange("data", "image", data.secure_url, currentUploadIndex);
         toast.dismiss("upload");
         toast.success("Image uploaded successfully!");
+        setShowUploadModal(false);
       } else {
         throw new Error("Upload failed");
       }
@@ -191,7 +201,7 @@ export const GallerySectionDashboard: React.FC = () => {
             subTitle={formData.heading.subTitle}
           />
           <span className="flex gap-2 items-center">
-            <button onClick={handleAdd}>
+            <button onClick={handleAddWithModal}>
               <IoAddCircleSharp className="text-green-500 cursor-pointer w-7 h-7" />
             </button>
             <button onClick={() => setEditing(!editing)} className="transition">
@@ -245,7 +255,7 @@ export const GallerySectionDashboard: React.FC = () => {
 
             {/* Gallery Items */}
             <div className="space-y-4 grid grid-cols-1 lg:grid-cols-4 gap-4">
-              {formData.data.map((item, i) => (
+              {formData.data?.reverse()?.map((item, i) => (
                 <motion.div
                   key={item.id}
                   whileHover={{ scale: 1.01 }}
@@ -267,24 +277,6 @@ export const GallerySectionDashboard: React.FC = () => {
                       handleChange("data", "title", e.target.value, i)
                     }
                     className="w-full border-b border-gray-300 dark:bg-gray-700 p-1 mb-2"
-                  />
-
-                  {/* File Input */}
-                  <label
-                    htmlFor={`file-input-${i}`}
-                    className="flex items-center justify-center p-4 border-2 border-dashed border-gray-300 dark:border-gray-600 rounded-lg cursor-pointer hover:border-amber-500 hover:bg-amber-50 dark:hover:bg-gray-600 transition-colors mb-2"
-                  >
-                    <span className="text-gray-600 dark:text-gray-300 text-sm">
-                      {item.image ? "Change Image" : "Upload Image"}
-                    </span>
-                  </label>
-                  <Input
-                    size="md"
-                    id={`file-input-${i}`}
-                    type="file"
-                    accept="image/*"
-                    onChange={(e) => handleImageUpload(e, i)}
-                    className="hidden"
                   />
 
                   {item.image && (
@@ -319,22 +311,41 @@ export const GallerySectionDashboard: React.FC = () => {
               transition={{ duration: 0.5, delay: i * 0.1 }}
               className={`relative overflow-hidden rounded-xl group shadow-md dark:shadow-gray-700 border border-gray-200 dark:border-gray-700 ${i === 1 || i === 0 || i === 5 || i === 2 ? "col-span-2" : ""} ${i === 2 ? "row-span-2" : ""}`}
             >
-              {" "}
               <img
                 src={item.image}
                 alt={item.title || "Gallery Image"}
                 className="w-full h-full object-cover transform duration-300 group-hover:scale-105"
-              />{" "}
-              {/* Overlay caption */}{" "}
+              />
               {item.title && (
                 <div className="absolute bottom-2 left-2 bg-amber-600/80 dark:bg-amber-500/80 text-white dark:text-gray-900 text-sm font-medium px-3 py-1 rounded-lg backdrop-blur-sm">
-                  {" "}
-                  {item.title}{" "}
+                  {item.title}
                 </div>
-              )}{" "}
+              )}
             </motion.div>
           ))}
         </div>
+
+        {/* ---------- UPLOAD MODAL ---------- */}
+        {showUploadModal && (
+          <div className="fixed inset-0 bg-black/50 z-50 flex justify-center items-center">
+            <div className="bg-white dark:bg-gray-800 p-6 rounded-xl flex flex-col items-center gap-4">
+              <h2 className="text-lg font-semibold">Upload New Image</h2>
+              <input
+                type="file"
+                accept="image/*"
+                onChange={handleModalImageUpload}
+                className="border p-2 rounded-lg"
+              />
+              <button
+                className="mt-4 px-4 py-2 bg-red-500 text-white rounded-lg"
+                onClick={() => setShowUploadModal(false)}
+              >
+                Cancel
+              </button>
+              {uploading && <Spinner size="sm" />}
+            </div>
+          </div>
+        )}
       </div>
     </section>
   );

@@ -138,49 +138,52 @@ export const AchievementsDashboard = () => {
 
       {/* ✅ Grid Section */}
       <div className="grid sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 mt-8">
-        {formData.data.map((achievement, index) => (
-          <motion.div
-            key={achievement.id}
-            initial={{ opacity: 0, y: 20, rotateY: 45 }}
-            whileInView={{ opacity: 1, y: 0, rotateY: 0 }}
-            transition={{ duration: 0.6 }}
-            className="bg-white dark:bg-gray-800 rounded-2xl shadow-xl p-6 relative group"
-          >
-            {/* 3D Animated Icon */}
+        {formData.data
+          ?.slice(0, 8)
+          ?.reverse()
+          ?.map((achievement, index) => (
             <motion.div
-              initial={{ rotateY: 0 }}
-              whileHover={{ rotateY: 360 }}
-              transition={{ duration: 1 }}
-              className="text-5xl mb-4 text-amber-500 flex justify-center"
+              key={achievement.id}
+              initial={{ opacity: 0, y: 20, rotateY: 45 }}
+              whileInView={{ opacity: 1, y: 0, rotateY: 0 }}
+              transition={{ duration: 0.6 }}
+              className="bg-white dark:bg-gray-800 rounded-2xl shadow-xl p-6 relative group"
             >
-              {/* <Layers3D className="w-10 h-10" /> */}
-              {achievement.icon}
+              {/* 3D Animated Icon */}
+              <motion.div
+                initial={{ rotateY: 0 }}
+                whileHover={{ rotateY: 360 }}
+                transition={{ duration: 1 }}
+                className="text-5xl mb-4 text-amber-500 flex justify-center"
+              >
+                {/* <Layers3D className="w-10 h-10" /> */}
+                {achievement.icon}
+              </motion.div>
+
+              <h3 className="text-3xl font-bold text-emerald-600 dark:text-emerald-400 text-center">
+                {achievement.count}+
+              </h3>
+              <p className="text-gray-700 dark:text-gray-300 text-center mt-2">
+                {achievement.title}
+              </p>
+
+              {/* Edit/Delete 3D buttons */}
+              <div className="absolute top-3 right-3 flex gap-2   transition">
+                <motion.button
+                  onClick={() => setSelectedAchievement(achievement)}
+                  whileHover={{ scale: 1.2 }}
+                >
+                  <FaRegEdit className="text-yellow-500 cursor-pointer w-6 h-6" />
+                </motion.button>
+                <motion.button
+                  onClick={() => handleDelete(achievement.id)}
+                  whileHover={{ scale: 1.2 }}
+                >
+                  <BsTrash3Fill className="text-rose-500 cursor-pointer w-6 h-5" />
+                </motion.button>
+              </div>
             </motion.div>
-
-            <h3 className="text-3xl font-bold text-emerald-600 dark:text-emerald-400 text-center">
-              {achievement.count}+
-            </h3>
-            <p className="text-gray-700 dark:text-gray-300 text-center mt-2">
-              {achievement.title}
-            </p>
-
-            {/* Edit/Delete 3D buttons */}
-            <div className="absolute top-3 right-3 flex gap-2   transition">
-              <motion.button
-                onClick={() => setSelectedAchievement(achievement)}
-                whileHover={{ scale: 1.2 }}
-              >
-                <FaRegEdit className="text-yellow-500 cursor-pointer w-6 h-6" />
-              </motion.button>
-              <motion.button
-                onClick={() => handleDelete(achievement.id)}
-                whileHover={{ scale: 1.2 }}
-              >
-                <BsTrash3Fill className="text-rose-500 cursor-pointer w-6 h-5" />
-              </motion.button>
-            </div>
-          </motion.div>
-        ))}
+          ))}
       </div>
 
       {/* ✅ Edit Achievement Modal */}
