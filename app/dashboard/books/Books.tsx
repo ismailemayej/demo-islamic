@@ -7,6 +7,8 @@ import { useGetSection } from "@/app/dashboard/Hook/GetData";
 import { OpenModal } from "@/components/Modal";
 import { FaRegEdit } from "react-icons/fa";
 import { BsTrash3Fill } from "react-icons/bs";
+import { IoAddCircleSharp } from "react-icons/io5";
+import { Heading } from "@/components/Heading";
 
 interface Book {
   id: string;
@@ -31,6 +33,7 @@ export const BookSectionDashboard = () => {
 
   const [selectedBook, setSelectedBook] = useState<Book | null>(null);
   const [modalOpen, setModalOpen] = useState(false);
+  const [headingModalOpen, setHeadingModalOpen] = useState(false);
   const [saving, setSaving] = useState(false);
   const [uploading, setUploading] = useState(false);
 
@@ -46,7 +49,6 @@ export const BookSectionDashboard = () => {
     }
   }, [section]);
 
-  // Centralized save function
   const handleSaveSection = async (updatedData: BookSectionData = formData) => {
     setSaving(true);
     toast.loading("Saving...", { id: "save" });
@@ -64,6 +66,7 @@ export const BookSectionDashboard = () => {
       toast.success("✅ Saved successfully!");
       setSelectedBook(null);
       setModalOpen(false);
+      setHeadingModalOpen(false);
     } catch (err: any) {
       toast.dismiss("save");
       toast.error(err.message || "Save failed");
@@ -102,7 +105,6 @@ export const BookSectionDashboard = () => {
     if (!selectedBook) return;
     const file = e.target.files?.[0];
     if (!file) return;
-
     setUploading(true);
     toast.loading("Uploading image...", { id: "upload" });
 
@@ -134,7 +136,8 @@ export const BookSectionDashboard = () => {
   if (loading)
     return (
       <div className="flex justify-center items-center py-20">
-        <Spinner size="lg" />
+        {" "}
+        <Spinner size="lg" />{" "}
       </div>
     );
 
@@ -142,61 +145,71 @@ export const BookSectionDashboard = () => {
 
   return (
     <div className="p-6 bg-white dark:bg-gray-900 rounded-xl shadow-md">
-      <h2 className="text-2xl font-semibold mb-6 text-emerald-600">
-        📚 Book Section Dashboard
-      </h2>
-
-      {/* Heading Inputs */}
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-8">
-        <Input
-          size="md"
-          label="Section Title"
-          value={formData.heading.title}
-          onChange={(e) =>
-            setFormData({
-              ...formData,
-              heading: { ...formData.heading, title: e.target.value },
-            })
-          }
+      {/* Heading Preview */}
+      <div className="flex justify-between items-center mx-auto gap-7 mb-6">
+        <Heading
+          title={formData.heading.title}
+          subTitle={formData.heading.subTitle}
         />
-        <Input
-          size="md"
-          label="Section Subtitle"
-          value={formData.heading.subTitle}
-          onChange={(e) =>
-            setFormData({
-              ...formData,
-              heading: { ...formData.heading, subTitle: e.target.value },
-            })
-          }
-        />
+        <div className="flex items-end gap-3">
+          <IoAddCircleSharp
+            className="text-green-500 cursor-pointer w-7 h-7"
+            onClick={() => {
+              const newBook: Book = {
+                id: Date.now().toString(),
+                bookname: "",
+                writer: "",
+                description: "",
+                bookimage: "",
+              };
+              setSelectedBook(newBook);
+              setModalOpen(true);
+            }}
+          />
+          <FaRegEdit
+            className="text-yellow-500 cursor-pointer w-7 h-6"
+            onClick={() => setHeadingModalOpen(true)}
+          />
+        </div>
       </div>
-      <div className="flex justify-between my-3">
-        <Button
-          color="primary"
-          variant="flat"
-          onPress={() => {
-            const newBook: Book = {
-              id: Date.now().toString(),
-              bookname: "",
-              writer: "",
-              description: "",
-              bookimage: "",
-            };
-            setSelectedBook(newBook);
-            setModalOpen(true);
-          }}
+      {/* Heading Edit Modal */}
+      {headingModalOpen && (
+        <OpenModal
+          isOpen={headingModalOpen}
+          onClose={() => setHeadingModalOpen(false)}
+          title="Edit Heading"
         >
-          ➕ Add Book
-        </Button>
-        <Button
-          color="success"
-          onPress={() => handleSaveSection()}
-          isLoading={saving || uploading}
-        >
-          💾 Save Section
-        </Button>
-      </div>
+          <div className="flex flex-col gap-3">
+            <Input
+              label="Section Title"
+              value={formData.heading.title}
+              onChange={(e) =>
+                setFormData({
+                  ...formData,
+                  heading: { ...formData.heading, title: e.target.value },
+                })
+              }
+            />
+            <Input
+              label="Section Subtitle"
+              value={formData.heading.subTitle}
+              onChange={(e) =>
+                setFormData({
+                  ...formData,
+                  heading: { ...formData.heading, subTitle: e.target.value },
+                })
+              }
+            />
+            <Button
+              color="success"
+              onPress={() => handleSaveSection()}
+              isLoading={saving}
+            >
+              💾 Save Heading
+            </Button>
+          </div>
+        </OpenModal>
+      )}
       {/* Books Grid */}
       <div className="grid gap-6 md:grid-cols-3">
         {formData.data?.reverse()?.map((book) => (
@@ -206,7 +219,6 @@ export const BookSectionDashboard = () => {
           >
             <div className="absolute top-2 right-2 flex gap-2">
               <button
-                color="warning"
                 onClick={() => {
                   setSelectedBook(book);
                   setModalOpen(true);
@@ -214,7 +226,7 @@ export const BookSectionDashboard = () => {
               >
                 <FaRegEdit className="text-yellow-500 cursor-pointer w-7 h-6" />
               </button>
-              <button color="danger" onClick={() => handleDeleteBook(book.id)}>
+              <button onClick={() => handleDeleteBook(book.id)}>
                 <BsTrash3Fill className="text-rose-500 cursor-pointer w-6 h-5" />
               </button>
             </div>
@@ -222,7 +234,7 @@ export const BookSectionDashboard = () => {
             <img
               src={book.bookimage || "/placeholder-book.png"}
               alt={book.bookname}
-              className="w-1/2 h-62 object-cover rounded-md mb-3"
+              className="lg:w-1/2 w-full h-62 object-cover rounded-md mb-3"
             />
             <h3 className="text-lg font-semibold text-emerald-600">
               {book.bookname}
@@ -234,8 +246,7 @@ export const BookSectionDashboard = () => {
           </div>
         ))}
       </div>
-
-      {/* Modal */}
+      {/* Modal for Add/Edit Book */}
       {modalOpen && selectedBook && (
         <OpenModal
           isOpen={modalOpen}
@@ -284,7 +295,6 @@ export const BookSectionDashboard = () => {
             />
 
             <div className="flex justify-end gap-3 mt-4">
-              {/* Close Button */}
               <Button
                 color="secondary"
                 variant="flat"
@@ -292,8 +302,6 @@ export const BookSectionDashboard = () => {
               >
                 Close
               </Button>
-
-              {/* Save Button */}
               <Button
                 color="success"
                 onPress={handleModalSave}

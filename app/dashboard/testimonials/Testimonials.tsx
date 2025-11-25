@@ -59,6 +59,23 @@ export const TestimonialsSectionDashboard: React.FC = () => {
 
   const handleModalSave = async () => {
     if (!selectedTestimonial) return;
+
+    // 🔹 Validation
+    if (!selectedTestimonial.name.trim()) {
+      toast.error("Name is required!");
+      return;
+    }
+
+    if (!selectedTestimonial.role.trim()) {
+      toast.error("Role is required!");
+      return;
+    }
+
+    if (!selectedTestimonial.comment.trim()) {
+      toast.error("Comment is required!");
+      return;
+    }
+
     const exists = formData.data.some((t) => t.id === selectedTestimonial.id);
     const updatedData = exists
       ? formData.data.map((t) =>
@@ -71,6 +88,7 @@ export const TestimonialsSectionDashboard: React.FC = () => {
 
     setSaving(true);
     toast.loading("Saving...", { id: "save" });
+
     try {
       const res = await fetch("/api/all-data/testimonialsection/update", {
         method: "PATCH",

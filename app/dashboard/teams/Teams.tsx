@@ -6,11 +6,12 @@ import { toast } from "react-hot-toast";
 import { Heading } from "@/components/Heading";
 import Background from "@/components/background";
 import { useGetSection } from "../Hook/GetData";
-import { FaTrash, FaEdit, FaRegEdit } from "react-icons/fa";
+import { FaRegEdit } from "react-icons/fa";
 import { Button } from "@heroui/button";
 import { OpenModal } from "@/components/Modal";
 import { Input } from "@heroui/input";
 import { BsTrash3Fill } from "react-icons/bs";
+import { IoAddCircleSharp } from "react-icons/io5";
 
 interface TeamMember {
   id: string;
@@ -35,9 +36,7 @@ export const TeamSectionDashboard = () => {
 
   const [selectedMember, setSelectedMember] = useState<TeamMember | null>(null);
   const [modalOpen, setModalOpen] = useState(false);
-
   const [headingEditOpen, setHeadingEditOpen] = useState(false);
-
   const [saving, setSaving] = useState(false);
   const [uploading, setUploading] = useState(false);
 
@@ -57,8 +56,32 @@ export const TeamSectionDashboard = () => {
     setSelectedMember({ ...selectedMember, [field]: value });
   };
 
+  // 🔹 Add New Member and Open Modal
+  const handleAddMember = () => {
+    const newMember: TeamMember = {
+      id: Date.now().toString(),
+      name: "",
+      position: "",
+      imageurl: "",
+      number: "",
+    };
+    setSelectedMember(newMember);
+    setModalOpen(true);
+  };
+
   const handleModalSave = async () => {
     if (!selectedMember) return;
+
+    // 🔹 Validation
+    if (!selectedMember.name.trim()) {
+      toast.error("Name is required!");
+      return;
+    }
+
+    if (!selectedMember.position.trim()) {
+      toast.error("Position is required!");
+      return;
+    }
 
     const exists = formData.data.some((m) => m.id === selectedMember.id);
 
@@ -167,15 +190,21 @@ export const TeamSectionDashboard = () => {
   return (
     <Background id="team">
       <div className="container mx-auto">
-        <div className="flex flex-col lg:flex-row items-center justify-between mb-6">
+        <div className="flex justify-between items-center mx-auto gap-7 mb-6">
           <Heading
             title={formData.heading.title}
             subTitle={formData.heading.subTitle}
           />
-
-          <Button onClick={() => setHeadingEditOpen(true)}>
-            <FaRegEdit className="text-yellow-500 cursor-pointer w-7 h-6" />
-          </Button>
+          <div className="flex align-bottom gap-3">
+            <IoAddCircleSharp
+              className="text-green-500 cursor-pointer w-7 h-7"
+              onClick={handleAddMember}
+            />
+            <FaRegEdit
+              className="text-yellow-500 cursor-pointer w-7 h-6"
+              onClick={() => setHeadingEditOpen(true)}
+            />
+          </div>
         </div>
 
         <div className="grid gap-6 grid-cols-1 md:grid-cols-3 lg:grid-cols-4">
