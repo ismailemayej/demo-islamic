@@ -28,14 +28,14 @@ export default function Loader() {
         <Image
           src={image.src}
           alt="Logo"
-          width={120}
-          height={120}
+          width={50}
+          height={50}
           className="z-[5] rounded-full"
         />
       </div>
 
       {/* Percentage Text */}
-      <p className="mt-8 text-xl font-semibold text-gray-800 dark:text-gray-200">
+      <p className="mt-4 text-lg font-semibold text-gray-800 dark:text-gray-200">
         {progress}%
       </p>
     </div>

@@ -33,25 +33,26 @@ export const Navbar: React.FC = () => {
           {/* 🔹 Logo */}
           <motion.div
             className="lg:text-2xl text-xl font-[Quicksand] font-extrabold
-                     text-transparent bg-clip-text
-                     bg-gradient-to-r from-yellow-400 via-amber-500 to-yellow-600
-                     dark:from-yellow-300 dark:via-amber-400 dark:to-yellow-400
-                     drop-shadow-sm"
+             text-transparent bg-clip-text
+             bg-gradient-to-r from-green-400 via-emerald-500 to-cyan-500
+             dark:from-green-300 dark:via-emerald-400 dark:to-cyan-400
+             drop-shadow-md"
             initial={{ opacity: 0, y: 20, scale: 0.95 }}
             animate={{ opacity: 1, y: 0, scale: 1 }}
             transition={{ duration: 1.2, ease: "easeOut" }}
           >
             <Link href="/">
               <motion.span
-                className="bg-clip-text text-transparent bg-gradient-to-r from-yellow-400 via-amber-500 to-yellow-600"
+                className="bg-clip-text text-transparent bg-gradient-to-r 
+                 from-green-400 via-emerald-500 to-cyan-500
+                 dark:from-green-300 dark:via-emerald-400 dark:to-cyan-400"
                 animate={{
-                  backgroundPosition: ["0% 0%", "100% 0%"],
-                  scale: [1, 1.03, 1],
+                  backgroundPosition: ["0% 0%", "100% 0%", "0% 0%"],
                 }}
                 transition={{
                   repeat: Infinity,
                   repeatType: "loop",
-                  duration: 4,
+                  duration: 5,
                   ease: "linear",
                 }}
                 style={{ backgroundSize: "200% auto", display: "inline-block" }}
