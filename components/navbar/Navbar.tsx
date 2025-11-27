@@ -5,9 +5,9 @@ import { motion, AnimatePresence } from "framer-motion";
 import { ThemeSwitch } from "../theme-switch";
 import { Container } from "../container";
 import Link from "next/link";
-
 import { useGetSection } from "@/app/dashboard/Hook/GetData";
 import SkeletonPage from "../Skeleton";
+import Loader from "../loader";
 export type NavLink = {
   name: string;
   url: string;
@@ -19,7 +19,7 @@ export const Navbar: React.FC = () => {
   const { section, loading } = useGetSection("websitesection");
   const [isOpen, setIsOpen] = useState(false);
   const NAV_LINKS: NavLink[] = section?.data?.NavLinks;
-  if (loading) return <SkeletonPage />;
+  if (loading) return <Loader />;
 
   return (
     <header

@@ -46,9 +46,14 @@ export const ArticlesSection: React.FC<ArticleProps> = ({ section }) => {
                 <p className="bangla text-gray-600 dark:text-gray-300 text-sm">
                   Writer: {article.blogwriter}
                 </p>
-                <p className="bnagla line-clamp-3 text-gray-700 dark:text-gray-300 transition-colors duration-500">
-                  {article.blogdescription}
-                </p>
+                <p
+                  className="bnagla line-clamp-3 text-gray-700 dark:text-gray-300 transition-colors duration-500"
+                  dangerouslySetInnerHTML={{
+                    __html:
+                      article.blogdescription ||
+                      "I am a passionate <strong>Islamic scholar</strong> dedicated to spreading the message of Islam with wisdom and understanding.",
+                  }}
+                ></p>
               </div>
               <p className="text-gray-500 dark:text-gray-400 text-sm transition-colors duration-500">
                 {article.date}

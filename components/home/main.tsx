@@ -1,5 +1,4 @@
 "use client";
-
 import { WebsiteData } from "@/types/allData";
 import { AboutSection } from "./About";
 import { AchievementsSection } from "./Achievements";
@@ -18,14 +17,14 @@ import { SocialMediaSection } from "./SocialMedia";
 import { TeamSection } from "./Team";
 import { TestimonialsSection } from "./Testimonials";
 import { YouTubeVideosSection } from "./YTvideos";
-
+import Loader from "../loader";
 export default function Main({ data }: { data: WebsiteData[] }) {
   // Helper method → any section data
   const getSection = (name: string) =>
     data.find((item) => item.section === name);
-
+  if (!data) return <Loader />;
   return (
-    <main className="flex flex-col lg:gap-5 gap-2 items-center justify-center w-full">
+    <main className="flex flex-col lg:gap-5 gap-2 w-full container mx-auto">
       {/* Hero */}
       <section className="w-full">
         <HeroSection section={getSection("herosection")?.data} />

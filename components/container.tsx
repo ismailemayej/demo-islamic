@@ -1,9 +1,11 @@
 import React from "react";
 import clsx from "clsx";
+
 interface ContainerProps {
   children: React.ReactNode;
   className?: string;
 }
+
 export const Container: React.FC<ContainerProps> = ({
   children,
   className,
@@ -11,8 +13,9 @@ export const Container: React.FC<ContainerProps> = ({
   return (
     <div
       className={clsx(
-        "mx-auto lg:px-0 px-2",
-        "max-w-[480px] sm:max-w-[640px] md:max-w-[768px] lg:max-w-[1024px] xl:max-w-[1280px] 2xl:max-w-[1536px]",
+        "mx-auto w-full",
+        "px-2 sm:px-2 md:px-2 lg:px-0",
+        "max-w-screen-sm sm:max-w-screen-md md:max-w-screen-lg lg:max-w-screen-xl xl:max-w-screen-2xl",
         className
       )}
     >

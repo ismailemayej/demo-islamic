@@ -63,9 +63,14 @@ export const ServiceSection: React.FC<ServiceSectionProps> = ({ section }) => {
               </h3>
 
               {/* DESCRIPTION */}
-              <p className="text-gray-600 dark:text-gray-300 text-sm">
-                {service.shortDescription}
-              </p>
+              <p
+                className="text-gray-600 dark:text-gray-300 text-sm"
+                dangerouslySetInnerHTML={{
+                  __html:
+                    service.shortDescription ||
+                    "I am a passionate <strong>Islamic scholar</strong> dedicated to spreading the message of Islam with wisdom and understanding.",
+                }}
+              ></p>
             </motion.div>
           ))}
       </div>

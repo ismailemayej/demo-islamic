@@ -11,6 +11,7 @@ import toast from "react-hot-toast";
 import { IoAddCircleSharp } from "react-icons/io5";
 import { FaRegEdit } from "react-icons/fa";
 import { BsTrash3Fill } from "react-icons/bs";
+import JoditEditor from "jodit-react";
 
 const FA_ICONS = [
   "fa-mosque",
@@ -34,6 +35,7 @@ interface ServiceItem {
 
 export const ServiceSectionDashboard: React.FC = () => {
   const { section, loading } = useGetSection("servicesection");
+  const editor = JoditEditor as any;
 
   const [formData, setFormData] = useState<any>({
     heading: { title: "", subTitle: "" },
@@ -334,18 +336,23 @@ export const ServiceSectionDashboard: React.FC = () => {
               }
               fullWidth
             />
-
-            <Textarea
-              label="Full Description"
-              placeholder="Full Description"
+            <JoditEditor
+              ref={editor}
               value={selectedService.fullDescription}
-              onChange={(e) =>
+              onChange={(newContent: string) =>
                 setSelectedService({
                   ...selectedService,
-                  fullDescription: e.target.value,
+                  fullDescription: newContent,
                 })
               }
-              fullWidth
+              config={{
+                readonly: false,
+                toolbarSticky: false,
+                showXPathInStatusbar: false,
+                height: 200,
+                askBeforePasteHTML: false,
+              }}
+              className="w-full border p-3 rounded-lg dark:bg-gray-800 dark:text-white"
             />
 
             <Button

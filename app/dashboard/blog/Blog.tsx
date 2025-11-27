@@ -1,5 +1,5 @@
 "use client";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { motion } from "framer-motion";
 import { toast } from "react-hot-toast";
 import { Spinner } from "@nextui-org/react";
@@ -12,6 +12,7 @@ import { OpenModal } from "@/components/Modal";
 import { FaRegEdit } from "react-icons/fa";
 import { BsTrash3Fill } from "react-icons/bs";
 import { PlusCircle } from "lucide-react";
+import JoditEditor from "jodit-react";
 
 interface Article {
   id: string;
@@ -37,6 +38,7 @@ export const ArticlesSectionDashboard: React.FC = () => {
     heading: { title: "", subTitle: "" },
     data: [],
   });
+  const editor = useRef(null);
 
   const [selectedArticle, setSelectedArticle] = useState<Article | null>(null);
   const [editingHeading, setEditingHeading] = useState(false);
@@ -233,9 +235,14 @@ export const ArticlesSectionDashboard: React.FC = () => {
                   {article.blogtitle}
                 </h3>
 
-                <p className="text-gray-700 dark:text-gray-300 mb-3 line-clamp-3">
-                  {article.blogdescription}
-                </p>
+                <p
+                  className="text-gray-700 dark:text-gray-300 mb-3 line-clamp-3"
+                  dangerouslySetInnerHTML={{
+                    __html:
+                      article.blogdescription ||
+                      "I am a passionate <strong>Islamic scholar</strong> dedicated to spreading the message of Islam with wisdom and understanding.",
+                  }}
+                ></p>
 
                 <p className="text-sm text-gray-500 dark:text-gray-400">
                   ✍️ {article.blogwriter} | 📅 {article.date}
@@ -292,12 +299,19 @@ export const ArticlesSectionDashboard: React.FC = () => {
                 }
               />
 
-              <textarea
+              <JoditEditor
+                ref={editor}
                 value={selectedArticle.blogdescription}
-                onChange={(e) =>
-                  handleArticleChange("blogdescription", e.target.value)
+                onChange={(content: string) =>
+                  handleArticleChange("blogdescription", content)
                 }
-                rows={12}
+                config={{
+                  readonly: false,
+                  toolbarSticky: false,
+                  showXPathInStatusbar: false,
+                  height: 200,
+                  askBeforePasteHTML: false,
+                }}
                 className="w-full border p-3 rounded-lg dark:bg-gray-800 dark:text-white"
               />
 

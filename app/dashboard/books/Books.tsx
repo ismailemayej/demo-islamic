@@ -9,6 +9,7 @@ import { FaRegEdit } from "react-icons/fa";
 import { BsTrash3Fill } from "react-icons/bs";
 import { IoAddCircleSharp } from "react-icons/io5";
 import { Heading } from "@/components/Heading";
+import JoditEditor from "jodit-react";
 
 interface Book {
   id: string;
@@ -240,9 +241,14 @@ export const BookSectionDashboard = () => {
               {book.bookname}
             </h3>
             <p className="text-gray-500">✍️ {book.writer}</p>
-            <p className="text-gray-700 dark:text-gray-300 text-sm line-clamp-4">
-              {book.description}
-            </p>
+            <p
+              className="text-gray-700 dark:text-gray-300 text-sm line-clamp-4"
+              dangerouslySetInnerHTML={{
+                __html:
+                  book.description ||
+                  "I am a passionate <strong>Islamic scholar</strong> dedicated to spreading the message of Islam with wisdom and understanding.",
+              }}
+            ></p>
           </div>
         ))}
       </div>
@@ -266,11 +272,20 @@ export const BookSectionDashboard = () => {
               value={selectedBook.writer}
               onChange={(e) => handleChange("writer", e.target.value)}
             />
-            <Textarea
-              label="Description"
+            <JoditEditor
               value={selectedBook.description}
-              onChange={(e) => handleChange("description", e.target.value)}
+              onChange={(content: string) =>
+                handleChange("description", content)
+              }
+              config={{
+                readonly: false,
+                toolbarSticky: false,
+                showXPathInStatusbar: false,
+                height: 200,
+                askBeforePasteHTML: false,
+              }}
             />
+
             {selectedBook.bookimage && (
               <>
                 <img

@@ -43,10 +43,14 @@ export const AboutMe: React.FC = () => {
             {section?.data?.title || "About Me"}
           </h1>
 
-          <p className="text-base sm:text-lg text-gray-700 dark:text-gray-300 leading-relaxed bangla">
-            {section?.data?.description ||
-              "I am a passionate MERN stack developer who loves creating dynamic, user-friendly web applications and learning new technologies every day."}
-          </p>
+          <p
+            className="text-base sm:text-lg text-gray-700 dark:text-gray-300 leading-relaxed bangla"
+            dangerouslySetInnerHTML={{
+              __html:
+                section?.data?.description ||
+                "I am a passionate <strong>Islamic scholar</strong> dedicated to spreading the message of Islam with wisdom and understanding.",
+            }}
+          ></p>
         </motion.div>
       </div>
     </Background>

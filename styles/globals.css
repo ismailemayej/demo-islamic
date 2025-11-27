@@ -46,9 +46,9 @@ body {
   }
 }
 
-.animate-spin-slow {
+/* .animate-spin-slow {
   animation: spin-slow 2.5s linear infinite;
-}
+} */
 
 /* Rotating outer ring */
 .loader-ring {

@@ -95,9 +95,14 @@ export const BookSection: React.FC<BookSectionProps> = ({ section }) => {
               <p className="text-gray-700 dark:text-gray-200 font-medium bangla">
                 ✍️ লেখক: {selectedBook.writer}
               </p>
-              <p className="text-gray-600 dark:text-gray-300 text-justify bangla">
-                {selectedBook.description}
-              </p>
+              <p
+                className="text-gray-600 dark:text-gray-300 text-justify bangla"
+                dangerouslySetInnerHTML={{
+                  __html:
+                    selectedBook.description ||
+                    "I am a passionate <strong>Islamic scholar</strong> dedicated to spreading the message of Islam with wisdom and understanding.",
+                }}
+              ></p>
               {phone && (
                 <Button
                   as="a"

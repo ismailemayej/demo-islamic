@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { motion } from "framer-motion";
 import Image from "next/image";
 import { Heading } from "@/components/Heading";
@@ -21,8 +21,10 @@ import { toast } from "sonner";
 import { Upload, Trash2, Check, X } from "lucide-react";
 import { useGetSection } from "../Hook/GetData";
 import { FaRegEdit } from "react-icons/fa";
+import JoditEditor from "jodit-react";
 
 export const AboutSectionDashboard = () => {
+  const editor = useRef(null);
   const { section, loading, error } = useGetSection<any>("aboutsection");
 
   const [formData, setFormData] = useState({
@@ -212,10 +214,14 @@ export const AboutSectionDashboard = () => {
               <h3 className="text-2xl font-semibold dark:text-white bangla">
                 {formData.data.title || "Who I Am"}
               </h3>
-              <p className="text-lg text-gray-700 dark:text-gray-300 leading-relaxed bangla">
-                {formData.data.description ||
-                  "I am a passionate Islamic scholar dedicated to spreading the message of Islam with wisdom and understanding."}
-              </p>
+              <p
+                className="text-lg text-gray-700 dark:text-gray-300 leading-relaxed bangla"
+                dangerouslySetInnerHTML={{
+                  __html:
+                    formData.data.description ||
+                    "I am a passionate <strong>Islamic scholar</strong> dedicated to spreading the message of Islam with wisdom and understanding.",
+                }}
+              ></p>
             </motion.div>
           </div>
         </Background>
@@ -260,14 +266,20 @@ export const AboutSectionDashboard = () => {
                       handleChange("data", "title", e.target.value)
                     }
                   />
-                  <textarea
+                  <JoditEditor
+                    ref={editor}
                     value={formData.data.description}
-                    onChange={(e) =>
-                      handleChange("data", "description", e.target.value)
+                    onChange={(newContent: string) =>
+                      handleChange("data", "description", newContent)
                     }
-                    placeholder="Description"
                     className="w-full p-3 rounded-lg border text-gray-800 dark:bg-gray-800 dark:text-white"
-                    rows={6}
+                    config={{
+                      readonly: false,
+                      toolbarSticky: false,
+                      showXPathInStatusbar: false,
+                      height: 200,
+                      askBeforePasteHTML: false,
+                    }}
                   />
 
                   <div className="mt-3">

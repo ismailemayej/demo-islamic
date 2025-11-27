@@ -79,10 +79,14 @@ export const AboutSection: React.FC<AboutProps> = ({ section }) => {
             transition={{ type: "spring", stiffness: 200 }}
           >
             <FileText className="w-9 h-9 text-amber-500 drop-shadow-md mt-1" />
-            <p className="text-lg text-gray-700 dark:text-gray-300 leading-relaxed bangla line-clamp-5">
-              {section?.data?.description ||
-                "আমি একজন ওয়েব ডেভেলপার, যিনি ফ্রন্টএন্ড ও ব্যাকএন্ড উভয় দিকেই কাজ করতে পছন্দ করি।"}
-            </p>
+            <p
+              className="text-lg text-gray-700 dark:text-gray-300 leading-relaxed bangla line-clamp-5"
+              dangerouslySetInnerHTML={{
+                __html:
+                  section?.data?.description ||
+                  "I am a passionate <strong>Islamic scholar</strong> dedicated to spreading the message of Islam with wisdom and understanding.",
+              }}
+            ></p>
           </motion.div>
 
           {/* More Info Button with 3D Hover */}

@@ -3,39 +3,37 @@ import { motion } from "framer-motion";
 import profile from "@/public/images/profile.png";
 import Background from "../background";
 import type { THeroSection } from "@/types/all-types";
+import HeroBackground from "../HeroBackground";
 
 interface HeroProps {
   section?: THeroSection;
 }
+
 export const HeroSection: React.FC<HeroProps> = ({ section }) => {
   return (
-    <Background id="hero">
-      <div className="mx-auto flex flex-col lg:flex-row items-center justify-between gap-12 mt-4">
-        {/* Left: Image with 3D tilt effect */}
+    <HeroBackground>
+      <div
+        className="
+          absolute inset-0 z-0
+          bg-[radial-gradient(circle_at_10%_20%,rgba(16,88,56,0.15)_1px,transparent_1px),radial-gradient(circle_at_80%_80%,rgba(16,88,56,0.15)_1px,transparent_1px)]
+          [background-size:40px_40px]
+          opacity-30 dark:opacity-20
+        "
+      ></div>
+
+      <div className="relative z-10 mx-auto flex flex-col lg:flex-row items-center justify-between gap-12 mt-4">
+        {/* Left: Image */}
         <div className="relative w-full lg:w-1/2 flex justify-center lg:justify-start">
-          <motion.div
-            className="relative w-full max-w-md rounded-3xl overflow-hidden"
-            whileHover={{
-              y: -10,
-              boxShadow: "0px 20px 50px rgba(0,0,0,0.3)",
-            }}
-          >
+          <motion.div className="relative w-full max-w-md overflow-hidden lg:ml-20">
             <img
               src={section?.image || profile.src}
               alt={section?.title || "Hero Image"}
-              className="w-full h-auto object-cover transition-transform duration-500 hover:scale-105 shadow-2xl"
+              className="w-full lg:h-96 h-auto object-cover transition-transform duration-500 hover:scale-105 shadow-2xl rounded-xl"
             />
           </motion.div>
-
-          {/* subtle floating animation */}
-          <motion.div
-            className="absolute inset-0 bg-gradient-to-t from-black/10 to-transparent rounded-3xl"
-            animate={{ y: [0, -10, 0] }}
-            transition={{ duration: 5, repeat: Infinity, ease: "easeInOut" }}
-          />
         </div>
 
-        {/* Right: Text Content */}
+        {/* Right: Text */}
         <motion.div
           initial={{ opacity: 0, x: 80, rotateY: 10 }}
           whileInView={{ opacity: 1, x: 0, rotateY: 0 }}
@@ -47,14 +45,9 @@ export const HeroSection: React.FC<HeroProps> = ({ section }) => {
           </h2>
 
           <motion.h1
-            className="text-5xl sm:text-6xl font-extrabold text-gray-800 dark:text-gray-100 leading-tight"
-            animate={{
-              textShadow: [
-                "0 0 0px #22c55e",
-                "0 0 10px #22c55e",
-                "0 0 0px #22c55e",
-              ],
-            }}
+            className="text-5xl sm:text-6xl 
+             bg-gradient-to-r from-emerald-400 via-cyan-400 to-blue-400
+             bg-clip-text text-transparent"
             transition={{ duration: 3, repeat: Infinity }}
           >
             {section?.subTitle || "Hero Subtitle"}
@@ -76,6 +69,6 @@ export const HeroSection: React.FC<HeroProps> = ({ section }) => {
           </a>
         </motion.div>
       </div>
-    </Background>
+    </HeroBackground>
   );
 };
