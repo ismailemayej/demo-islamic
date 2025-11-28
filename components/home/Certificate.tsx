@@ -38,14 +38,14 @@ export const CertificateSection: React.FC<CertificateProps> = ({ section }) => {
               {/* Degree */}
               {cert.degree && (
                 <p className="text-gray-700 dark:text-gray-300 mb-1">
-                  <span className="font-semibold">ডিগ্রীঃ</span> {cert.degree}
+                  <span className="font-semibold">Degree:</span> {cert.degree}
                 </p>
               )}
 
               {/* Institution */}
               {cert.institution && (
                 <p className="text-gray-700 dark:text-gray-300 mb-1">
-                  <span className="font-semibold">প্রতিষ্ঠানঃ</span>{" "}
+                  <span className="font-semibold"> Accademy: </span>{" "}
                   {cert.institution}
                 </p>
               )}
@@ -53,14 +53,14 @@ export const CertificateSection: React.FC<CertificateProps> = ({ section }) => {
               {/* Board */}
               {cert.board && (
                 <p className="text-gray-700 dark:text-gray-300 mb-1">
-                  <span className="font-semibold">বোর্ডঃ</span> {cert.board}
+                  <span className="font-semibold">Board:</span> {cert.board}
                 </p>
               )}
 
               {/* Year */}
               {cert.year && (
                 <p className="text-gray-700 dark:text-gray-300 mb-1">
-                  <span className="font-semibold">সালঃ</span> {cert.year}
+                  <span className="font-semibold">Year </span> {cert.year}
                 </p>
               )}
 

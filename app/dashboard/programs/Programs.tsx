@@ -206,12 +206,12 @@ export const ProgramsSectionDashboard: React.FC = () => {
             const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
             const remainingDays =
               diffDays > 1
-                ? `${diffDays} দিন বাকি`
+                ? `${diffDays} days left`
                 : diffDays === 1
-                  ? "আগামীকাল"
+                  ? "Tomorrow"
                   : diffDays === 0
-                    ? "আজই অনুষ্ঠিত হবে"
-                    : "সম্পন্ন হয়েছে";
+                    ? "It will be held today"
+                    : "Completed";
             const isUpcoming = diffDays >= 0;
 
             return (
@@ -238,19 +238,19 @@ export const ProgramsSectionDashboard: React.FC = () => {
                   </div>
                 </div>
                 <p>
-                  <span className="font-semibold dark:text-white">নামঃ</span>{" "}
+                  <span className="font-semibold dark:text-white">নাম </span>{" "}
                   {program.name}
                 </p>
                 <p>
-                  <span className="font-semibold dark:text-white">স্থানঃ</span>{" "}
+                  <span className="font-semibold dark:text-white">স্থান </span>{" "}
                   {program.location}
                 </p>
                 <p>
-                  <span className="font-semibold dark:text-white">তারিখঃ</span>{" "}
+                  <span className="font-semibold dark:text-white"> </span>{" "}
                   {program.date}
                 </p>
                 <p>
-                  <span className="font-semibold dark:text-white">বারঃ</span>{" "}
+                  <span className="font-semibold dark:text-white">বার </span>{" "}
                   {program.day}
                 </p>
                 <div

@@ -83,7 +83,7 @@ export const AppointmentSectionDashboard: React.FC = () => {
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <div className="mb-4 sm:mb-0">
               <label className="block font-semibold mb-1 text-gray-800 dark:text-gray-200">
-                প্রোগ্রামের নাম
+                Program Name
               </label>
               <Input
                 size="md"
@@ -98,7 +98,7 @@ export const AppointmentSectionDashboard: React.FC = () => {
 
             <div className="mb-4 sm:mb-0">
               <label className="block font-semibold mb-1 text-gray-800 dark:text-gray-200">
-                কত দিন
+                Day
               </label>
               <Input
                 size="md"
@@ -115,7 +115,7 @@ export const AppointmentSectionDashboard: React.FC = () => {
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mt-4">
             <div>
               <label className="block font-semibold mb-1 text-gray-800 dark:text-gray-200">
-                তারিখ-সাল-মাস
+                -Year-মাস
               </label>
               <Input
                 size="md"
@@ -138,7 +138,7 @@ export const AppointmentSectionDashboard: React.FC = () => {
                 name="contact"
                 value={formData.contact}
                 onChange={handleChange}
-                label="মোবাইল / ইমেইল"
+                label="Mobile / Email"
                 required
                 className="w-full border border-gray-300 dark:border-gray-600 rounded-lg p-2 text-gray-800 dark:text-gray-200 placeholder-gray-400 dark:placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-emerald-400"
               />
@@ -147,7 +147,7 @@ export const AppointmentSectionDashboard: React.FC = () => {
 
           <div className="mt-4">
             <label className="block font-semibold mb-1 text-gray-800 dark:text-gray-200">
-              প্রোগ্রামের বিস্তারিত
+              Details
             </label>
             <textarea
               name="details"
@@ -163,7 +163,7 @@ export const AppointmentSectionDashboard: React.FC = () => {
             type="submit"
             className="w-full mt-6 bg-emerald-600 dark:bg-emerald-500 text-white py-3 rounded-lg font-semibold hover:bg-emerald-700 dark:hover:bg-emerald-600 transition-colors"
           >
-            সাবমিট
+            Submit
           </button>
         </motion.form>
       </div>

@@ -82,7 +82,7 @@ export const AppointmentSection: React.FC = () => {
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
           <div className="mb-4 sm:mb-0">
             <Input
-              label="প্রোগ্রামের নাম"
+              label="Program Name"
               size="md"
               type="text"
               name="programName"
@@ -94,7 +94,7 @@ export const AppointmentSection: React.FC = () => {
 
           <div className="mb-4 sm:mb-0">
             <Input
-              label="কত দিন"
+              label="Day"
               size="md"
               type="text"
               name="duration"
@@ -108,7 +108,7 @@ export const AppointmentSection: React.FC = () => {
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mt-4">
           <div>
             <DatePicker
-              label="তারিখ"
+              label=""
               name="date"
               value={formData.date ? parseDate(formData.date) : null}
               onChange={(value) =>
@@ -122,7 +122,7 @@ export const AppointmentSection: React.FC = () => {
 
           <div>
             <Input
-              label="মোবাইল / ইমেইল"
+              label="Mobile / Email"
               size="md"
               type="text"
               name="contact"
@@ -135,7 +135,7 @@ export const AppointmentSection: React.FC = () => {
 
         <div className="mt-4">
           <Textarea
-            label="প্রোগ্রামের বিস্তারিত"
+            label="Details"
             size="lg"
             name="details"
             value={formData.details}
@@ -149,7 +149,7 @@ export const AppointmentSection: React.FC = () => {
           type="submit"
           className="w-full mt-6 bg-emerald-600 dark:bg-emerald-500 text-white py-3 rounded-lg font-semibold hover:bg-emerald-700 dark:hover:bg-emerald-600 transition-colors"
         >
-          সাবমিট
+          Submit
         </button>
       </motion.form>
     </Background>

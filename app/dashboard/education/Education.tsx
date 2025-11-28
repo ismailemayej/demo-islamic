@@ -261,25 +261,25 @@ export const EducationSectionDashboard: React.FC = () => {
             <div className="space-y-2 text-gray-700 dark:text-gray-300 bangla">
               <div>
                 <span className="text-amber-700 dark:text-amber-500 font-semibold">
-                  প্রতিষ্ঠান:
+                  Accademy::
                 </span>{" "}
                 {edu.institution || "—"}
               </div>
               <div>
                 <span className="text-amber-700 dark:text-amber-500 font-semibold">
-                  বোর্ড:
+                  Board::
                 </span>{" "}
                 {edu.board || "—"}
               </div>
               <div>
                 <span className="text-amber-700 dark:text-amber-500 font-semibold">
-                  সাল:
+                  Year:
                 </span>{" "}
                 {edu.year || "—"}
               </div>
               <div>
                 <span className="text-amber-700 dark:text-amber-500 font-semibold">
-                  রেজাল্ট:
+                  Result:
                 </span>{" "}
                 {edu.result || "—"}
               </div>
@@ -378,7 +378,7 @@ const ModalForm = ({
       }
     />
     <Input
-      label="প্রতিষ্ঠান"
+      label="Accademy:"
       value={tempEducation.institution}
       onChange={(e) =>
         setTempEducation((prev: any) => ({
@@ -388,21 +388,21 @@ const ModalForm = ({
       }
     />
     <Input
-      label="বোর্ড"
+      label=" Board:"
       value={tempEducation.board}
       onChange={(e) =>
         setTempEducation((prev: any) => ({ ...prev, board: e.target.value }))
       }
     />
     <Input
-      label="সাল"
+      label="Year"
       value={tempEducation.year}
       onChange={(e) =>
         setTempEducation((prev: any) => ({ ...prev, year: e.target.value }))
       }
     />
     <Input
-      label="রেজাল্ট"
+      label="Result"
       value={tempEducation.result}
       onChange={(e) =>
         setTempEducation((prev: any) => ({ ...prev, result: e.target.value }))

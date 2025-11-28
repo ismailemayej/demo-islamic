@@ -32,10 +32,10 @@ export const RecentProgramsSection: React.FC<RecentProgramsProps> = ({
   const calculateRemainingDays = (programDate: Date) => {
     const diffTime = programDate.getTime() - today.getTime();
     const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
-    if (diffDays > 1) return `${diffDays} দিন বাকি`;
-    if (diffDays === 1) return "আগামীকাল";
-    if (diffDays === 0) return "আজই অনুষ্ঠিত হবে";
-    return "সম্পন্ন হয়েছে";
+    if (diffDays > 1) return `${diffDays} days left`;
+    if (diffDays === 1) return "Tomorrow";
+    if (diffDays === 0) return "It will be held today";
+    return "Completed";
   };
 
   return (

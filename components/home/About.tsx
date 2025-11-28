@@ -95,7 +95,7 @@ export const AboutSection: React.FC<AboutProps> = ({ section }) => {
                 text-white rounded-full shadow-xl bangla flex items-center gap-2 px-6"
               >
                 <Info className="w-5 h-5" />
-                বিস্তারিত দেখুন
+                See Details
               </Button>
             </Link>
           </motion.div>

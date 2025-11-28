@@ -21,10 +21,10 @@ export const AllProgramsSection = () => {
   const calculateRemainingDays = (programDate: Date) => {
     const diffTime = programDate.getTime() - today.getTime();
     const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
-    if (diffDays > 1) return `${diffDays} দিন বাকি`;
-    if (diffDays === 1) return "আগামীকাল";
-    if (diffDays === 0) return "আজই অনুষ্ঠিত হবে";
-    return "সম্পন্ন হয়েছে";
+    if (diffDays > 1) return `${diffDays} days left`;
+    if (diffDays === 1) return "Tomorrow";
+    if (diffDays === 0) return "It will be held today";
+    return "Completed";
   };
 
   return (
@@ -92,7 +92,7 @@ export const AllProgramsSection = () => {
               ) : (
                 <div className="mt-3 w-full py-2 rounded-lg flex items-center justify-center gap-2 font-semibold text-sm bg-gray-500 text-white dark:bg-gray-600">
                   <CheckCircle className="w-4 h-4" />
-                  সম্পন্ন হয়েছে
+                  Completed
                 </div>
               )}
             </motion.div>

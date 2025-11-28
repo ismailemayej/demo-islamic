@@ -24,7 +24,7 @@ export const TestimonialsSection: React.FC<TestimonialProps> = ({
         title={section?.heading?.title || "জনপ্রিয় মতামত"}
         subTitle={
           section?.heading?.subTitle ||
-          "আমাদের প্রতিষ্ঠানের ছাত্র ও সম্প্রদায়ের সদস্যদের কাছ থেকে"
+          "আমাদের  Accademy:ের ছাত্র ও সম্প্রদায়ের সদস্যদের কাছ থেকে"
         }
       />
 

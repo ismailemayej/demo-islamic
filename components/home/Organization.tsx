@@ -23,10 +23,10 @@ export const OrganizationSection: React.FC<OrganizationSectionProps> = ({
   return (
     <Background id="organizations">
       <Heading
-        title={section?.heading?.title || "আমার প্রতিষ্ঠান সমূহ"}
+        title={section?.heading?.title || "আমার  Accademy: সমূহ"}
         subTitle={
           section?.heading?.subTitle ||
-          "এই প্রতিষ্ঠানসমূহ দ্বীনের খেদমতে পরিচালনা করি"
+          "এই  Accademy:সমূহ দ্বীনের খেদমতে পরিচালনা করি"
         }
       />
 

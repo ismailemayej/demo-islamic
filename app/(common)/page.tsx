@@ -1,10 +1,11 @@
-export const dynamic = "force-dynamic";
+export const revalidate = 60;
+
 import Main from "@/components/home/main";
 import { WebsiteData } from "@/types/allData";
 
 export default async function Home() {
   const res = await fetch(`${process.env.NEXT_PUBLIC_SITE_URL}/api/all-data`, {
-    cache: "no-store",
+    next: { revalidate: 60 },
   });
 
   if (!res.ok) throw new Error("Failed to fetch website data");

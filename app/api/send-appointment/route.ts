@@ -51,7 +51,7 @@ export async function POST(req: Request) {
       <p>আপনাকে জানানো হচ্ছে যে একজন নতুন অ্যাপয়েন্টমেন্ট অনুরোধ করেছেন। বিস্তারিত নিচে দেওয়া হলো:</p>
       <table style="width:100%; border-collapse: collapse; margin-top:20px;">
         <tr>
-          <td style="padding:8px; font-weight:bold; background:#f0fdf4;">প্রোগ্রামের নাম</td>
+          <td style="padding:8px; font-weight:bold; background:#f0fdf4;">Program Name</td>
           <td style="padding:8px; background:#f9fafb;">${programName}</td>
         </tr>
         <tr>
@@ -59,7 +59,7 @@ export async function POST(req: Request) {
           <td style="padding:8px; background:#f9fafb;">${duration}</td>
         </tr>
         <tr>
-          <td style="padding:8px; font-weight:bold; background:#f0fdf4;">তারিখ</td>
+          <td style="padding:8px; font-weight:bold; background:#f0fdf4;"></td>
           <td style="padding:8px; background:#f9fafb;">${date}</td>
         </tr>
         <tr>

@@ -29,7 +29,7 @@ export const Navbar: React.FC = () => {
                  transition-all duration-500"
     >
       <Container>
-        <nav className="container mx-auto py-1 flex justify-between items-center">
+        <nav className="container mx-auto lg:py-1 py-3 flex justify-between items-center">
           {/* 🔹 Logo */}
           <motion.div
             className="lg:text-2xl text-xl font-[Quicksand] font-extrabold
@@ -89,11 +89,7 @@ export const Navbar: React.FC = () => {
 
           {/* 🔹 Right Section */}
           <div className="flex items-center space-x-4">
-            <div className="hidden lg:flex items-center justify-center">
-              <span className="text-3xl text-amber-600 dark:text-amber-400 font-serif">
-                ﷻ
-              </span>
-            </div>
+            <div className="hidden lg:flex items-center justify-center"></div>
             <ThemeSwitch />
 
             {/* 🔹 Mobile Menu Button */}
