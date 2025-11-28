@@ -77,9 +77,6 @@ export const AppointmentSection: React.FC = () => {
 
       <motion.form
         onSubmit={handleSubmit}
-        initial={{ opacity: 0, y: 20 }}
-        whileInView={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.6 }}
         className="mt-10 bg-white dark:bg-gray-800 p-6 sm:p-8 md:p-10 rounded-2xl shadow-lg max-w-3xl mx-auto"
       >
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">

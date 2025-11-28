@@ -2,9 +2,18 @@
 
 import { motion } from "framer-motion";
 import { Heading } from "../Heading";
-import { Clock, CheckCircle, Calendar, MapPin, User } from "lucide-react";
+import {
+  Clock,
+  CheckCircle,
+  Calendar,
+  MapPin,
+  User,
+  ArrowRight,
+} from "lucide-react";
 import Background from "../background";
 import type { RecentProgramItem, TProgramSection } from "@/types/all-types";
+import { Spinner } from "@heroui/spinner";
+import Link from "next/link";
 
 interface RecentProgramsProps {
   section?: TProgramSection;
@@ -14,6 +23,9 @@ interface RecentProgramsProps {
 export const RecentProgramsSection: React.FC<RecentProgramsProps> = ({
   section,
 }) => {
+  if (!section) {
+    return <Spinner size="lg" />;
+  }
   const today = new Date();
   const MOCK_PROGRAMS: RecentProgramItem[] = section?.data || [];
 
@@ -28,13 +40,35 @@ export const RecentProgramsSection: React.FC<RecentProgramsProps> = ({
 
   return (
     <Background id="programs">
-      <Heading
-        title={section?.heading?.title || "প্রোগ্রাম"}
-        subTitle={
-          section?.heading?.subTitle ||
-          "আমাদের সাম্প্রতিক ইসলামিক প্রোগ্রামের তালিকা"
-        }
-      />
+      <div className="flex justify-between items-center w-full">
+        <div className="flex justify-between items-center w-full">
+          <div className="flex-1 text-center">
+            <Heading
+              title={section?.heading?.title || "প্রোগ্রাম"}
+              subTitle={
+                section?.heading?.subTitle ||
+                "আমাদের সাম্প্রতিক ইসলামিক প্রোগ্রামের তালিকা"
+              }
+            />
+          </div>
+          <span className="lg:block hidden">
+            <Link
+              href="/all-programs"
+              className="
+      flex items-center gap-1 font-medium
+      text-blue-600 dark:text-blue-400
+      hover:underline
+      "
+            >
+              More
+              <ArrowRight
+                size={18}
+                className="text-blue-600 dark:text-blue-400"
+              />
+            </Link>
+          </span>
+        </div>
+      </div>
 
       <div className="w-full grid gap-3 md:grid-cols-3 lg:grid-cols-5 mt-10">
         {MOCK_PROGRAMS.slice(0, 5)
@@ -47,16 +81,11 @@ export const RecentProgramsSection: React.FC<RecentProgramsProps> = ({
             return (
               <motion.div
                 key={program.id || index}
-                initial={{ opacity: 0, y: 40 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                whileHover={{ scale: 1.06, rotateX: 2, rotateY: -2 }}
-                transition={{ duration: 0.4, delay: index * 0.15 }}
                 className="relative bg-white/50 dark:bg-gray-800/40 backdrop-blur-lg rounded-3xl p-6 shadow-xl flex flex-col justify-between cursor-pointer border border-emerald-100 dark:border-gray-700 hover:shadow-2xl hover:-translate-y-1 transition-all duration-500"
               >
                 {/* Top Icons & Program Name */}
                 <div className="flex items-center gap-3 mb-4">
-                  <span className="text-amber-500 text-2xl">🕌</span>
-                  <h3 className="text-xl font-bold text-emerald-700 dark:text-emerald-400">
+                  <h3 className="text-xl font-bold text-center text-emerald-700 dark:text-emerald-400">
                     {program.programName}
                   </h3>
                 </div>
@@ -64,21 +93,17 @@ export const RecentProgramsSection: React.FC<RecentProgramsProps> = ({
                 {/* Program Details with Icons */}
                 <div className="flex flex-col gap-2 flex-1">
                   <p className="flex items-center text-gray-700 dark:text-gray-200 gap-2">
-                    <User className="w-4 h-4 text-emerald-500" />
-                    <span className="font-semibold">নামঃ</span> {program.name}
-                  </p>
-                  <p className="flex items-center text-gray-700 dark:text-gray-200 gap-2">
                     <MapPin className="w-4 h-4 text-amber-500" />
-                    <span className="font-semibold">স্থানঃ</span>{" "}
+
                     {program.location}
                   </p>
                   <p className="flex items-center text-gray-700 dark:text-gray-200 gap-2">
                     <Calendar className="w-4 h-4 text-blue-500" />
-                    <span className="font-semibold">তারিখঃ</span> {program.date}
+                    {program.date}
                   </p>
                   <p className="flex items-center text-gray-700 dark:text-gray-200 gap-2">
                     <Clock className="w-4 h-4 text-emerald-500" />
-                    <span className="font-semibold">বারঃ</span> {program.day}
+                    {program.day}
                   </p>
                 </div>
 
@@ -108,6 +133,19 @@ export const RecentProgramsSection: React.FC<RecentProgramsProps> = ({
             );
           })}
       </div>
+      <span className="flex justify-end  lg:hidden mt-1">
+        <Link
+          href="/all-programs"
+          className="
+      flex items-center gap-1 font-medium
+      text-blue-600 dark:text-blue-400
+      hover:underline lg:block
+      "
+        >
+          More
+          <ArrowRight size={18} className="text-blue-600 dark:text-blue-400" />
+        </Link>
+      </span>
     </Background>
   );
 };

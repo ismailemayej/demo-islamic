@@ -29,7 +29,7 @@ export const Navbar: React.FC = () => {
                  transition-all duration-500"
     >
       <Container>
-        <nav className="container mx-auto px-4 py-3 flex justify-between items-center">
+        <nav className="container mx-auto py-1 flex justify-between items-center">
           {/* 🔹 Logo */}
           <motion.div
             className="lg:text-2xl text-xl font-[Quicksand] font-extrabold

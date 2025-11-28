@@ -12,7 +12,6 @@ import { FaRegEdit } from "react-icons/fa";
 import { BsTrash3Fill } from "react-icons/bs";
 import { Spinner } from "@heroui/spinner";
 import { useGetSection } from "../Hook/GetData";
-
 interface CertificateItem {
   id: string | number;
   degree: string;

@@ -1,7 +1,10 @@
+export const dynamic = "force-dynamic";
+
 import React from "react";
 import { ArticlesSectionDashboard } from "./Blog";
-const HeroPage = () => {
+
+const BlogPage = () => {
   return <ArticlesSectionDashboard />;
 };
 
-export default HeroPage;
+export default BlogPage;

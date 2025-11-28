@@ -5,6 +5,7 @@ import { Heading } from "../Heading";
 import Background from "../background";
 import Loader from "../loader";
 import { TestimonialItem, TTestimonialsSection } from "@/types/all-types";
+import { Spinner } from "@heroui/spinner";
 
 type TestimonialProps = {
   section: TTestimonialsSection | undefined;
@@ -14,7 +15,7 @@ export const TestimonialsSection: React.FC<TestimonialProps> = ({
 }) => {
   const TESTIMONIALS = section?.data || [];
   if (!section) {
-    return <Loader />;
+    return <Spinner size="lg" />;
   }
 
   return (
@@ -33,9 +34,6 @@ export const TestimonialsSection: React.FC<TestimonialProps> = ({
           ?.map((testimonial: TestimonialItem, index: number) => (
             <motion.div
               key={testimonial.id}
-              initial={{ opacity: 0, y: 30 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6, delay: index * 0.2 }}
               className="bg-emerald-50 dark:bg-gray-800 rounded-3xl p-6 shadow-lg hover:shadow-2xl transition-shadow duration-300 flex flex-col h-full"
             >
               <div className="flex items-center gap-4 mb-4">
@@ -43,11 +41,11 @@ export const TestimonialsSection: React.FC<TestimonialProps> = ({
                   <img
                     src={testimonial.image}
                     alt={testimonial.name}
-                    className="w-16 h-16 rounded-full object-cover border-2 border-amber-500"
+                    className="lg:w-16 lg:h-16 w-12 h-12 rounded-full object-cover border-2 border-amber-500"
                   />
                 )}
                 <div>
-                  <h3 className="bangla text-xl font-semibold text-emerald-700 dark:text-emerald-400">
+                  <h3 className="bangla lg:text-xl text-md font-semibold text-emerald-700 dark:text-emerald-400">
                     {testimonial.name}
                   </h3>
                   <p className="text-gray-600 dark:text-gray-300 text-sm">

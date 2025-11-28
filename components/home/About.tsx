@@ -7,6 +7,7 @@ import Background from "../background";
 
 import { Button } from "@heroui/button";
 import Link from "next/link";
+import { Spinner } from "@heroui/spinner";
 
 type AboutProps = {
   section?: {
@@ -22,6 +23,9 @@ type AboutProps = {
   };
 };
 export const AboutSection: React.FC<AboutProps> = ({ section }) => {
+  if (!section) {
+    return <Spinner size="lg" />;
+  }
   return (
     <Background id="about">
       {/* Heading */}
@@ -35,13 +39,7 @@ export const AboutSection: React.FC<AboutProps> = ({ section }) => {
         style={{ perspective: "1000px" }}
       >
         {/* Left Side: 3D Profile Image */}
-        <motion.div
-          initial={{ opacity: 0, rotateY: -10 }}
-          whileInView={{ opacity: 1, rotateY: 0 }}
-          whileHover={{ rotateY: 10, scale: 1.05 }}
-          transition={{ duration: 1 }}
-          className="w-full lg:w-1/3 flex justify-center lg:justify-start"
-        >
+        <motion.div className="w-full lg:w-1/3 flex justify-center lg:justify-start">
           <div className="relative group shadow-2xl rounded-3xl overflow-hidden w-64 sm:w-72 md:w-80 border border-gray-200 dark:border-gray-700 transition-all duration-500">
             <motion.img
               src={section?.data?.image || profile.src}
@@ -54,12 +52,7 @@ export const AboutSection: React.FC<AboutProps> = ({ section }) => {
         </motion.div>
 
         {/* Right Side: 3D Content with Icons */}
-        <motion.div
-          initial={{ opacity: 0, x: 60 }}
-          whileInView={{ opacity: 1, x: 0 }}
-          transition={{ duration: 1 }}
-          className="w-full lg:w-2/3 space-y-6"
-        >
+        <motion.div className="w-full lg:w-2/3 space-y-6">
           {/* Title with 3D Icon */}
           <motion.div
             className="flex items-center gap-3"

@@ -1,11 +1,9 @@
 "use client";
-
 import React, { useState } from "react";
 import { motion } from "framer-motion";
 import Background from "@/components/background";
 import { Heading } from "@/components/Heading";
 import toast from "react-hot-toast";
-import { useGetSection } from "../Hook/GetData";
 import { Input } from "@heroui/input";
 
 export const AppointmentSectionDashboard: React.FC = () => {

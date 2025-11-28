@@ -4,8 +4,8 @@ import { Heading } from "../Heading";
 import Background from "../background";
 import { useState } from "react";
 import { OpenModal } from "../Modal";
-import Loader from "../loader";
 import { ArticleItem, TArticlesSection } from "@/types/all-types";
+import { Spinner } from "@heroui/spinner";
 
 interface ArticleProps {
   section: TArticlesSection | undefined;
@@ -15,7 +15,7 @@ export const ArticlesSection: React.FC<ArticleProps> = ({ section }) => {
   const MOCK_ARTICLES: ArticleItem[] = section?.data || [];
   const [activeArticle, setActiveArticle] = useState<ArticleItem | null>(null);
   if (!section) {
-    return <Loader />;
+    return <Spinner size="lg" />;
   }
   return (
     <Background id="blog">
@@ -33,18 +33,18 @@ export const ArticlesSection: React.FC<ArticleProps> = ({ section }) => {
           ?.map((article: ArticleItem, index: number) => (
             <motion.div
               key={article.id}
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6, delay: index * 0.2 }}
               className="bg-white dark:bg-gray-800 rounded-3xl shadow-xl p-6 hover:shadow-2xl transition-shadow duration-300 flex flex-col justify-between cursor-pointer"
               onClick={() => setActiveArticle(article)}
             >
               <div className="mb-4">
-                <h3 className="bangla text-2xl font-bold text-emerald-700 dark:text-emerald-400 mb-2 transition-colors duration-500">
+                <h3 className="bangla lg:text-2xl text-lg font-bold text-emerald-700 dark:text-emerald-400 mb-2 transition-colors duration-500">
                   {article.blogtitle}
                 </h3>
                 <p className="bangla text-gray-600 dark:text-gray-300 text-sm">
-                  Writer: {article.blogwriter}
+                  <span className=" text-cyan-950 dark:text-amber-400 ">
+                    Writer:
+                  </span>
+                  {article.blogwriter}
                 </p>
                 <p
                   className="bnagla line-clamp-3 text-gray-700 dark:text-gray-300 transition-colors duration-500"
@@ -77,9 +77,14 @@ export const ArticlesSection: React.FC<ArticleProps> = ({ section }) => {
             <p className="text-gray-500 dark:text-gray-400 mb-6 text-sm">
               Date: {activeArticle.date}
             </p>
-            <p className="text-gray-700 dark:text-gray-300 whitespace-pre-line">
-              {activeArticle.blogdescription}
-            </p>
+            <p
+              className="text-gray-700 dark:text-gray-300 whitespace-pre-line"
+              dangerouslySetInnerHTML={{
+                __html:
+                  activeArticle?.blogdescription ||
+                  "I am a passionate <strong>Islamic scholar</strong> dedicated to spreading the message of Islam with wisdom and understanding.",
+              }}
+            ></p>
           </div>
         </OpenModal>
       )}

@@ -7,26 +7,46 @@ interface BackgroundProps {
 
 const Background: React.FC<BackgroundProps> = ({ children, id }) => {
   return (
-    <section id={id} className="relative py-10 px-4 rounded-xl overflow-hidden">
-      {/* Background Gradient + Pattern */}
+    <section id={id} className="relative px-0 rounded-2xl overflow-hidden">
+      {/* Main Soft Gradient (Perfectly Smooth) */}
       <div
         className="
           absolute inset-0 z-0
-          bg-gradient-to-r from-emerald-50 via-cyan-50 to-blue-50
-          dark:from-emerald-900 dark:via-cyan-900 dark:to-blue-900
-          opacity-70
+          bg-gradient-to-br 
+          from-blue-50 via-cyan-50 to-blue-100
+          dark:from-slate-900 dark:via-slate-800 dark:to-slate-900
         "
+      />
+
+      {/* Soft Glow Top Left */}
+      <div
+        className="
+          absolute -top-20 -left-20 w-72 h-72 
+          bg-cyan-300/15 dark:bg-cyan-500/10
+          blur-[120px] rounded-full
+        "
+      />
+
+      {/* Soft Glow Bottom Right (Fixed — no harsh overlap) */}
+      <div
+        className="
+          absolute bottom-0 right-0 w-72 h-72 
+         
+        "
+      />
+
+      {/* Very soft pattern (no double color effect) */}
+      <div
+        className="absolute inset-0 opacity-[0.03]"
         style={{
-          backgroundImage: `
-            radial-gradient(circle, rgba(255,255,255,0.03) 1px, transparent 1px),
-            radial-gradient(circle, rgba(0,0,0,0.03) 1px, transparent 1px)
-          `,
-          backgroundSize: "40px 40px",
+          backgroundImage:
+            "radial-gradient(circle, rgba(0,0,0,0.6) 1px, transparent 1px)",
+          backgroundSize: "32px 32px",
         }}
       ></div>
 
-      {/* Overlay blur and shadow */}
-      <div className="relative z-10 backdrop-blur-sm border border-gray-300/40 dark:border-gray-800/40 shadow-xl rounded-xl p-4">
+      {/* Content Glass Box */}
+      <div className="relative z-10 backdrop-blur-lg border border-white/20 dark:border-white/5 shadow-xl rounded-2xl p-6">
         {children}
       </div>
     </section>

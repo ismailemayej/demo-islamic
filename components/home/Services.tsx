@@ -4,15 +4,18 @@ import { Heading } from "../Heading";
 import Background from "../background";
 import { useState } from "react";
 import { OpenModal } from "../Modal";
-import Loader from "../loader";
+
 import { ServiceItem, TServiceSection } from "@/types/all-types";
+import { Spinner } from "@heroui/spinner";
 
 type ServiceSectionProps = {
   section: TServiceSection | undefined;
 };
 
 export const ServiceSection: React.FC<ServiceSectionProps> = ({ section }) => {
-  // const { section, loading } = useGetSection("servicesection");
+  if (!section) {
+    return <Spinner size="lg" />;
+  }
 
   const [selectedService, setSelectedService] = useState<ServiceItem | null>(
     null
@@ -39,9 +42,6 @@ export const ServiceSection: React.FC<ServiceSectionProps> = ({ section }) => {
           ?.map((service, index) => (
             <motion.div
               key={service.id}
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6, delay: index * 0.2 }}
               className="
               bg-white dark:bg-gray-800 
               rounded-3xl shadow-lg p-6 
@@ -91,9 +91,14 @@ export const ServiceSection: React.FC<ServiceSectionProps> = ({ section }) => {
             <p className="text-gray-700 dark:text-gray-300">
               {selectedService.shortDescription}
             </p>
-            <p className="text-gray-700 dark:text-gray-300">
-              {selectedService.fullDescription}
-            </p>
+            <p
+              className="text-gray-700 dark:text-gray-300"
+              dangerouslySetInnerHTML={{
+                __html:
+                  selectedService?.fullDescription ||
+                  "I am a passionate <strong>Islamic scholar</strong> dedicated to spreading the message of Islam with wisdom and understanding.",
+              }}
+            ></p>
           </div>
         </OpenModal>
       )}

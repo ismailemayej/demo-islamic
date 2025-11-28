@@ -2,7 +2,13 @@
 
 import { useState } from "react";
 import { motion } from "framer-motion";
-import { Card, Image as HeroImage, Button, Skeleton } from "@heroui/react";
+import {
+  Card,
+  Image as HeroImage,
+  Button,
+  Skeleton,
+  Spinner,
+} from "@heroui/react";
 import { useGetSection } from "@/app/dashboard/Hook/GetData";
 import { Heading } from "../Heading";
 import Background from "../background";
@@ -17,7 +23,7 @@ export const BookSection: React.FC<BookSectionProps> = ({ section }) => {
   const { section: contactSection } = useGetSection("contactsection");
   const [selectedBook, setSelectedBook] = useState<any>(null);
   if (!section) {
-    return <Loader />;
+    return <Spinner size="lg" />;
   }
   const heading = section?.heading || {
     title: "Our Books",
@@ -38,7 +44,6 @@ export const BookSection: React.FC<BookSectionProps> = ({ section }) => {
             ?.map((book: any) => (
               <motion.div
                 key={book._id || book.id}
-                whileHover={{ scale: 1.05 }}
                 className="w-full sm:w-auto"
               >
                 <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-lg overflow-hidden flex flex-col items-center">
@@ -93,7 +98,7 @@ export const BookSection: React.FC<BookSectionProps> = ({ section }) => {
             />
             <div className="space-y-4 pb-6 px-3">
               <p className="text-gray-700 dark:text-gray-200 font-medium bangla">
-                ✍️ লেখক: {selectedBook.writer}
+                ✍️ Writer: {selectedBook.writer}
               </p>
               <p
                 className="text-gray-600 dark:text-gray-300 text-justify bangla"

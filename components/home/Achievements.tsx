@@ -5,6 +5,7 @@ import Background from "../background";
 import { useGetSection } from "@/app/dashboard/Hook/GetData";
 import Loader from "../loader";
 import { AchievementItem, TAchievementsSection } from "@/types/all-types";
+import { Spinner } from "@heroui/spinner";
 
 interface AchievementProps {
   section: TAchievementsSection | undefined;
@@ -14,7 +15,7 @@ export const AchievementsSection: React.FC<AchievementProps> = ({
   section,
 }) => {
   if (!section) {
-    return <Loader />;
+    return <Spinner size="lg" />;
   }
   // console.log("Achievement section:", section);
   const ACHIEVEMENTS = section?.data || [];
@@ -32,9 +33,6 @@ export const AchievementsSection: React.FC<AchievementProps> = ({
           ?.map((achievement: AchievementItem, index: number) => (
             <motion.div
               key={achievement.id}
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6, delay: index * 0.2 }}
               className="bg-white dark:bg-gray-800 rounded-3xl shadow-xl p-6 flex flex-col items-center justify-center hover:shadow-2xl transition-shadow duration-300"
             >
               <div className="text-5xl mb-4">{achievement.icon}</div>

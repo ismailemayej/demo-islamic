@@ -9,7 +9,7 @@ export default function HomeLayout({
   children: React.ReactNode;
 }) {
   return (
-    <div className="relative flex flex-col h-screen overflow-x-hidden ">
+    <div className="relative flex flex-col h-screen overflow-x-hidden  ">
       <OfferToast />
       <TopAdBanner />
       <Navbar />

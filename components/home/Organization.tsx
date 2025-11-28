@@ -6,6 +6,7 @@ import { Heading } from "../Heading";
 import { OpenModal } from "../Modal";
 import Background from "../background";
 import { TOrganizationSection } from "@/types/all-types";
+import { Spinner } from "@heroui/spinner";
 type OrganizationSectionProps = {
   section?: TOrganizationSection;
 };
@@ -15,6 +16,9 @@ export const OrganizationSection: React.FC<OrganizationSectionProps> = ({
   // const { section, loading, error } = useGetSection("organizationsection");
   const [selectedOrg, setSelectedOrg] = useState<any>(null);
   const organizations = section?.data || [];
+  if (!section) {
+    return <Spinner size="lg" />;
+  }
 
   return (
     <Background id="organizations">
@@ -33,16 +37,7 @@ export const OrganizationSection: React.FC<OrganizationSectionProps> = ({
           ?.map((org: any, index: number) => (
             <motion.div
               key={org.id}
-              initial={{ opacity: 0, y: 30 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              whileHover={{
-                scale: 1.05,
-                rotateX: 5,
-                rotateY: -5,
-                transition: { type: "spring", stiffness: 300, damping: 20 },
-              }}
               style={{ perspective: 1000 }}
-              transition={{ duration: 0.7, delay: index * 0.2 }}
               className="w-full cursor-pointer"
             >
               <Card
@@ -65,10 +60,10 @@ export const OrganizationSection: React.FC<OrganizationSectionProps> = ({
                     {org.name}
                   </h4>
                   <p className="text-gray-700 dark:text-gray-200 text-sm">
-                    পজিশন: {org.possition}
+                    Position : {org.possition}
                   </p>
                   <p className="text-gray-600 dark:text-gray-300 text-sm">
-                    ঠিকানা: {org.address}
+                    Address: {org.address}
                   </p>
                 </CardBody>
               </Card>
@@ -94,10 +89,10 @@ export const OrganizationSection: React.FC<OrganizationSectionProps> = ({
               {selectedOrg.name}
             </h2>
             <p className="text-amber-600 dark:text-amber-400 font-medium text-lg mb-1">
-              পজিশন: {selectedOrg.possition}
+              Position: {selectedOrg.possition}
             </p>
             <p className="text-gray-700 dark:text-gray-200 mb-2">
-              <strong>ঠিকানা:</strong> {selectedOrg.address}
+              <strong>Address:</strong> {selectedOrg.address}
             </p>
             <p className="text-gray-600 dark:text-gray-300 text-justify whitespace-pre-line">
               {selectedOrg.details}

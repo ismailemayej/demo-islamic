@@ -17,6 +17,7 @@ import {
 } from "react-icons/fa";
 import Background from "../background";
 import { TSocialMediaSection } from "@/types/all-types";
+import { Spinner } from "@heroui/spinner";
 
 const ThreeDCard: React.FC<React.PropsWithChildren<{ href: string }>> = ({
   href,
@@ -59,6 +60,9 @@ type SocialMediaSectionProps = {
 export const SocialMediaSection: React.FC<SocialMediaSectionProps> = ({
   section,
 }) => {
+  if (!section) {
+    return <Spinner size="lg" />;
+  }
   const SOCIAL_LINKS = section?.data || [];
 
   const getIcon = (name: string) => {
@@ -118,18 +122,8 @@ export const SocialMediaSection: React.FC<SocialMediaSectionProps> = ({
 
           return (
             <ThreeDCard key={index} href={social.url}>
-              <motion.div
-                className="text-5xl mb-3"
-                whileHover={{ scale: 1.2, rotateY: 10, rotateX: -5 }}
-                transition={{ type: "spring", stiffness: 200 }}
-              >
-                {icon}
-              </motion.div>
-              <motion.span
-                className="font-semibold text-gray-700 dark:text-gray-200 text-center"
-                whileHover={{ scale: 1.05 }}
-                transition={{ duration: 0.3 }}
-              >
+              <motion.div className="text-5xl mb-3">{icon}</motion.div>
+              <motion.span className="font-semibold text-gray-700 dark:text-gray-200 text-center">
                 {social.name}
               </motion.span>
             </ThreeDCard>

@@ -6,6 +6,7 @@ import { Award } from "lucide-react";
 import Background from "../background";
 import Loader from "../loader";
 import { CertificateItem, TCertificateSection } from "@/types/all-types";
+import { Spinner } from "@heroui/spinner";
 
 interface CertificateProps {
   section: TCertificateSection | undefined;
@@ -13,7 +14,7 @@ interface CertificateProps {
 
 export const CertificateSection: React.FC<CertificateProps> = ({ section }) => {
   if (!section) {
-    return <Loader />;
+    return <Spinner size="lg" />;
   }
   const CERTIFICATES = section?.data || [];
 
@@ -32,9 +33,6 @@ export const CertificateSection: React.FC<CertificateProps> = ({ section }) => {
           ?.map((cert: CertificateItem, index: number) => (
             <motion.div
               key={index}
-              initial={{ opacity: 0, y: 40 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.7, delay: index * 0.2 }}
               className="bg-emerald-50 dark:bg-gray-800 rounded-3xl shadow-lg dark:shadow-gray-700 hover:shadow-2xl dark:hover:shadow-gray-600 transition-all duration-300 p-6 relative overflow-hidden"
             >
               {/* Degree */}
@@ -69,17 +67,12 @@ export const CertificateSection: React.FC<CertificateProps> = ({ section }) => {
               {/* GPA */}
               {cert.gpa && (
                 <p className="text-gray-700 dark:text-gray-300 mb-2">
-                  <span className="font-semibold">GPA / CGPAঃ</span> {cert.gpa}
+                  <span className="font-semibold">GPA/CGPA</span> {cert.gpa}
                 </p>
               )}
 
               {/* Badge at bottom */}
-              <motion.div
-                initial={{ scale: 0 }}
-                whileInView={{ scale: 1 }}
-                transition={{ delay: 0.3 }}
-                className="absolute bottom-4 right-4 bg-amber-500 dark:bg-amber-400 text-white w-10 h-10 rounded-full flex items-center justify-center shadow-md"
-              >
+              <motion.div className="absolute bottom-4 right-4 bg-amber-500 dark:bg-amber-400 text-white w-10 h-10 rounded-full flex items-center justify-center shadow-md">
                 <Award className="w-5 h-5" />
               </motion.div>
             </motion.div>

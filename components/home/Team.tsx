@@ -10,12 +10,15 @@ import { Heading } from "../Heading";
 import Background from "../background";
 import Loader from "../loader";
 import { TTeamSection } from "@/types/all-types";
+import { Spinner } from "@heroui/spinner";
 
 type TeamSectionProps = {
   section: TTeamSection | undefined;
 };
 export const TeamSection: React.FC<TeamSectionProps> = ({ section }) => {
-  if (!section) return <Loader />;
+  if (!section) {
+    return <Spinner size="lg" />;
+  }
 
   const teamMembers = section.data || [];
 
@@ -35,13 +38,7 @@ export const TeamSection: React.FC<TeamSectionProps> = ({ section }) => {
           ?.slice(0, 5)
           ?.reverse()
           ?.map((member: any, index: number) => (
-            <motion.div
-              key={member.id}
-              initial={{ opacity: 0, y: 30 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.7, delay: index * 0.1 }}
-              className="w-full"
-            >
+            <motion.div key={member.id} className="w-full">
               <Card
                 isHoverable
                 isPressable

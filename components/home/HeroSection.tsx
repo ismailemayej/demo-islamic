@@ -4,12 +4,16 @@ import profile from "@/public/images/profile.png";
 import Background from "../background";
 import type { THeroSection } from "@/types/all-types";
 import HeroBackground from "../HeroBackground";
+import { Spinner } from "@heroui/spinner";
 
 interface HeroProps {
   section?: THeroSection;
 }
 
 export const HeroSection: React.FC<HeroProps> = ({ section }) => {
+  if (!section) {
+    return <Spinner size="lg" />;
+  }
   return (
     <HeroBackground>
       <div
@@ -17,7 +21,7 @@ export const HeroSection: React.FC<HeroProps> = ({ section }) => {
           absolute inset-0 z-0
           bg-[radial-gradient(circle_at_10%_20%,rgba(16,88,56,0.15)_1px,transparent_1px),radial-gradient(circle_at_80%_80%,rgba(16,88,56,0.15)_1px,transparent_1px)]
           [background-size:40px_40px]
-          opacity-30 dark:opacity-20
+          opacity-30 dark:opacity-20 container mx-auto
         "
       ></div>
 

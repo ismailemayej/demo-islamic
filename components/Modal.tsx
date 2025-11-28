@@ -35,7 +35,9 @@ export const OpenModal: React.FC<ReusableModalProps> = ({
                 {title}
               </h3>
             </ModalHeader>
-            <ModalBody className="bangla dark:text-white">{children}</ModalBody>
+            <ModalBody className="bangla dark:text-white px-0">
+              {children}
+            </ModalBody>
             <ModalFooter>
               <Button color="danger" variant="light" onPress={onClose}>
                 Close

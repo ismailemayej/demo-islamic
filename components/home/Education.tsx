@@ -6,6 +6,7 @@ import { Heading } from "../Heading";
 import Background from "../background";
 import Loader from "../loader";
 import { EducationItem, TEducationSection } from "@/types/all-types";
+import { Spinner } from "@heroui/spinner";
 
 interface EducationProps {
   section: TEducationSection | undefined;
@@ -13,7 +14,7 @@ interface EducationProps {
 export const EducationSection: React.FC<EducationProps> = ({ section }) => {
   const EDUCATION_DATA = section?.data || [];
   if (!section) {
-    return <Loader />;
+    return <Spinner size="lg" />;
   }
   return (
     <Background id="education">
@@ -31,14 +32,11 @@ export const EducationSection: React.FC<EducationProps> = ({ section }) => {
           ?.map((edu: EducationItem, index: number) => (
             <motion.div
               key={index}
-              initial={{ opacity: 0, y: 30 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.8 }}
               className="relative p-6 bg-white dark:bg-gray-800 shadow-md dark:shadow-gray-700 hover:shadow-lg rounded-2xl border border-amber-100 dark:border-gray-700 transition-colors duration-500"
             >
               <div className="flex items-center gap-3 mb-3">
                 <GraduationCap className="text-amber-600 dark:text-amber-400 w-6 h-6" />
-                <h3 className="bangla text-xl font-semibold text-amber-800 dark:text-amber-400">
+                <h3 className="bangla lg:text-xl text-md font-semibold text-amber-800 dark:text-amber-400">
                   {edu?.examName}
                 </h3>
               </div>

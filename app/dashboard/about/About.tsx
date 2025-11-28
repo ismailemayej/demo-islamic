@@ -1,5 +1,4 @@
 "use client";
-
 import { useState, useEffect, useRef } from "react";
 import { motion } from "framer-motion";
 import Image from "next/image";
@@ -24,8 +23,8 @@ import { FaRegEdit } from "react-icons/fa";
 import JoditEditor from "jodit-react";
 
 export const AboutSectionDashboard = () => {
-  const editor = useRef(null);
   const { section, loading, error } = useGetSection<any>("aboutsection");
+  const editor = useRef(null);
 
   const [formData, setFormData] = useState({
     heading: { title: "", subTitle: "" },

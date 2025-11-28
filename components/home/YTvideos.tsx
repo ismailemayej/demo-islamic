@@ -5,13 +5,16 @@ import { Video, X } from "lucide-react";
 import { Heading } from "../Heading";
 import Background from "../background";
 import { TVideoSection, VideoItem } from "@/types/all-types";
+import { Spinner } from "@heroui/spinner";
 type YouTubeVideosSectionProps = {
   data: TVideoSection | undefined;
 };
 export const YouTubeVideosSection: React.FC<YouTubeVideosSectionProps> = ({
   data,
 }) => {
-  // const { section, loading } = useGetSection("youtubevideosection");
+  if (!data) {
+    return <Spinner size="lg" />;
+  }
   const [activeVideo, setActiveVideo] = useState<VideoItem | null>(null);
   const Videos_Section = data?.data || [];
 
@@ -54,14 +57,6 @@ export const YouTubeVideosSection: React.FC<YouTubeVideosSectionProps> = ({
             return (
               <motion.div
                 key={index}
-                initial={{ opacity: 0, y: 40 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.6, delay: index * 0.1 }}
-                whileHover={{
-                  rotateY: 10,
-                  rotateX: 5,
-                  scale: 1.07,
-                }}
                 className="relative cursor-pointer bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 
                 rounded-2xl shadow-xl overflow-hidden transition-transform duration-500"
                 onClick={() => setActiveVideo(video)}

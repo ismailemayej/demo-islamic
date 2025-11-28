@@ -10,6 +10,7 @@ import {
   FaWhatsapp,
 } from "react-icons/fa";
 import Background from "../background";
+import { Spinner } from "@heroui/spinner";
 
 interface ContactItemProps {
   icon: React.ReactNode;
@@ -53,7 +54,7 @@ interface TContactSection {
   };
 }
 export const ContactSection: React.FC<TContactSection> = ({ section }) => {
-  if (!section) return null;
+  if (!section) return <Spinner size="lg" />;
 
   const { email, phone, address, mapUrl } = section.data;
 

@@ -1,15 +1,30 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Heading } from "../Heading";
 import Background from "../background";
 import { TPhotoSection } from "@/types/all-types";
+import { Spinner } from "@heroui/spinner";
 type GallerySectionProps = {
   section: TPhotoSection | null | undefined;
 };
 export const GallerySection: React.FC<GallerySectionProps> = ({ section }) => {
+  if (!section) {
+    return <Spinner size="lg" />;
+  }
   const [selectedImage, setSelectedImage] = useState<string | null>(null);
+  useEffect(() => {
+    if (selectedImage) {
+      document.body.style.overflow = "hidden"; // স্ক্রল বন্ধ
+    } else {
+      document.body.style.overflow = "auto"; // স্ক্রল চালু
+    }
+
+    return () => {
+      document.body.style.overflow = "auto";
+    };
+  }, [selectedImage]);
 
   return (
     <Background id="gallery">
@@ -27,16 +42,6 @@ export const GallerySection: React.FC<GallerySectionProps> = ({ section }) => {
           ?.map((item: any, i: number) => (
             <motion.div
               key={i}
-              initial={{ opacity: 0, scale: 0.95 }}
-              whileInView={{ opacity: 1, scale: 1 }}
-              transition={{ duration: 0.5, delay: i * 0.1 }}
-              whileHover={{
-                scale: 1.05,
-                rotateX: 5,
-                rotateY: -5,
-                transition: { type: "spring", stiffness: 300, damping: 20 },
-              }}
-              style={{ perspective: 1000 }}
               className={`relative overflow-hidden rounded-xl group shadow-md dark:shadow-gray-700 border border-gray-200 dark:border-gray-700 ${
                 i === 0 || i === 1 || i === 5 || i === 2 ? "lg:col-span-2" : ""
               } ${i === 2 ? "lg:row-span-2" : ""}`}
@@ -57,15 +62,15 @@ export const GallerySection: React.FC<GallerySectionProps> = ({ section }) => {
           ))}
       </div>
 
-      {/* Modal for zoomed image */}
       <AnimatePresence>
         {selectedImage && (
           <motion.div
+            className="fixed inset-0 z-50 flex items-center justify-center 
+                 bg-black/80 backdrop-blur-sm p-4"
+            onClick={() => setSelectedImage(null)}
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-70"
-            onClick={() => setSelectedImage(null)}
           >
             <motion.img
               src={selectedImage}
@@ -73,7 +78,7 @@ export const GallerySection: React.FC<GallerySectionProps> = ({ section }) => {
               initial={{ scale: 0.8 }}
               animate={{ scale: 1 }}
               exit={{ scale: 0.8 }}
-              className="max-h-[90%] max-w-[90%] rounded-lg shadow-lg"
+              className="max-h-[90vh] max-w-[90vw] object-contain rounded-xl shadow-xl"
               onClick={(e) => e.stopPropagation()}
             />
           </motion.div>

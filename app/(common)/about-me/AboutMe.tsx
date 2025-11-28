@@ -17,7 +17,7 @@ export const AboutMe: React.FC = () => {
         subTitle={section?.heading.subTitle || "Learn more about me"}
       />
 
-      <div className="container mx-auto mt-10 px-4 flex flex-col lg:flex-row items-start justify-center gap-8">
+      <div className="container mt-10 flex flex-col lg:flex-row items-start justify-start gap-8">
         {/* Image (left on large screen, top on mobile) */}
         <motion.div
           initial={{ opacity: 0, x: -40 }}
@@ -44,7 +44,7 @@ export const AboutMe: React.FC = () => {
           </h1>
 
           <p
-            className="text-base sm:text-lg text-gray-700 dark:text-gray-300 leading-relaxed bangla"
+            className="text-base sm:text-lg text-gray-700 dark:text-gray-300 leading-relaxed bangla text-left"
             dangerouslySetInnerHTML={{
               __html:
                 section?.data?.description ||
