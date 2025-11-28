@@ -21,7 +21,7 @@ export const Heading: React.FC<HeadingProps> = ({
       e.currentTarget.getBoundingClientRect();
     const x = e.clientX - left;
     const y = e.clientY - top;
-    const rotateY = (x / width - 0.5) * 20; // -10 to 10 degree
+    const rotateY = (x / width - 0.5) * 20;
     const rotateX = (0.5 - y / height) * 20; // -10 to 10 degree
     setTilt({ rotateX, rotateY });
   };
@@ -47,13 +47,13 @@ export const Heading: React.FC<HeadingProps> = ({
           rotateY: tilt.rotateY,
         }}
         transition={{ type: "spring", stiffness: 250, damping: 20 }}
-        className="h-full relative inline-block bangla font-extrabold 
+        className="h-full relative inline-block font-extrabold 
           text-3xl sm:text-3xl lg:text-5xl 
           bg-clip-text text-transparent font-serif tracking-tight drop-shadow-[0_3px_3px_rgba(255,191,0,0.3)]
           bg-gradient-to-r from-amber-800 via-yellow-600 to-orange-700
           dark:from-amber-400 dark:via-yellow-300 dark:to-orange-400 transition-colors duration-500"
       >
-        <span className="inline-block text-transparent bg-clip-text bg-gradient-to-r from-amber-700 via-yellow-600 to-orange-600 dark:from-amber-400 dark:via-yellow-300 dark:to-orange-400">
+        <span className="inline-block text-transparent bg-clip-text bg-gradient-to-r from-amber-700 via-yellow-600 to-orange-600 dark:from-amber-400 dark:via-yellow-300 dark:to-orange-400 font-extrabold bangla">
           {title}
         </span>
         <motion.span
@@ -69,7 +69,7 @@ export const Heading: React.FC<HeadingProps> = ({
           initial={{ opacity: 0, y: 15 }}
           whileInView={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.7, delay: 0.3 }}
-          className={`bangla mt-4 text-gray-700 dark:text-amber-200 max-w-3xl mx-auto leading-relaxed text-lg sm:text-lg ${
+          className={`bangla mt-4 text-gray-700 dark:text-amber-200 max-w-3xl mx-auto leading-relaxed text-lg sm:text-lg line-clamp-1 ${
             center ? "text-center" : "text-left"
           } transition-colors duration-500`}
         >

@@ -85,10 +85,10 @@ export const ServiceSection: React.FC<ServiceSectionProps> = ({ section }) => {
         >
           <div className="max-h-[70vh] overflow-y-auto p-4 space-y-4">
             <div className="text-[90px] text-center text-emerald-600 dark:text-emerald-400">
-              <i className={`fas ${selectedService.icon}`}></i>
+              {/* <i className={`fas ${selectedService.icon}`}></i> */}
             </div>
 
-            <p className="text-gray-700 dark:text-gray-300">
+            <p className="text-gray-700 dark:text-gray-300 bangla">
               {selectedService.shortDescription}
             </p>
             <p

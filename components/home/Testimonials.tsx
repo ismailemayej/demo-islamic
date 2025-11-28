@@ -56,7 +56,6 @@ export const TestimonialsSection: React.FC<TestimonialProps> = ({
               <p className="text-gray-700 dark:text-gray-200 flex-1 line-clamp-5">
                 {testimonial.comment}
               </p>
-              <div className="mt-4 text-amber-500 text-2xl self-end">🕌</div>
             </motion.div>
           ))}
       </div>

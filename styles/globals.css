@@ -1,6 +1,7 @@
 @import "tailwindcss";
 @config "../tailwind.config.js";
 @import "@fortawesome/fontawesome-free/css/all.min.css";
+
 /* ----------- Chrome, Edge, Safari, Opera ----------- */
 ::-webkit-scrollbar {
   width: 0px;
@@ -26,8 +27,34 @@ body {
 }
 
 .bangla {
-  font-family: "Tiro Bangla", "Roboto";
+  font-family: "Roboto", sans-serif; /* default English font */
   font-weight: 400;
+}
+
+/* বাংলার ইউনিকোড রেঞ্জে Tiro Bangla ব্যবহার */
+.bangla span,
+.bangla * {
+  font-family: "Roboto", sans-serif;
+}
+
+/* Alternatively: Automatic font switching using unicode-range via @font-face (advanced) */
+@font-face {
+  font-family: "Tiro Bangla";
+  src: url("https://fonts.gstatic.com/s/tirobangla/v1/xyz.woff2")
+    format("woff2");
+  unicode-range: U+0980-09FF; /* Bengali Unicode range */
+}
+
+@font-face {
+  font-family: "Roboto";
+  src: url("https://fonts.gstatic.com/s/roboto/v30/KFOmCnqEu92Fr1Me5WZLCzYlKw.woff2")
+    format("woff2");
+  unicode-range: U+0000-007F; /* English / Latin */
+}
+
+/* মূল ক্লাস */
+.bangla {
+  font-family: "Roboto", "Tiro Bangla", sans-serif;
 }
 
 /* Smooth spin */

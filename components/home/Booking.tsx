@@ -71,8 +71,8 @@ export const AppointmentSection: React.FC = () => {
   return (
     <Background id="booking">
       <Heading
-        title="অ্যাপয়েন্টমেন্ট"
-        subTitle="নিচের ফর্মটি পূরণ করে আমাদের প্রোগ্রাম বুক করুন"
+        title=" Appointment"
+        subTitle=" book an appointment for a program"
       />
 
       <motion.form

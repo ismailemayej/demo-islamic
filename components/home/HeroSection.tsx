@@ -1,7 +1,6 @@
 "use client";
 import { motion } from "framer-motion";
 import profile from "@/public/images/profile.png";
-import Background from "../background";
 import type { THeroSection } from "@/types/all-types";
 import HeroBackground from "../HeroBackground";
 import { Spinner } from "@heroui/spinner";
@@ -42,22 +41,22 @@ export const HeroSection: React.FC<HeroProps> = ({ section }) => {
           initial={{ opacity: 0, x: 80, rotateY: 10 }}
           whileInView={{ opacity: 1, x: 0, rotateY: 0 }}
           transition={{ duration: 1 }}
-          className="w-full lg:w-1/2 text-center lg:text-left space-y-5"
+          className="w-full lg:w-1/2 text-left lg:text-left space-y-5 px-4"
         >
           <h2 className="text-3xl font-semibold text-emerald-700 dark:text-emerald-400 tracking-wide">
             {section?.title || "Hero Title"}
           </h2>
 
           <motion.h1
-            className="text-5xl sm:text-6xl 
+            className="text-4xl sm:text-4xl 
              bg-gradient-to-r font-extrabold from-emerald-400 via-cyan-400 to-blue-400
-             bg-clip-text text-transparent"
+             bg-clip-text text-transparent line-clamp-2"
             transition={{ duration: 3, repeat: Infinity }}
           >
             {section?.subTitle || "Hero Subtitle"}
           </motion.h1>
 
-          <p className="text-lg text-gray-700 dark:text-gray-300 leading-relaxed">
+          <p className=" line-clamp-4 text-lg text-gray-700 dark:text-gray-300 leading-relaxed">
             {section?.description ||
               "This is the hero section description placeholder."}
           </p>
@@ -66,7 +65,7 @@ export const HeroSection: React.FC<HeroProps> = ({ section }) => {
             <motion.button
               whileHover={{ scale: 1.1, rotate: 2 }}
               whileTap={{ scale: 0.95 }}
-              className="mt-5 px-6 py-3 bg-green-900 text-white font-semibold rounded-full shadow-lg hover:bg-emerald-700 transition"
+              className=" px-9 py-2 bg-green-900 text-white font-semibold rounded-full shadow-lg hover:bg-emerald-700 transition"
             >
               Our Books
             </motion.button>

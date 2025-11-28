@@ -6,7 +6,7 @@ import { ThemeSwitch } from "../theme-switch";
 import { Container } from "../container";
 import Link from "next/link";
 import { useGetSection } from "@/app/dashboard/Hook/GetData";
-import SkeletonPage from "../Skeleton";
+
 import Loader from "../loader";
 export type NavLink = {
   name: string;
@@ -26,13 +26,13 @@ export const Navbar: React.FC = () => {
       className="sticky top-0 left-0 right-0 z-50
                  bg-white/70 dark:bg-gray-900/60
                  backdrop-blur-md shadow-sm border-b border-gray-200 dark:border-gray-700
-                 transition-all duration-500"
+                 transition-all duration-500 lg:px-0 px-2"
     >
       <Container>
-        <nav className="container mx-auto lg:py-1 py-3 flex justify-between items-center">
+        <nav className="container mx-auto py-3 flex justify-between items-center">
           {/* 🔹 Logo */}
           <motion.div
-            className="lg:text-2xl text-xl font-[Quicksand] font-extrabold
+            className="lg:text-4xl text-xl font-[Quicksand] font-extrabold
              text-transparent bg-clip-text
              bg-gradient-to-r from-green-400 via-emerald-500 to-cyan-500
              dark:from-green-300 dark:via-emerald-400 dark:to-cyan-400
@@ -126,11 +126,11 @@ export const Navbar: React.FC = () => {
                   href={link.url}
                   onClick={() => setIsOpen(false)}
                   whileHover={{ x: 5 }}
-                  className="block px-5 py-3 text-lg font-bold
+                  className="block px-5 py-1 text-lg font-bold
                              text-gray-700 dark:text-gray-300
                              hover:bg-amber-50/70 dark:hover:bg-gray-700/70
                              hover:text-amber-600 dark:hover:text-amber-400
-                             rounded-lg mx-3 mb-2 transition-all duration-200"
+                             rounded-lg mx-3 transition-all duration-200"
                 >
                   {link.name}
                 </motion.a>

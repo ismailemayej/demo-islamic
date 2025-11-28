@@ -34,7 +34,6 @@ interface ContactSection {
 export const ContactSectionDashboard: React.FC = () => {
   const { section, loading, error } =
     useGetSection<ContactData>("contactsection");
-  console.log("Contact Section Data:", section);
 
   const [formData, setFormData] = useState<ContactSection>({
     heading: { title: "", subTitle: "" },

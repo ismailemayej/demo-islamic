@@ -59,7 +59,7 @@ export const AboutSection: React.FC<AboutProps> = ({ section }) => {
             whileHover={{ x: 5 }}
             transition={{ type: "spring", stiffness: 200 }}
           >
-            <User2 className="w-10 h-10 text-emerald-600 dark:text-emerald-400 drop-shadow-lg" />
+            <User2 className="w-10 h-10 lg:block hidden text-emerald-600 dark:text-emerald-400 drop-shadow-lg" />
             <h1 className="text-3xl font-bold text-gray-800 dark:text-gray-200 leading-relaxed bangla">
               {section?.data?.title || "আমার সম্পর্কে"}
             </h1>
@@ -71,7 +71,7 @@ export const AboutSection: React.FC<AboutProps> = ({ section }) => {
             whileHover={{ x: 5 }}
             transition={{ type: "spring", stiffness: 200 }}
           >
-            <FileText className="w-9 h-9 text-amber-500 drop-shadow-md mt-1" />
+            <FileText className="w-9 h-9 lg:block hidden text-amber-500 drop-shadow-md mt-1" />
             <p
               className="text-lg text-gray-700 dark:text-gray-300 leading-relaxed bangla line-clamp-5"
               dangerouslySetInnerHTML={{

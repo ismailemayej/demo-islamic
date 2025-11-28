@@ -1,11 +1,12 @@
 "use client";
 import { useState } from "react";
 import { motion } from "framer-motion";
-import { Video, X } from "lucide-react";
+import { ArrowRight, Video, X } from "lucide-react";
 import { Heading } from "../Heading";
 import Background from "../background";
 import { TVideoSection, VideoItem } from "@/types/all-types";
 import { Spinner } from "@heroui/spinner";
+import Link from "next/link";
 type YouTubeVideosSectionProps = {
   data: TVideoSection | undefined;
 };
@@ -37,10 +38,38 @@ export const YouTubeVideosSection: React.FC<YouTubeVideosSectionProps> = ({
 
   return (
     <Background id="youtubevideos">
-      <Heading
-        title="🎥 ভিডিও গ্যালারি"
-        subTitle="আমার ইউটিউব চ্যানেলে প্রকাশিত কিছু ভিডিও"
-      />
+      <div className="flex justify-between items-center w-full">
+        <div className="flex justify-between items-center w-full">
+          <div className="flex-1 text-center">
+            <Heading
+              title={data?.heading?.title || "🎥 ভিডিও গ্যালারি"}
+              subTitle={
+                data.heading.subTitle ||
+                "আমার ইউটিউব চ্যানেলে প্রকাশিত কিছু ভিডিও"
+              }
+            />
+          </div>
+          <span className="lg:block hidden">
+            <Link
+              href={
+                data?.moreVideosUrl ||
+                "https://mizanur-rahman-azhari.vercel.app/"
+              }
+              className="
+            flex items-center gap-1 font-medium
+            text-blue-600 dark:text-blue-400
+            hover:underline
+            "
+            >
+              More
+              <ArrowRight
+                size={18}
+                className="text-blue-600 dark:text-blue-400"
+              />
+            </Link>
+          </span>
+        </div>
+      </div>
 
       {/* Videos Grid */}
       <div
@@ -96,19 +125,21 @@ export const YouTubeVideosSection: React.FC<YouTubeVideosSectionProps> = ({
       </div>
 
       {/* More Videos Button */}
-      <div className="flex justify-center">
-        <motion.a
+      <span className="block lg:hidden">
+        <Link
           href={
             data?.moreVideosUrl || "https://mizanur-rahman-azhari.vercel.app/"
           }
-          target="_blank"
-          whileHover={{ scale: 1.05 }}
-          whileTap={{ scale: 0.95 }}
-          className="bg-gradient-to-r from-emerald-900 to-amber-800 text-white font-semibold py-2 px-6 rounded-full shadow-lg hover:shadow-2xl transition-all duration-300"
+          className="
+            flex items-center gap-1 font-medium
+            text-blue-600 dark:text-blue-400
+            hover:underline
+            "
         >
-          More Videos →
-        </motion.a>
-      </div>
+          More
+          <ArrowRight size={18} className="text-blue-600 dark:text-blue-400" />
+        </Link>
+      </span>
 
       {/* Video Modal with 3D Zoom */}
       {activeVideo && (

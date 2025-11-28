@@ -138,6 +138,30 @@ export const YouTubeVideosSectionDashboard: React.FC = () => {
       setSaving(false);
     }
   };
+  const handleUpdateHeading = async () => {
+    setSaving(true);
+    toast.loading("Saving...", { id: "save-heading" });
+
+    try {
+      const res = await fetch("/api/all-data/youtubevideosection/update", {
+        method: "PATCH",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(formData),
+      });
+
+      const json = await res.json();
+      if (!json.success) throw new Error(json.error || "Update failed");
+
+      toast.dismiss("save-heading");
+      toast.success("Heading updated successfully!");
+      setOpenHeadingModal(false);
+    } catch (err: any) {
+      toast.dismiss("save-heading");
+      toast.error(err.message || "Update failed");
+    } finally {
+      setSaving(false);
+    }
+  };
 
   return (
     <section className="py-10 px-3">
@@ -245,7 +269,7 @@ export const YouTubeVideosSectionDashboard: React.FC = () => {
         />
 
         <button
-          onClick={handleUpdateVideo}
+          onClick={handleUpdateHeading}
           className="mt-4 bg-amber-500 text-white px-6 py-2 rounded-lg"
         >
           {saving ? "Saving..." : "Save"}

@@ -271,7 +271,7 @@ export const AboutSectionDashboard = () => {
                     onChange={(newContent: string) =>
                       handleChange("data", "description", newContent)
                     }
-                    className="w-full p-3 rounded-lg border text-gray-800 dark:bg-gray-800 dark:text-white"
+                    className="w-full p-3 rounded-lg border  dark:bg-gray-800 "
                     config={{
                       readonly: false,
                       toolbarSticky: false,
