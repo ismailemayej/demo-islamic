@@ -168,11 +168,13 @@ export const YouTubeVideosSectionDashboard: React.FC = () => {
       <div className="container mx-auto">
         {/* Header Section */}
         <div className="flex justify-between items-center mb-6">
-          <Heading
-            title={formData.heading.title}
-            subTitle={formData.heading.subTitle}
-            center
-          />
+          <div className="flex-1 text-center">
+            <Heading
+              title={formData.heading.title}
+              subTitle={formData.heading.subTitle}
+              center
+            />
+          </div>
 
           <div className="flex items-center gap-3">
             <button onClick={handleAddVideo}>

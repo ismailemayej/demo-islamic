@@ -1,13 +1,11 @@
 export const dynamic = "force-dynamic";
 import React from "react";
-import DashboardPage from "./Dashboard";
-
+import SiteInfo from "./site-info/SiteInfo";
 const DashboardPages = () => {
   return (
     <div>
-      <DashboardPage />
+      <SiteInfo />
     </div>
   );
 };
-
 export default DashboardPages;

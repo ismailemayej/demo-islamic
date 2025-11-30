@@ -81,7 +81,7 @@ export const ServiceSection: React.FC<ServiceSectionProps> = ({ section }) => {
           title={selectedService.title}
           isOpen={openModal}
           onClose={() => setOpenModal(false)}
-          size="md"
+          size="sm"
         >
           <div className="max-h-[70vh] overflow-y-auto p-4 space-y-4">
             <div className="text-[90px] text-center text-emerald-600 dark:text-emerald-400">

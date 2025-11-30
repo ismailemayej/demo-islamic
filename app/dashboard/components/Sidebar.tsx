@@ -24,7 +24,6 @@ import {
   FaMedal,
   FaServicestack,
 } from "react-icons/fa";
-import { Divider } from "@heroui/divider";
 
 interface SidebarLink {
   id: string;
@@ -66,12 +65,6 @@ export const Sidebar = ({ onLinkClick }: { onLinkClick?: () => void }) => {
       name: "Blog",
       icon: <FaBlogger className="text-orange-500 text-lg" />,
       href: "/dashboard/blog",
-    },
-    {
-      id: "6",
-      name: "Booking",
-      icon: <FaCalendarAlt className="text-purple-500 text-lg" />,
-      href: "/dashboard/booking",
     },
     {
       id: "7",
@@ -145,15 +138,25 @@ export const Sidebar = ({ onLinkClick }: { onLinkClick?: () => void }) => {
       icon: <FaBookReader className="text-green-400 text-lg" />,
       href: "/dashboard/books",
     },
+    {
+      id: "6",
+      name: "Booking",
+      icon: <FaCalendarAlt className="text-purple-500 text-lg" />,
+      href: "/dashboard/booking",
+    },
   ]);
 
   return (
-    <aside className="flex flex-col h-screen w-64 bg-white dark:bg-gray-900 border-r border-gray-200 dark:border-gray-800">
+    <aside
+      className="flex flex-col mt-2 lg:pl-3 h-screen w-52 bg-gradient-to-br
+        from-amber-50 to-white
+          dark:from-slate-900 dark:via-slate-800 dark:to-slate-900 rounded-2xl lg:mx-2"
+    >
       <SidebarProfile />
 
       <ScrollShadow
         hideScrollBar
-        className="flex-1 overflow-y-auto lg:mb-0 mb-30 ml-2"
+        className="flex-1 overflow-y-scroll lg:mb-0 mb-20 ml-2"
       >
         <DraggableList<SidebarLink>
           items={links}
@@ -164,7 +167,7 @@ export const Sidebar = ({ onLinkClick }: { onLinkClick?: () => void }) => {
               <Link
                 href={link.href}
                 onClick={onLinkClick}
-                className={`group flex items-center gap-3 rounded-md px-3 py-2 text-sm font-medium transition-all duration-200
+                className={`group flex items-center gap-3 rounded-md px-3 py-2 text-sm font-medium transition-all duration-200 
                 ${
                   pathname === link.href
                     ? "bg-gradient-to-r from-blue-100 to-indigo-100 dark:from-gray-800 dark:to-gray-700 text-green-600 scale-105"
@@ -174,7 +177,6 @@ export const Sidebar = ({ onLinkClick }: { onLinkClick?: () => void }) => {
                 {link.icon}
                 <span>{link.name}</span>
               </Link>
-              <Divider />
             </>
           )}
         />

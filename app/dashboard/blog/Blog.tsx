@@ -147,11 +147,13 @@ export const ArticlesSectionDashboard: React.FC = () => {
     <Background id="blog">
       <div className="container mx-auto">
         {/* Heading + Edit + Add Blog Button */}
-        <div className="flex justify-center items-center gap-6 mb-6">
-          <Heading
-            title={formData.heading.title}
-            subTitle={formData.heading.subTitle}
-          />
+        <div className="flex justify-center items-center gap-6 mb-6 w-full">
+          <div className="flex-1 text-center">
+            <Heading
+              title={formData.heading.title}
+              subTitle={formData.heading.subTitle}
+            />
+          </div>
 
           {/* Edit Heading */}
           <button

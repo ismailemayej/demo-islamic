@@ -185,10 +185,12 @@ export const SocialMediaSectionDashboard: React.FC = () => {
       <div className="container mx-auto px-0">
         {/* Heading + Edit Button */}
         <div className="flex justify-between items-center mb-6">
-          <Heading
-            title={formData.heading.title}
-            subTitle={formData.heading.subTitle}
-          />
+          <div className="flex-1 text-center">
+            <Heading
+              title={formData.heading.title}
+              subTitle={formData.heading.subTitle}
+            />
+          </div>
           <span className="flex justify-center gap-3">
             <button onClick={handleAdd}>
               <IoAddCircleSharp className="text-green-500 cursor-pointer w-7 h-7" />

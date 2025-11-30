@@ -199,10 +199,12 @@ export const ServiceSectionDashboard: React.FC = () => {
           </div>
         ) : (
           <div className="flex justify-between items-center mx-auto gap-7 mb-6">
-            <Heading
-              title={formData.heading.title}
-              subTitle={formData.heading.subTitle}
-            />
+            <div className="flex-1 text-center">
+              <Heading
+                title={formData.heading.title}
+                subTitle={formData.heading.subTitle}
+              />
+            </div>
             <div className="flex align-bottom gap-3">
               <IoAddCircleSharp
                 className="text-green-500 cursor-pointer w-7 h-7"

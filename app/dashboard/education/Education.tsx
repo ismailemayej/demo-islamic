@@ -159,11 +159,13 @@ export const EducationSectionDashboard: React.FC = () => {
     <section className="py-16 px-3 rounded-xl bg-gradient-to-b from-amber-50 to-white dark:bg-gradient-to-b dark:from-gray-700 dark:to-gray-900 transition-colors duration-500">
       {/* Section Heading */}
       <div className="flex flex-col sm:flex-row justify-between items-center mb-6 gap-4">
-        <Heading
-          title={formData.heading.title}
-          subTitle={formData.heading.subTitle}
-          center
-        />
+        <div className="flex-1 text-center">
+          <Heading
+            title={formData.heading.title}
+            subTitle={formData.heading.subTitle}
+            center
+          />
+        </div>
 
         <span className="flex gap-2 items-center">
           <button onClick={openAddModal} title="Add new">

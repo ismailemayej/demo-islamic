@@ -147,11 +147,13 @@ export const BookSectionDashboard = () => {
   return (
     <div className="p-6 bg-white dark:bg-gray-900 rounded-xl shadow-md">
       {/* Heading Preview */}
-      <div className="flex justify-between items-center mx-auto gap-7 mb-6">
-        <Heading
-          title={formData.heading.title}
-          subTitle={formData.heading.subTitle}
-        />
+      <div className="flex justify-between items-center mx-auto gap-7 mb-6 w-full">
+        <div className="flex-1 text-center">
+          <Heading
+            title={formData.heading.title}
+            subTitle={formData.heading.subTitle}
+          />
+        </div>
         <div className="flex items-end gap-3">
           <IoAddCircleSharp
             className="text-green-500 cursor-pointer w-7 h-7"

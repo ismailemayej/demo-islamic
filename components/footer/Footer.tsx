@@ -3,7 +3,7 @@ import { useGetSection } from "@/app/dashboard/Hook/GetData";
 export const Footer: React.FC = () => {
   const { section, loading, error } = useGetSection("websitesection");
   return (
-    <footer className="bg-gray-300 dark:bg-gray-800 text-gray-800 dark:text-gray-200 py-8 transition-colors duration-500">
+    <footer className="mt-3 bg-gray-300 dark:bg-gray-800 text-gray-800 dark:text-gray-200 py-8 transition-colors duration-500">
       <div className="container mx-auto px-4 text-center space-y-4">
         {/* Copyright */}
         <p className="text-gray-500 dark:text-gray-400 text-md mt-4 bangla">

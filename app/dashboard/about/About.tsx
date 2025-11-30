@@ -162,18 +162,19 @@ export const AboutSectionDashboard = () => {
   if (error) return <p className="text-red-500 text-center py-10">{error}</p>;
 
   return (
-    <Background id="about-dashboard">
+    <>
       {/* 🔹 Preview Section */}
       <div>
         <Background id="about-preview">
-          <div className="flex justify-between items-center mb-4">
-            .
-            <Heading
-              title={formData.heading.title || "আমাদের সম্পর্কে"}
-              subTitle={
-                formData.heading.subTitle || "মাওলানা মিজানুর রহমান আল-আযহারী"
-              }
-            />
+          <div className="flex justify-between items-center mb-4 w-full">
+            <div className="flex-1 text-center">
+              <Heading
+                title={formData.heading.title || "আমাদের সম্পর্কে"}
+                subTitle={
+                  formData.heading.subTitle || "মাওলানা মিজানুর রহমান আল-আযহারী"
+                }
+              />
+            </div>
             <FaRegEdit
               onClick={() => setIsEditing(true)}
               className="text-yellow-500 cursor-pointer w-7 h-6"
@@ -336,6 +337,6 @@ export const AboutSectionDashboard = () => {
           )}
         </ModalContent>
       </Modal>
-    </Background>
+    </>
   );
 };

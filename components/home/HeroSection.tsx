@@ -43,7 +43,7 @@ export const HeroSection: React.FC<HeroProps> = ({ section }) => {
           transition={{ duration: 1 }}
           className="w-full lg:w-1/2 text-left lg:text-left space-y-5 px-4"
         >
-          <h2 className="text-3xl font-semibold text-emerald-700 dark:text-emerald-400 tracking-wide">
+          <h2 className="text-2xl font-semibold text-emerald-700 dark:text-emerald-400 tracking-wide">
             {section?.title || "Hero Title"}
           </h2>
 

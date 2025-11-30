@@ -126,10 +126,12 @@ export const ContactSectionDashboard: React.FC = () => {
               />
             </div>
           ) : (
-            <Heading
-              title={formData.heading.title}
-              subTitle={formData.heading.subTitle}
-            />
+            <div className="flex-1 text-center">
+              <Heading
+                title={formData.heading.title}
+                subTitle={formData.heading.subTitle}
+              />
+            </div>
           )}
 
           <Button

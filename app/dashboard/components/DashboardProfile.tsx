@@ -8,22 +8,22 @@ export const SidebarProfile = () => {
   const name = section?.data?.ownerName;
 
   return (
-    <div className="px-3 flex items-center justify-between p-4 border-b border-gray-200 dark:border-gray-800">
+    <div className=" flex flex-col items-center justify-center py-2 border-b border-gray-200 dark:border-gray-800 px-2">
       <div className="relative">
         {imageUrl && (
           <div className="relative group">
             <Image
               src={imageUrl}
               alt="Profile"
-              width={40}
-              height={40}
+              width={50}
+              height={50}
               className="rounded-full border-2 border-green-500 object-cover"
             />
           </div>
         )}
       </div>
 
-      <h2 className=" bangla  text-lg lg:text-xl font-semibold text-gray-800 dark:text-gray-100">
+      <h2 className=" bangla text-center text-md lg:text-lg font-semibold text-gray-800 dark:text-gray-100">
         {name}
       </h2>
     </div>

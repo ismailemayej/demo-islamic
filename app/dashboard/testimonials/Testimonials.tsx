@@ -177,10 +177,12 @@ export const TestimonialsSectionDashboard: React.FC = () => {
     <section className="py-10 px-3 rounded-xl bg-gradient-to-b from-amber-50 to-white dark:from-gray-700 dark:to-gray-900 transition-colors duration-500">
       <div className="container mx-auto px-0">
         <div className="flex justify-between items-center mb-6">
-          <Heading
-            title={formData.heading.title}
-            subTitle={formData.heading.subTitle}
-          />
+          <div className="flex-1 text-center">
+            <Heading
+              title={formData.heading.title}
+              subTitle={formData.heading.subTitle}
+            />
+          </div>
 
           <div className="flex items-center gap-3">
             {/* Add New Testimonial */}

@@ -119,11 +119,13 @@ export const AchievementsDashboard = () => {
 
   return (
     <Background id="achievement-dashboard">
-      <div className="flex justify-between items-center mb-6">
-        <Heading
-          title={formData.heading.title || "Achievements"}
-          subTitle={formData.heading.subTitle || "Our proud moments"}
-        />
+      <div className="flex justify-between items-center mb-6 w-full">
+        <div className="flex-1 text-center">
+          <Heading
+            title={formData.heading.title || "Achievements"}
+            subTitle={formData.heading.subTitle || "Our proud moments"}
+          />
+        </div>
         <div className="flex align-bottom gap-3">
           <IoAddCircleSharp
             className="text-green-500 cursor-pointer w-7 h-7"

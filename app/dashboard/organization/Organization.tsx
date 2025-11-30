@@ -191,10 +191,12 @@ export const OrganizationSectionDashboard = () => {
     <section className="relative py-20 px-3 bg-gradient-to-b from-amber-50 to-white dark:from-gray-700 dark:to-gray-900">
       <div className="container mx-auto text-center">
         <div className="flex justify-between items-center mb-6">
-          <Heading
-            title={formData.heading.title}
-            subTitle={formData.heading.subTitle}
-          />
+          <div className="flex-1 text-center">
+            <Heading
+              title={formData.heading.title}
+              subTitle={formData.heading.subTitle}
+            />
+          </div>
           <span className="flex gap-3">
             <button onClick={handleAddOrg}>
               <IoAddCircleSharp className="text-green-500 w-7 h-7" />

@@ -29,10 +29,9 @@ export const GallerySection: React.FC<GallerySectionProps> = ({ section }) => {
   return (
     <Background id="gallery">
       <Heading
-        title={section?.heading?.title || " Accademy:ের গ্যালারি"}
+        title={section?.heading?.title || " Accademy"}
         subTitle={
-          section?.heading?.subTitle ||
-          "আমাদের  Accademy:ের বিভিন্ন মুহূর্তের ছবি সমূহ"
+          section?.heading?.subTitle || "Accademy Gallery Showcase Your Work"
         }
       />
       <div className="grid gap-2 mt-6 lg:grid-cols-6 md:grid-cols-3 sm:grid-cols-2 grid-cols-1 auto-rows-[200px] lg:auto-rows-[300px]">

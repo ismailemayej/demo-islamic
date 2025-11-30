@@ -148,10 +148,12 @@ export const CertificateSectionDashboard = () => {
             </div>
           ) : (
             <>
-              <Heading
-                title={formData.heading.title}
-                subTitle={formData.heading.subTitle}
-              />
+              <div className="flex-1 text-center">
+                <Heading
+                  title={formData.heading.title}
+                  subTitle={formData.heading.subTitle}
+                />
+              </div>
               <div className="flex gap-4 items-center">
                 <IoAddCircleSharp
                   onClick={() =>
