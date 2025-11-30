@@ -53,7 +53,7 @@ export const Heading: React.FC<HeadingProps> = ({
           bg-gradient-to-r from-amber-800 via-yellow-600 to-orange-700
           dark:from-amber-400 dark:via-yellow-300 dark:to-orange-400 transition-colors duration-500"
       >
-        <span className="inline-block text-transparent bg-clip-text bg-gradient-to-r from-amber-700 via-yellow-600 to-orange-600 dark:from-amber-400 dark:via-yellow-300 dark:to-orange-400 font-extrabold bangla">
+        <span className="inline-block text-transparent bg-clip-text bg-gradient-to-r from-amber-700 via-yellow-600 to-orange-600 dark:from-amber-500 dark:via-yellow-300 dark:to-orange-400 font-extrabold bangla">
           {title}
         </span>
         <motion.span

@@ -36,7 +36,11 @@ export const OpenModal: React.FC<ReusableModalProps> = ({
         base: "max-h-[92vh]", // Modal মোট উচ্চতা বাড়ানো হল
       }}
     >
-      <ModalContent>
+      <ModalContent
+        className="bg-gradient-to-br 
+          from-blue-50 via-cyan-50 to-blue-100
+          dark:from-slate-900 dark:via-slate-800 dark:to-slate-900"
+      >
         {() => (
           <>
             {/* Header - সবসময় পুরো দেখা যাবে */}

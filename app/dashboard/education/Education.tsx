@@ -236,13 +236,13 @@ export const EducationSectionDashboard: React.FC = () => {
             transition={{ duration: 0.8, delay: index * 0.05 }}
             className="relative p-6 bg-white dark:bg-gray-800 shadow-md rounded-2xl border border-amber-100 dark:border-gray-700 hover:shadow-xl transition-all duration-300"
           >
-            <div className="absolute top-3 right-3 flex gap-2">
+            <div className="absolute top-2 right-3 flex gap-2">
               <button
                 onClick={() => openEditModal(index)}
                 className="text-blue-500 hover:text-blue-700 transition"
                 title="Edit item"
               >
-                <FaRegEdit className="text-yellow-500 cursor-pointer w-6 h-6" />
+                <FaRegEdit className="text-yellow-500 cursor-pointer w-5 h-5" />
               </button>
               <button
                 onClick={() => handleDelete(index)}

@@ -239,20 +239,19 @@ export const ProgramsSectionDashboard: React.FC = () => {
                     </button>
                   </div>
                 </div>
+
                 <p>
-                  <span className="font-semibold dark:text-white">নাম </span>{" "}
-                  {program.name}
-                </p>
-                <p>
-                  <span className="font-semibold dark:text-white">স্থান </span>{" "}
+                  <span className="font-semibold dark:text-white">
+                    Location:{" "}
+                  </span>{" "}
                   {program.location}
                 </p>
                 <p>
-                  <span className="font-semibold dark:text-white"> </span>{" "}
+                  <span className="font-semibold dark:text-white">Date: </span>{" "}
                   {program.date}
                 </p>
                 <p>
-                  <span className="font-semibold dark:text-white">বার </span>{" "}
+                  <span className="font-semibold dark:text-white">Day: </span>{" "}
                   {program.day}
                 </p>
                 <div
@@ -292,19 +291,7 @@ export const ProgramsSectionDashboard: React.FC = () => {
                   }
                   className=" border p-2 rounded-lg w-full dark:bg-gray-700"
                 />
-                <Input
-                  size="md"
-                  type="text"
-                  label="Name"
-                  value={selectedProgram.name}
-                  onChange={(e) =>
-                    setSelectedProgram({
-                      ...selectedProgram,
-                      name: e.target.value,
-                    })
-                  }
-                  className="dark:text-white border p-2 rounded-lg w-full dark:bg-gray-700"
-                />
+
                 <Input
                   size="md"
                   type="text"

@@ -8,6 +8,7 @@ import {
   FaMapMarkerAlt,
   FaWhatsapp,
   FaEdit,
+  FaRegEdit,
 } from "react-icons/fa";
 import { toast } from "react-hot-toast";
 import Background from "@/components/background";
@@ -103,7 +104,7 @@ export const ContactSectionDashboard: React.FC = () => {
         {/* Heading Section */}
         <div className="flex justify-between items-center mb-5">
           {isEditing ? (
-            <div className="flex flex-col w-full space-y-2">
+            <div className="lg:flex w-full gap-2">
               <Input
                 size="md"
                 type="text"
@@ -138,7 +139,11 @@ export const ContactSectionDashboard: React.FC = () => {
             onClick={() => (isEditing ? handleSave() : setIsEditing(true))}
             className="ml-4"
           >
-            {isEditing ? "Save" : "Edit"}
+            {isEditing ? (
+              "Save"
+            ) : (
+              <FaRegEdit className="text-yellow-500 cursor-pointer w-6 h-5" />
+            )}
           </Button>
         </div>
 

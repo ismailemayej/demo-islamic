@@ -251,7 +251,7 @@ export const ArticlesSectionDashboard: React.FC = () => {
                   ✍️ {article.blogwriter} | 📅 {article.date}
                 </p>
 
-                <div className="absolute top-4 right-4 flex gap-3">
+                <div className="absolute top-2 right-4 flex gap-3">
                   <button
                     className="hover:scale-110 transition-transform"
                     onClick={() => {

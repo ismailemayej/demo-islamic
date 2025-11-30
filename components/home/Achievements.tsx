@@ -39,7 +39,7 @@ export const AchievementsSection: React.FC<AchievementProps> = ({
               <h3 className="text-3xl font-bold text-emerald-700 dark:text-emerald-400 mb-2 transition-colors duration-500">
                 {achievement.count}+
               </h3>
-              <p className="text-gray-700 dark:text-gray-300 text-center transition-colors duration-500">
+              <p className="line-clamp-2 text-gray-700 dark:text-gray-300 text-center transition-colors duration-500">
                 {achievement.title}
               </p>
             </motion.div>

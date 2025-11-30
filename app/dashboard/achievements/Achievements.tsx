@@ -165,7 +165,7 @@ export const AchievementsDashboard = () => {
               <h3 className="text-3xl font-bold text-emerald-600 dark:text-emerald-400 text-center">
                 {achievement.count}+
               </h3>
-              <p className="text-gray-700 dark:text-gray-300 text-center mt-2">
+              <p className="line-clamp-2 text-gray-700 dark:text-gray-300 text-center mt-2">
                 {achievement.title}
               </p>
 

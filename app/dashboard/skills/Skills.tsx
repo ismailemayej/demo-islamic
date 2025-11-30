@@ -11,6 +11,7 @@ import { OpenModal } from "@/components/Modal";
 import Background from "@/components/background";
 import { useGetSection } from "../Hook/GetData";
 import { SkillItem, TSkillSection } from "@/types/all-types";
+import { Divider } from "@nextui-org/react";
 
 const gradients = [
   "from-red-400 to-pink-500",
@@ -180,7 +181,7 @@ const SkillsDashboardSection: React.FC = () => {
               </div>
 
               {/* Edit/Delete Buttons */}
-              <div className="absolute top-3 right-3 flex gap-2 mb-9">
+              <div className="absolute top-1 right-3 flex gap-2 mb-9">
                 <FaRegEdit
                   className="text-yellow-500 cursor-pointer w-6 h-6"
                   onClick={() => setSelectedSkill(skill)}
@@ -190,6 +191,7 @@ const SkillsDashboardSection: React.FC = () => {
                   onClick={() => handleDelete(skill.id)}
                 />
               </div>
+              <Divider />
             </motion.div>
           );
         })}
