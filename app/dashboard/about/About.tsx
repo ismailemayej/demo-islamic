@@ -21,6 +21,7 @@ import { Upload, Trash2, Check, X } from "lucide-react";
 import { useGetSection } from "../Hook/GetData";
 import { FaRegEdit } from "react-icons/fa";
 import JoditEditor from "jodit-react";
+import RichSimpleEditor from "@/components/SimpleEditor";
 
 export const AboutSectionDashboard = () => {
   const { section, loading, error } = useGetSection<any>("aboutsection");
@@ -266,20 +267,12 @@ export const AboutSectionDashboard = () => {
                       handleChange("data", "title", e.target.value)
                     }
                   />
-                  <JoditEditor
-                    ref={editor}
-                    value={formData.data.description}
-                    onChange={(newContent: string) =>
+                  <RichSimpleEditor
+                    initialValue={formData.data.description}
+                    onChange={(newContent) =>
                       handleChange("data", "description", newContent)
                     }
-                    className="w-full p-3 rounded-lg border  dark:bg-gray-800 "
-                    config={{
-                      readonly: false,
-                      toolbarSticky: false,
-                      showXPathInStatusbar: false,
-                      height: 200,
-                      askBeforePasteHTML: false,
-                    }}
+                    className="w-full p-3 rounded-lg border dark:bg-gray-800"
                   />
 
                   <div className="mt-3">

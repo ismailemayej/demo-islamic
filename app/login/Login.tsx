@@ -116,7 +116,7 @@ export default function LoginPage() {
       if (!json.success) throw new Error(json.error || "Update failed");
 
       toast.dismiss(loadingToast);
-      toast.success("✅ User & Password updated successfully!");
+      toast.success("✅ Email/Mobile & Password updated successfully!");
       setIsModalOpen(false);
       setOldPass("");
       setNewPass("");

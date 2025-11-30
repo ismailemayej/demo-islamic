@@ -12,6 +12,7 @@ import { IoAddCircleSharp } from "react-icons/io5";
 import { FaRegEdit } from "react-icons/fa";
 import { BsTrash3Fill } from "react-icons/bs";
 import JoditEditor from "jodit-react";
+import RichSimpleEditor from "@/components/SimpleEditor";
 
 const FA_ICONS = [
   "fa-mosque",
@@ -338,22 +339,14 @@ export const ServiceSectionDashboard: React.FC = () => {
               }
               fullWidth
             />
-            <JoditEditor
-              ref={editor}
-              value={selectedService.fullDescription}
+            <RichSimpleEditor
+              initialValue={selectedService.fullDescription}
               onChange={(newContent: string) =>
                 setSelectedService({
                   ...selectedService,
                   fullDescription: newContent,
                 })
               }
-              config={{
-                readonly: false,
-                toolbarSticky: false,
-                showXPathInStatusbar: false,
-                height: 200,
-                askBeforePasteHTML: false,
-              }}
               className="w-full border p-3 rounded-lg dark:bg-gray-800 dark:text-white"
             />
 

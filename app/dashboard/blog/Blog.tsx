@@ -13,6 +13,7 @@ import { FaRegEdit } from "react-icons/fa";
 import { BsTrash3Fill } from "react-icons/bs";
 import { PlusCircle } from "lucide-react";
 import JoditEditor from "jodit-react";
+import RichSimpleEditor from "@/components/SimpleEditor";
 
 interface Article {
   id: string;
@@ -301,20 +302,12 @@ export const ArticlesSectionDashboard: React.FC = () => {
                 }
               />
 
-              <JoditEditor
-                ref={editor}
-                value={selectedArticle.blogdescription}
-                onChange={(content: string) =>
-                  handleArticleChange("blogdescription", content)
+              <RichSimpleEditor
+                initialValue={selectedArticle.blogdescription}
+                onChange={(value) =>
+                  handleArticleChange("blogdescription", value)
                 }
-                config={{
-                  readonly: false,
-                  toolbarSticky: false,
-                  showXPathInStatusbar: false,
-                  height: 200,
-                  askBeforePasteHTML: false,
-                }}
-                className="w-full border p-3 rounded-lg dark:bg-gray-800 dark:text-white"
+                className="bangla w-full border p-3 rounded-lg dark:bg-gray-800 dark:text-white"
               />
 
               <Input

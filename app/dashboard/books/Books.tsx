@@ -10,6 +10,7 @@ import { BsTrash3Fill } from "react-icons/bs";
 import { IoAddCircleSharp } from "react-icons/io5";
 import { Heading } from "@/components/Heading";
 import JoditEditor from "jodit-react";
+import RichSimpleEditor from "@/components/SimpleEditor";
 
 interface Book {
   id: string;
@@ -274,18 +275,12 @@ export const BookSectionDashboard = () => {
               value={selectedBook.writer}
               onChange={(e) => handleChange("writer", e.target.value)}
             />
-            <JoditEditor
-              value={selectedBook.description}
+            <RichSimpleEditor
+              initialValue={selectedBook.description}
               onChange={(content: string) =>
                 handleChange("description", content)
               }
-              config={{
-                readonly: false,
-                toolbarSticky: false,
-                showXPathInStatusbar: false,
-                height: 200,
-                askBeforePasteHTML: false,
-              }}
+              className="w-full border p-3 rounded-lg dark:bg-gray-800 dark:text-white"
             />
 
             {selectedBook.bookimage && (

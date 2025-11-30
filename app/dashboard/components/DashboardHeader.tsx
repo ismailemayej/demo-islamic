@@ -1,27 +1,23 @@
 "use client";
 
-import React, { useState } from "react";
+import React from "react";
 import { useGetSection } from "../Hook/GetData";
 import { ThemeSwitch } from "@/components/theme-switch";
 import { Button } from "@heroui/button";
-import { Alert } from "@heroui/alert";
+import toast from "react-hot-toast";
 import { LogOut } from "lucide-react";
 import { useRouter } from "next/navigation"; // <<=== added
 
 const DashboardHeader = () => {
   const router = useRouter(); // <<=== router initialize
   const { section } = useGetSection("websitesection");
-  const [alert, setAlert] = useState<{
-    type: "success" | "error";
-    msg: string;
-  } | null>(null);
 
   const handleLogout = async () => {
     await fetch("/api/logout", { method: "POST" });
-    setAlert({ type: "success", msg: "Logout successful!" });
+    toast.success("Logout successful!");
 
     // Redirect after logout
-    router.push("/login"); // <<=== redirect here
+    router.push("/login");
   };
 
   return (
@@ -29,8 +25,9 @@ const DashboardHeader = () => {
       className="
         w-full 
         px-4 sm:px-6 py-4  
-        flex items-center lg:justify-between justify-end bg-gradient-to-br
-        from-amber-50 to-white dark:bg-slate-800/40 
+        flex items-center lg:justify-between justify-end bg-bg-gradient-to-r
+        from-amber-50 to-white
+          dark:from-slate-900 dark:via-slate-800 dark:to-slate-900 
         backdrop-blur-xl shadow-lg  
         border border-white/30 dark:border-slate-700/30  
         rounded-t-2xl mt-2 mx-2
