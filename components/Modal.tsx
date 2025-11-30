@@ -9,6 +9,7 @@ import {
   ModalFooter,
   Button,
 } from "@nextui-org/react";
+import { ScrollShadow } from "@heroui/scroll-shadow";
 
 interface ReusableModalProps {
   title: string;
@@ -26,22 +27,35 @@ export const OpenModal: React.FC<ReusableModalProps> = ({
   size = "md",
 }) => {
   return (
-    <Modal isOpen={isOpen} onOpenChange={onClose} size={size}>
+    <Modal
+      isOpen={isOpen}
+      onOpenChange={onClose}
+      size={size}
+      scrollBehavior="inside"
+      classNames={{
+        base: "max-h-[92vh]", // Modal মোট উচ্চতা বাড়ানো হল
+      }}
+    >
       <ModalContent>
         {() => (
           <>
-            <ModalHeader>
-              <h3 className="text-xl font-bold bangla dark:text-white">
+            {/* Header - সবসময় পুরো দেখা যাবে */}
+            <ModalHeader className="px-4 pt-4 pb-2">
+              <h3 className="text-xl font-bold bangla dark:text-white whitespace-normal">
                 {title}
               </h3>
             </ModalHeader>
-            <ModalBody className="bangla dark:text-white px-0">
-              {children}
+
+            {/* ScrollArea শুধুমাত্র Body অংশ */}
+            <ModalBody className="px-2">
+              <ScrollShadow hideScrollBar={false} className="max-h-[65vh] pr-1">
+                {children}
+              </ScrollShadow>
             </ModalBody>
-            <ModalFooter>
-              <Button color="danger" variant="light" onPress={onClose}>
-                Close
-              </Button>
+
+            {/* Footer */}
+            <ModalFooter className="px-4">
+              <button onClick={onClose}>Close</button>
             </ModalFooter>
           </>
         )}

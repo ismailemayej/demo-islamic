@@ -12,6 +12,7 @@ import { BsTrash3Fill } from "react-icons/bs";
 import { Building2 } from "lucide-react";
 import toast from "react-hot-toast";
 import { Input } from "@heroui/input";
+import RichSimpleEditor from "@/components/SimpleEditor";
 
 interface Organization {
   id: string;
@@ -313,11 +314,10 @@ export const OrganizationSectionDashboard = () => {
                   className="w-full border p-2 rounded-lg"
                 />
               </div>
-              <textarea
-                rows={5}
-                value={editOrgModal.details}
-                onChange={(e) =>
-                  setEditOrgModal({ ...editOrgModal, details: e.target.value })
+              <RichSimpleEditor
+                initialValue={editOrgModal.details}
+                onChange={(value) =>
+                  setEditOrgModal({ ...editOrgModal, details: value })
                 }
                 className="w-full border p-2 rounded-lg"
               />
