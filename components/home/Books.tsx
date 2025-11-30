@@ -36,18 +36,18 @@ export const BookSection: React.FC<BookSectionProps> = ({ section }) => {
     <Background id="books">
       <Heading title={heading.title} subTitle={heading.subTitle} />
       {/* 🔹 Books Grid */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4 justify-items-center">
+      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-6 w-full">
         {books.length > 0 ? (
           books
-            ?.slice(0, 6)
+            ?.slice(0, 5)
             ?.reverse()
             ?.map((book: any) => (
               <motion.div
                 key={book._id || book.id}
-                className="w-full sm:w-auto"
+                className="flex justify-center"
               >
-                <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-lg overflow-hidden flex flex-col items-center">
-                  <div className="w-[200px] h-[250px] relative">
+                <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-lg overflow-hidden flex flex-col items-center w-[200px]">
+                  <div className="w-full h-[250px] relative">
                     <img
                       src={book.bookimage}
                       alt={book.bookname}
