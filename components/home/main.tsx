@@ -18,6 +18,7 @@ import { TeamSection } from "./Team";
 import { TestimonialsSection } from "./Testimonials";
 import { YouTubeVideosSection } from "./YTvideos";
 import Loader from "../loader";
+import SkillsSection from "./Skills";
 export default function Main({ data }: { data: WebsiteData[] }) {
   // Helper method → any section data
   const getSection = (name: string) =>
@@ -89,6 +90,7 @@ export default function Main({ data }: { data: WebsiteData[] }) {
       <section className="w-full">
         <TeamSection section={getSection("teamsection")} />
       </section>
+      <SkillsSection section={getSection("skillsection")} />
       {/* Booking */}
       <section className="w-full">
         <AppointmentSection />

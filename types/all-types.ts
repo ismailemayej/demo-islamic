@@ -216,3 +216,16 @@ export interface TServiceSection {
   };
   data: ServiceItem[];
 }
+export interface SkillItem {
+  id: number;
+  name: string;
+  lavel: number;
+}
+
+export interface TSkillSection {
+  heading: {
+    title: string;
+    subTitle: string;
+  };
+  data: SkillItem[];
+}

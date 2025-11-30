@@ -23,6 +23,7 @@ import {
   FaBookReader,
   FaMedal,
   FaServicestack,
+  FaNetworkWired,
 } from "react-icons/fa";
 
 interface SidebarLink {
@@ -113,6 +114,12 @@ export const Sidebar = ({ onLinkClick }: { onLinkClick?: () => void }) => {
       name: "Teams",
       icon: <FaUsers className="text-emerald-500 text-lg" />,
       href: "/dashboard/teams",
+    },
+    {
+      id: "18",
+      name: "My Skills",
+      icon: <FaNetworkWired className="text-emerald-500 text-lg" />,
+      href: "/dashboard/skills",
     },
     {
       id: "18",
