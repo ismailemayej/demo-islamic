@@ -7,12 +7,18 @@ interface HeadingProps {
   title: React.ReactNode;
   subTitle?: React.ReactNode;
   center?: boolean;
+  // --- FIX 1: Re-add isBangla prop ---
+  isBangla?: boolean;
+  // ------------------------------------
 }
 
 export const Heading: React.FC<HeadingProps> = ({
   title,
   subTitle,
   center = true,
+  // --- FIX 2: Set default for isBangla ---
+  isBangla = false,
+  // ---------------------------------------
 }) => {
   const [tilt, setTilt] = useState({ rotateX: 0, rotateY: 0 });
 
@@ -22,13 +28,16 @@ export const Heading: React.FC<HeadingProps> = ({
     const x = e.clientX - left;
     const y = e.clientY - top;
     const rotateY = (x / width - 0.5) * 20;
-    const rotateX = (0.5 - y / height) * 20; // -10 to 10 degree
+    const rotateX = (0.5 - y / height) * 20;
     setTilt({ rotateX, rotateY });
   };
 
   const handleMouseLeave = () => {
     setTilt({ rotateX: 0, rotateY: 0 });
   };
+
+  // FIX 3: Conditional font class logic
+  const fontClasses = isBangla ? "bangla" : "font-sans";
 
   return (
     <motion.div
@@ -47,13 +56,19 @@ export const Heading: React.FC<HeadingProps> = ({
           rotateY: tilt.rotateY,
         }}
         transition={{ type: "spring", stiffness: 250, damping: 20 }}
-        className="h-full relative inline-block font-extrabold 
+        // FIX 4: Apply conditional font class to h2
+        className={`h-full relative inline-block font-extrabold 
           text-3xl sm:text-3xl lg:text-5xl 
-          bg-clip-text text-transparent font-serif tracking-tight drop-shadow-[0_3px_3px_rgba(255,191,0,0.3)]
+          bg-clip-text text-transparent tracking-tight drop-shadow-[0_3px_3px_rgba(255,191,0,0.3)]
+          ${fontClasses} 
           bg-gradient-to-r from-amber-800 via-yellow-600 to-orange-700
-          dark:from-amber-400 dark:via-yellow-300 dark:to-orange-400 transition-colors duration-500"
+          dark:from-amber-400 dark:via-yellow-300 dark:to-orange-400 transition-colors duration-500 `}
       >
-        <span className="inline-block text-transparent bg-clip-text bg-gradient-to-r from-amber-700 via-yellow-600 to-orange-600 dark:from-amber-500 dark:via-yellow-300 dark:to-orange-400 font-extrabold bangla">
+        <span
+          // FIX 5: REMOVED hardcoded 'font-sans' class from here.
+          // It now inherits the correct font (bangla or font-sans) from the h2 tag.
+          className="font-sans inline-block text-transparent bg-clip-text bg-gradient-to-r from-amber-700 via-yellow-600 to-orange-600 dark:from-amber-500 dark:via-yellow-300 dark:to-orange-400 font-extrabold"
+        >
           {title}
         </span>
         <motion.span
@@ -69,9 +84,10 @@ export const Heading: React.FC<HeadingProps> = ({
           initial={{ opacity: 0, y: 15 }}
           whileInView={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.7, delay: 0.3 }}
-          className={`bangla mt-4 text-gray-700 dark:text-amber-200 max-w-3xl mx-auto leading-relaxed text-lg sm:text-lg line-clamp-1 ${
+          // FIX 6: Apply conditional font class to subtitle
+          className={`${fontClasses} mt-4 text-gray-700 dark:text-amber-200 max-w-3xl mx-auto leading-relaxed text-lg sm:text-lg line-clamp-1 ${
             center ? "text-center" : "text-left"
-          } transition-colors duration-500`}
+          } transition-colors duration-500 font-sans`}
         >
           {subTitle}
         </motion.p>

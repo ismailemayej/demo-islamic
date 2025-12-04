@@ -32,7 +32,7 @@ export const Navbar: React.FC = () => {
         <nav className="container mx-auto py-3 flex justify-between items-center">
           {/* 🔹 Logo */}
           <motion.div
-            className="lg:text-4xl text-xl font-[Quicksand] font-extrabold
+            className="lg:text-3xl text-xl font-[Quicksand] font-extrabold
              text-transparent bg-clip-text
              bg-gradient-to-r from-green-400 via-emerald-500 to-cyan-500
              dark:from-green-300 dark:via-emerald-400 dark:to-cyan-400
@@ -45,7 +45,7 @@ export const Navbar: React.FC = () => {
               <motion.span
                 className="bg-clip-text text-transparent bg-gradient-to-r 
                  from-green-400 via-emerald-500 to-cyan-500
-                 dark:from-green-300 dark:via-emerald-400 dark:to-cyan-400"
+                 dark:from-green-300 dark:via-emerald-400 dark:to-cyan-400 font-sans"
                 animate={{
                   backgroundPosition: ["0% 0%", "100% 0%", "0% 0%"],
                 }}

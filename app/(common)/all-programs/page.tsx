@@ -1,4 +1,4 @@
-import React from "react";
+export const dynamic = "force-dynamic";
 import { AllProgramsSection } from "./Programs";
 
 const AllProgran = () => {

@@ -104,7 +104,7 @@ export default function SiteInfo() {
       if (found) {
         updatedLinks[index].url = found.href;
       } else {
-        // if selected name is not from MASTER, leave url as empty
+        // if selected name is font-sans from MASTER, leave url as empty
         updatedLinks[index].url = "";
       }
     }

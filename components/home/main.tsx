@@ -19,13 +19,17 @@ import { TestimonialsSection } from "./Testimonials";
 import { YouTubeVideosSection } from "./YTvideos";
 import Loader from "../loader";
 import SkillsSection from "./Skills";
+import ChatBox from "../chat/Chat";
+import ChatWrapper from "../chat/chatwraper";
 export default function Main({ data }: { data: WebsiteData[] }) {
   // Helper method → any section data
   const getSection = (name: string) =>
     data.find((item) => item.section === name);
   if (!data) return <Loader />;
+
   return (
-    <main className="flex flex-col lg:gap-5 gap-2 w-full container mx-auto">
+    <main className="flex flex-col lg:gap-5 gap-2 w-full container mx-auto font-sans">
+      <ChatWrapper />
       {/* Hero */}
       <section className="w-full">
         <HeroSection section={getSection("herosection")?.data} />

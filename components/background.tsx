@@ -46,7 +46,7 @@ const Background: React.FC<BackgroundProps> = ({ children, id }) => {
       ></div>
 
       {/* Content Glass Box */}
-      <div className="relative z-10 backdrop-blur-lg border border-white/20 dark:border-white/5 shadow-xl rounded-2xl p-6">
+      <div className="font-sans relative z-10 backdrop-blur-lg border border-white/20 dark:border-white/5 shadow-xl rounded-2xl p-6">
         {children}
       </div>
     </section>

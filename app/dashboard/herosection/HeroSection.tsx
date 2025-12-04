@@ -262,7 +262,7 @@ export const HeroSectionDashboard: React.FC = () => {
                 }
                 placeholder="Description"
                 disabled={!isEditing}
-                className={`w-full dark:text-white p-4 rounded-lg text-lg md:text-xl lg:text-xl ${
+                className={`font-sans w-full dark:text-white p-4 rounded-lg text-lg md:text-xl lg:text-xl ${
                   isEditing
                     ? "border border-gray-400 bg-white dark:bg-gray-700"
                     : "bg-transparent border-0"

@@ -1,9 +1,29 @@
+export const revalidate = 60;
+
 import "@/styles/globals.css";
 import { Providers } from "./providers";
-import { fontSans } from "@/config/fonts";
+// import { fontSans } from "@/config/fonts"; // <-- DELETED: We will define the fonts directly here
 import { Toaster } from "react-hot-toast";
 import clsx from "clsx";
 import { Metadata } from "next";
+// --- FONT FIX: Import both Poppins and Tiro_Bangla from next/font/google ---
+import { Poppins, Tiro_Bangla } from "next/font/google";
+
+// 1. Poppins (English/Default)
+const poppins = Poppins({
+  subsets: ["latin"],
+  weight: ["100", "200", "300", "400", "500", "600", "700", "800", "900"],
+  variable: "--font-poppins", // This will replace your old --font-sans
+  display: "swap",
+});
+
+// 2. Tiro Bangla (Bengali/Custom)
+const tiroBangla = Tiro_Bangla({
+  subsets: ["bengali"],
+  weight: ["400"],
+  variable: "--font-tirobangla",
+  display: "swap",
+});
 
 interface WebsiteSection {
   id: string;
@@ -21,7 +41,10 @@ async function getWebsiteSection(): Promise<WebsiteSection | null> {
   try {
     const res = await fetch(
       `${process.env.NEXT_PUBLIC_SITE_URL}/api/all-data/websitesection`,
-      { cache: "no-store" }
+      {
+        // F I X: Dynamic server usage ত্রুটি দূর করতে cache: "no-store" এর পরিবর্তে ISR (60 সেকেন্ড) ব্যবহার করা হলো।
+        next: { revalidate: 60 },
+      }
     );
     if (!res.ok) throw new Error(`HTTP error! status: ${res.status}`);
     const data = await res.json();
@@ -91,24 +114,21 @@ export default function RootLayout({
   return (
     <html suppressHydrationWarning lang="bn">
       <head>
-        {/* Google verification */}
         <meta
           name="google-site-verification"
           content={process.env.NEXT_PUBLIC_GOOGLE_VERIFICATION}
-        />
-
-        {/* ⬇️ Google Font: Tiro Bangla */}
-        <link
-          href="https://fonts.googleapis.com/css2?family=Tiro+Bangla:ital,wght@0,400;0,700;1,400;1,700&display=swap"
-          rel="stylesheet"
         />
       </head>
 
       <body
         className={clsx(
-          "min-h-screen text-foreground bg-background font-sans antialiased",
-          fontSans.variable,
-          "font-[var(--font-bangla)]"
+          "min-h-screen text-foreground bg-background antialiased",
+
+          poppins.variable,
+          tiroBangla.variable,
+
+          "font-sans",
+          "font-[var(--font-tirobangla)]"
         )}
       >
         <Providers themeProps={{ attribute: "class", defaultTheme: "dark" }}>

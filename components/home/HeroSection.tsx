@@ -11,66 +11,106 @@ interface HeroProps {
 
 export const HeroSection: React.FC<HeroProps> = ({ section }) => {
   if (!section) {
-    return <Spinner size="lg" />;
+    return (
+      <div className="flex h-[80vh] w-full items-center justify-center">
+        <Spinner size="lg" color="success" />
+      </div>
+    );
   }
+
   return (
     <HeroBackground>
-      <div
-        className="
-          absolute inset-0 z-0
-          bg-[radial-gradient(circle_at_10%_20%,rgba(16,88,56,0.15)_1px,transparent_1px),radial-gradient(circle_at_80%_80%,rgba(16,88,56,0.15)_1px,transparent_1px)]
-          [background-size:40px_40px]
-          opacity-30 dark:opacity-20 container mx-auto
-        "
-      ></div>
+      {/* Background Decorative Elements (Glows) */}
+      <div className="absolute top-0 left-0 w-full h-full overflow-hidden pointer-events-none z-0">
+        <div className="absolute top-[-10%] left-[-10%] w-[500px] h-[500px] bg-emerald-500/20 rounded-full blur-[120px] mix-blend-screen" />
+        <div className="absolute bottom-[-10%] right-[-10%] w-[500px] h-[500px] bg-blue-500/10 rounded-full blur-[120px] mix-blend-screen" />
+      </div>
 
-      <div className="relative z-10 mx-auto flex flex-col lg:flex-row items-center justify-between gap-12 mt-4">
-        {/* Left: Image */}
-        <div className="relative w-full lg:w-1/2 flex justify-center lg:justify-start">
-          <motion.div className="relative w-full max-w-md overflow-hidden lg:ml-20">
-            <img
-              src={section?.image || profile.src}
-              alt={section?.title || "Hero Image"}
-              className="w-full lg:h-96 h-auto object-cover transition-transform duration-500 hover:scale-105 shadow-2xl rounded-xl"
-            />
-          </motion.div>
-        </div>
-
-        {/* Right: Text */}
-        <motion.div
-          initial={{ opacity: 0, x: 80, rotateY: 10 }}
-          whileInView={{ opacity: 1, x: 0, rotateY: 0 }}
-          transition={{ duration: 1 }}
-          className="w-full lg:w-1/2 text-left lg:text-left space-y-5 px-4"
-        >
-          <h2 className="text-2xl font-semibold text-emerald-700 dark:text-emerald-400 tracking-wide">
-            {section?.title || "Hero Title"}
-          </h2>
-
-          <motion.h1
-            className="text-4xl sm:text-4xl 
-             bg-gradient-to-r font-extrabold from-emerald-400 via-cyan-400 to-blue-400
-             bg-clip-text text-transparent line-clamp-2"
-            transition={{ duration: 3, repeat: Infinity }}
+      <div className="container relative z-10 mx-auto px-6 lg:px-12 py-12 lg:py-20">
+        <div className="flex flex-col-reverse lg:flex-row items-center justify-between gap-12 lg:gap-20">
+          {/* Left: Text Content */}
+          <motion.div
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.8, ease: "easeOut" }}
+            className="w-full lg:w-1/2 space-y-8 text-center lg:text-left"
           >
-            {section?.subTitle || "Hero Subtitle"}
-          </motion.h1>
+            <div className="space-y-4">
+              {/* Badge / Title */}
+              <motion.div
+                initial={{ opacity: 0, x: -20 }}
+                whileInView={{ opacity: 1, x: 0 }}
+                transition={{ delay: 0.2, duration: 0.6 }}
+                className="font-sans inline-block px-4 py-1.5 rounded-full border border-emerald-500/30 bg-emerald-500/10 backdrop-blur-md"
+              >
+                <h2 className="text-sm font-bold tracking-widest text-emerald-700 dark:text-emerald-400 uppercase">
+                  {section?.title || "Hero Title"}
+                </h2>
+              </motion.div>
 
-          <p className=" line-clamp-4 text-lg text-gray-700 dark:text-gray-300 leading-relaxed">
-            {section?.description ||
-              "This is the hero section description placeholder."}
-          </p>
+              {/* Main Heading with Gradient */}
+              <h1 className="font-sans line-clamp-2 text-4xl sm:text-5xl lg:text-6xl font-extrabold leading-tight tracking-tight text-gray-900 dark:text-white">
+                <span className="bg-gradient-to-r from-emerald-600 via-teal-500 to-cyan-500 bg-clip-text text-transparent">
+                  {section?.subTitle || "Hero Subtitle"}
+                </span>
+              </h1>
+            </div>
 
-          <a href="#books">
-            <motion.button
-              whileHover={{ scale: 1.1, rotate: 2 }}
-              whileTap={{ scale: 0.95 }}
-              className=" px-9 py-2 bg-green-900 text-white font-semibold rounded-full shadow-lg hover:bg-emerald-700 transition"
+            {/* Description */}
+            <p className="text-lg text-gray-600 dark:text-gray-300 leading-relaxed max-w-2xl mx-auto lg:mx-0 line-clamp-4">
+              {section?.description ||
+                "This is the hero section description placeholder. Providing distinct, readable text helps the user engage immediately."}
+            </p>
+
+            {/* Button Group */}
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.4, duration: 0.6 }}
+              className="pt-2"
             >
-              Our Books
-            </motion.button>
-          </a>
-        </motion.div>
+              <a href="#books">
+                <motion.button
+                  whileHover={{ scale: 1.05 }}
+                  whileTap={{ scale: 0.95 }}
+                  className="group relative px-8 py-3.5 bg-gradient-to-r from-emerald-600 to-teal-700 text-white font-bold rounded-full shadow-[0_10px_20px_-10px_rgba(16,185,129,0.5)] overflow-hidden transition-all hover:shadow-[0_20px_30px_-10px_rgba(16,185,129,0.6)]"
+                >
+                  <span className="relative z-10">Our Books</span>
+                  {/* Button Shine Effect */}
+                  <div className="absolute top-0 left-[-100%] h-full w-full bg-gradient-to-r from-transparent via-white/20 to-transparent group-hover:animate-[shine_1s_ease-in-out_infinite]" />
+                </motion.button>
+              </a>
+            </motion.div>
+          </motion.div>
+
+          {/* Right: Image Content */}
+          <div className="w-full lg:w-1/2 flex justify-center lg:justify-end relative">
+            {/* Decorative Background Blob behind image */}
+            <div className="absolute inset-0 bg-gradient-to-tr from-emerald-500/20 to-blue-500/20 rounded-full blur-3xl transform scale-90 lg:translate-x-10" />
+
+            <motion.div
+              initial={{ opacity: 0, scale: 0.9, rotate: -2 }}
+              whileInView={{ opacity: 1, scale: 1, rotate: 0 }}
+              transition={{ duration: 0.8, type: "spring", bounce: 0.4 }}
+              className="relative z-10"
+            >
+              <div className="relative p-2 bg-white/10 backdrop-blur-sm border border-white/20 rounded-2xl shadow-2xl dark:bg-black/10">
+                <motion.img
+                  animate={{ y: [0, -15, 0] }}
+                  transition={{
+                    duration: 6,
+                    repeat: Infinity,
+                    ease: "easeInOut",
+                  }}
+                  src={section?.image || profile.src}
+                  alt={section?.title || "Hero Image"}
+                  className="w-full max-w-sm lg:max-w-md h-auto object-cover rounded-xl shadow-lg"
+                />
+              </div>
+            </motion.div>
+          </div>
+        </div>
       </div>
     </HeroBackground>
   );
