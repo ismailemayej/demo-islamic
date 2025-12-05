@@ -85,7 +85,7 @@ export const RecentProgramsSection: React.FC<RecentProgramsProps> = ({
               >
                 {/* Top Icons & Program Name */}
                 <div className="flex items-center gap-3 mb-4">
-                  <h3 className="text-xl font-bold text-center text-emerald-700 dark:text-emerald-400">
+                  <h3 className="text-xl  font-bold text-emerald-700 dark:text-emerald-400">
                     {program.programName}
                   </h3>
                 </div>

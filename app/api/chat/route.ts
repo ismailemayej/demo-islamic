@@ -1,22 +1,19 @@
-// app/api/chat/route.ts
-
 import { GoogleGenerativeAI } from "@google/generative-ai";
 import { NextResponse } from "next/server";
 
-// .env.local থেকে API কী লোড করা
 const apiKey = process.env.GEMINI_API_KEY;
-if (!apiKey) {
-  throw new Error("GEMINI_API_KEY environment variable is not set.");
-}
+if (!apiKey) throw new Error("GEMINI_API_KEY environment variable is not set.");
 
 const genAI = new GoogleGenerativeAI(apiKey);
+const name = process.env.NEXT_PUBLIC_OWNER_NAME || "AI Assistant";
+if (!name)
+  throw new Error("NEXT_PUBLIC_OWNER_NAME environment variable is not set.");
 
-// === মডেল ইনিশিয়ালাইজেশন এবং সিস্টেম ইনস্ট্রাকশন যুক্ত করা হয়েছে ===
+// Model setup
 const model = genAI.getGenerativeModel({
   model: "gemini-2.5-flash",
-
   systemInstruction: `
-You are ${process.env.NEXT_PUBLIC_OWNER_NAME}, a friendly chat assistant.  
+You are ${name}, a friendly chat assistant.  
 You must always reply in the same language the user uses.  
 Maintain a kind, polite, and helpful tone at all times.
 
@@ -44,96 +41,34 @@ Additional Rules:
 `,
 });
 
-const chat = model.startChat({
-  history: [],
-});
+// Start chat session
+const chat = model.startChat({ history: [] });
 
-// কাস্টম JSON API এন্ডপয়েন্ট
-const CUSTOM_JSON_API = "https://mizanur-rahman-azhari.vercel.app/api/all-data";
-
-/**
- * এক্সটার্নাল API থেকে ডেটা এনে ইউজারের মেসেজের সাথে ম্যাচ করে।
- * @param query ইউজারের চ্যাট মেসেজ
- * @returns প্রাসঙ্গিক ডেটা অবজেক্ট বা null
- */
-async function searchExternalData(query: string) {
-  try {
-    // API থেকে সমস্ত ডেটা আনা হচ্ছে
-    const response = await fetch(CUSTOM_JSON_API);
-    if (!response.ok) {
-      console.error(
-        `Error fetching data from custom API: ${response.statusText}`
-      );
-      return null;
-    }
-
-    const allData = await response.json();
-
-    if (!Array.isArray(allData.data)) {
-      console.error(
-        "Custom API response format is unexpected. Expected an array in 'data' field."
-      );
-      return null;
-    }
-
-    const lowerCaseQuery = query.toLowerCase();
-
-    // ডেটা অ্যারেতে লুপ করে প্রাসঙ্গিক তথ্য খোঁজা
-    const foundItem = allData.data.find((item: any) => {
-      // আইটেমের মধ্যে 'name' ফিল্ডের উপর ভিত্তি করে ম্যাচিং করা হচ্ছে
-      if (item.name && typeof item.name === "string") {
-        return (
-          lowerCaseQuery.includes(item.name.toLowerCase()) ||
-          item.name.toLowerCase().includes(lowerCaseQuery)
-        );
-      }
-      return false;
-    });
-
-    return foundItem;
-  } catch (error) {
-    console.error("Failed to search external data:", error);
-    return null;
-  }
-}
-
-// এই API Route-এ POST রিকোয়েস্ট হ্যান্ডেল করা হবে
+// POST API
 export async function POST(req: Request) {
   try {
-    const { message } = await req.json(); // ফ্রন্টএন্ড থেকে মেসেজ রিসিভ করা
+    const { message } = await req.json();
 
-    // ১. প্রথমে কাস্টম JSON API ডেটা সার্চ করা
-    const externalData = await searchExternalData(message);
-
-    if (externalData) {
-      // কাস্টম ডেটা পাওয়া গেলে, JSON ফরমেটে ডেটা ফেরত পাঠানো
-      return NextResponse.json({
-        status: "success",
-        data_type: "json", // ডেটা টাইপ নির্দিষ্ট করা
-        message: "আপনার অনুরোধ অনুযায়ী কাস্টম ডেটাবেস থেকে তথ্য পাওয়া গেছে:",
-        json_data: externalData, // JSON ডেটা ফেরত পাঠানো
-      });
+    if (!message) {
+      return NextResponse.json(
+        { status: "error", message: "Message is required!" },
+        { status: 400 }
+      );
     }
 
-    // ২. কাস্টম ডেটা না পাওয়া গেলে, Gemini API কল করা
-
-    // চ্যাট সেশনে নতুন মেসেজ পাঠানো হচ্ছে
     const result = await chat.sendMessage(message);
 
-    // Gemini-এর রেসপন্স টেক্সট বের করা
-    // systemInstruction ব্যবহারের ফলে মডেল নিজেই এখন পরিচয়ের সাথে উত্তর দেবে
-    const finalResponseText =
+    const text =
       result?.response?.candidates?.[0]?.content?.parts?.[0]?.text ||
-      "No response generated";
+      "Sorry, I couldn't generate a response.";
 
-    // ক্লায়েন্টকে JSON রেসপন্স হিসেবে পাঠানো
     return NextResponse.json({
       status: "success",
-      data_type: "text",
-      message: finalResponseText,
+      source: "ai",
+      message: text,
     });
   } catch (error) {
-    console.error("API কল করার সময় ত্রুটি:", error);
+    console.error("Chat API Error:", error);
     return NextResponse.json(
       { status: "error", message: "Internal Server Error" },
       { status: 500 }

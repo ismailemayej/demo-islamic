@@ -34,7 +34,7 @@ export const HeroSection: React.FC<HeroProps> = ({ section }) => {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.8, ease: "easeOut" }}
-            className="w-full lg:w-1/2 space-y-8 text-center lg:text-left"
+            className="w-full lg:w-1/2 space-y-8 text-left"
           >
             <div className="space-y-4">
               {/* Badge / Title */}
@@ -44,13 +44,13 @@ export const HeroSection: React.FC<HeroProps> = ({ section }) => {
                 transition={{ delay: 0.2, duration: 0.6 }}
                 className="font-sans inline-block px-4 py-1.5 rounded-full border border-emerald-500/30 bg-emerald-500/10 backdrop-blur-md"
               >
-                <h2 className="text-sm font-bold tracking-widest text-emerald-700 dark:text-emerald-400 uppercase">
+                <h2 className="text-sm  font-bold tracking-widest text-emerald-700 dark:text-emerald-400 uppercase">
                   {section?.title || "Hero Title"}
                 </h2>
               </motion.div>
 
               {/* Main Heading with Gradient */}
-              <h1 className="font-sans line-clamp-2 text-4xl sm:text-5xl lg:text-6xl font-extrabold leading-tight tracking-tight text-gray-900 dark:text-white">
+              <h1 className="text-left font-sans line-clamp-2 text-4xl sm:text-5xl lg:text-6xl font-extrabold leading-tight tracking-tight text-gray-900 dark:text-white">
                 <span className="bg-gradient-to-r from-emerald-600 via-teal-500 to-cyan-500 bg-clip-text text-transparent">
                   {section?.subTitle || "Hero Subtitle"}
                 </span>
@@ -58,7 +58,7 @@ export const HeroSection: React.FC<HeroProps> = ({ section }) => {
             </div>
 
             {/* Description */}
-            <p className="text-lg text-gray-600 dark:text-gray-300 leading-relaxed max-w-2xl mx-auto lg:mx-0 line-clamp-4">
+            <p className="text-left text-lg text-gray-600 dark:text-gray-300 leading-relaxed max-w-2xl mx-auto lg:mx-0 line-clamp-4">
               {section?.description ||
                 "This is the hero section description placeholder. Providing distinct, readable text helps the user engage immediately."}
             </p>
@@ -74,9 +74,9 @@ export const HeroSection: React.FC<HeroProps> = ({ section }) => {
                 <motion.button
                   whileHover={{ scale: 1.05 }}
                   whileTap={{ scale: 0.95 }}
-                  className="group relative px-8 py-3.5 bg-gradient-to-r from-emerald-600 to-teal-700 text-white font-bold rounded-full shadow-[0_10px_20px_-10px_rgba(16,185,129,0.5)] overflow-hidden transition-all hover:shadow-[0_20px_30px_-10px_rgba(16,185,129,0.6)]"
+                  className=" justify-start group relative px-8 py-3.5 bg-gradient-to-r from-emerald-600 to-teal-700 text-white font-bold rounded-full shadow-[0_10px_20px_-10px_rgba(16,185,129,0.5)] overflow-hidden transition-all hover:shadow-[0_20px_30px_-10px_rgba(16,185,129,0.6)]"
                 >
-                  <span className="relative z-10">Our Books</span>
+                  <span className="relative z-10 text-left">Our Books</span>
                   {/* Button Shine Effect */}
                   <div className="absolute top-0 left-[-100%] h-full w-full bg-gradient-to-r from-transparent via-white/20 to-transparent group-hover:animate-[shine_1s_ease-in-out_infinite]" />
                 </motion.button>

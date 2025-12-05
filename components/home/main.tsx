@@ -19,7 +19,6 @@ import { TestimonialsSection } from "./Testimonials";
 import { YouTubeVideosSection } from "./YTvideos";
 import Loader from "../loader";
 import SkillsSection from "./Skills";
-import ChatBox from "../chat/Chat";
 import ChatWrapper from "../chat/chatwraper";
 export default function Main({ data }: { data: WebsiteData[] }) {
   // Helper method → any section data

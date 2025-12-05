@@ -33,7 +33,7 @@ export const OpenModal: React.FC<ReusableModalProps> = ({
       size={size}
       scrollBehavior="inside"
       classNames={{
-        base: "max-h-[92vh]", // Modal মোট উচ্চতা বাড়ানো হল
+        base: "max-h-[92vh]",
       }}
     >
       <ModalContent
