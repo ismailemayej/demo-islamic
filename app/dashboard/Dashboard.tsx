@@ -241,7 +241,7 @@ export default function DashboardHome() {
       <div className="p-4 sm:p-8 space-y-10 min-h-screen">
         {/* Header Section */}
         <Card className="shadow-2xl bg-content1 border-t-6 border-primary/80">
-          <CardBody className="py-6 px-6 sm:px-8">
+          <CardBody className="py-6 px-6 sm:px-8 dark:bg-gray-800 dark:shadow-gray-700">
             <div className="flex justify-between items-start">
               <div>
                 <h1 className="text-xl lg:text-4xl font-extrabold text-primary flex items-center gap-3">
@@ -265,7 +265,7 @@ export default function DashboardHome() {
         {/* Primary Metrics (Total Items & Completion) */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
           {/* Total Sections */}
-          <Card className="shadow-lg bg-default-50/70 border-b-4 border-indigo-500 dark:border-indigo-400 transition-transform hover:scale-[1.02]">
+          <Card className="shadow-lg dark:bg-gray-800 dark:shadow-gray-700 bg-default-50/70 border-b-4 border-indigo-500 dark:border-indigo-400 transition-transform hover:scale-[1.02]">
             <CardHeader className="flex items-center gap-2 px-6 pt-5 pb-1">
               <BiRocket className="text-xl text-indigo-600 dark:text-indigo-400" />
               <span className="text-sm font-semibold text-default-600 uppercase">
@@ -280,7 +280,7 @@ export default function DashboardHome() {
           </Card>
 
           {/* Total Items */}
-          <Card className="shadow-lg bg-default-50/70 border-b-4 border-success-500 dark:border-success-400 transition-transform hover:scale-[1.02]">
+          <Card className="dark:bg-gray-800 dark:shadow-gray-700 shadow-lg bg-default-50/70 border-b-4 border-success-500 dark:border-success-400 transition-transform hover:scale-[1.02]">
             <CardHeader className="flex items-center gap-2 px-6 pt-5 pb-1">
               <FaTasks className="text-xl text-success-600 dark:text-success-400" />
               <span className="text-sm font-semibold text-default-600 uppercase">
@@ -295,7 +295,7 @@ export default function DashboardHome() {
           </Card>
 
           {/* Goal Completion */}
-          <Card className="shadow-lg bg-default-50/70 border-b-4 border-warning-500 dark:border-warning-400 transition-transform hover:scale-[1.02]">
+          <Card className="dark:bg-gray-800 dark:shadow-gray-700 shadow-lg bg-default-50/70 border-b-4 border-warning-500 dark:border-warning-400 transition-transform hover:scale-[1.02]">
             <CardHeader className="flex items-center gap-2 px-6 pt-5 pb-1">
               <MdOutlineVisibility className="text-xl text-warning-600 dark:text-warning-400" />
               <span className="text-sm font-semibold text-default-600 uppercase">
@@ -329,7 +329,7 @@ export default function DashboardHome() {
               return (
                 <Card
                   key={section.section}
-                  className={`shadow-xl bg-content1 hover:shadow-2xl transition-all duration-300 border-2 border-transparent hover:border-solid`}
+                  className={`dark:bg-gray-800 dark:shadow-gray-700 shadow-xl bg-content1 hover:shadow-2xl hover:scale-105 transition-transform duration-300 border-2 border-transparent hover:border-solid`}
                   // Dynamically set the hover border color using style
                 >
                   <CardHeader className="flex justify-between items-center px-6 pt-4 pb-0">

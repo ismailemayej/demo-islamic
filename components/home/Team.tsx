@@ -35,16 +35,17 @@ export const TeamSection: React.FC<TeamSectionProps> = ({ section }) => {
       {/* Team Grid */}
       <div className="grid gap-6 grid-cols-1 md:grid-cols-2 lg:grid-cols-5 w-full mt-8">
         {teamMembers
-          ?.slice(0, 5)
+          ?.slice()
           ?.reverse()
-          ?.map((member: any, index: number) => (
+          ?.slice(0, 6)
+          ?.map((member: any) => (
             <motion.div key={member.id} className="w-full">
               <Card
                 isHoverable
                 isPressable
                 className="flex flex-col items-center shadow-xl 
-                     bg-white/80 dark:bg-gray-800/50 border border-amber-100 dark:border-gray-700 
-                     backdrop-blur-lg rounded-2xl transition-all duration-300 w-full"
+            bg-white/80 dark:bg-gray-800/50 border border-amber-100 dark:border-gray-700 
+            backdrop-blur-lg rounded-2xl transition-all duration-300 w-full"
               >
                 <CardHeader className="flex flex-col items-center gap-2 w-full">
                   <Avatar
@@ -52,9 +53,11 @@ export const TeamSection: React.FC<TeamSectionProps> = ({ section }) => {
                     alt={member.name}
                     className="w-24 h-24 ring-4 ring-amber-400 dark:ring-amber-500 shadow-md"
                   />
+
                   <h3 className="bangla text-lg font-semibold text-gray-800 dark:text-gray-100 mt-2">
                     {member.name}
                   </h3>
+
                   <p className="bangla text-amber-600 dark:text-amber-400 text-sm font-medium">
                     {member.position}
                   </p>
@@ -74,7 +77,8 @@ export const TeamSection: React.FC<TeamSectionProps> = ({ section }) => {
                       </Button>
                     </Tooltip>
                   )}
-                  {member && (
+
+                  {member.number && (
                     <Tooltip content="Mobile">
                       <Button
                         isIconOnly

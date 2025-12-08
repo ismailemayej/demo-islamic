@@ -29,8 +29,9 @@ export const TestimonialsSection: React.FC<TestimonialProps> = ({
       />
 
       <div className="mt-3 grid gap-8 md:grid-cols-4">
-        {TESTIMONIALS?.slice(0, 4)
+        {TESTIMONIALS?.slice()
           ?.reverse()
+          .slice(0, 4)
           ?.map((testimonial: TestimonialItem, index: number) => (
             <motion.div
               key={testimonial.id}

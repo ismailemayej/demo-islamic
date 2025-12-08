@@ -69,8 +69,8 @@ export const AppointmentSectionDashboard: React.FC = () => {
     <Background id="booking">
       <div className="container mx-auto lg:px-8 bangla">
         <Heading
-          title="অ্যাপয়েন্টমেন্ট"
-          subTitle="নিচের ফর্মটি পূরণ করে আমাদের প্রোগ্রাম বুক করুন"
+          title="Appointment"
+          subTitle="Book an appointment for a program"
         />
 
         <motion.form
@@ -115,7 +115,7 @@ export const AppointmentSectionDashboard: React.FC = () => {
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mt-4">
             <div>
               <label className="block font-semibold mb-1 text-gray-800 dark:text-gray-200">
-                -Year-মাস
+                Date
               </label>
               <Input
                 size="md"
@@ -130,7 +130,7 @@ export const AppointmentSectionDashboard: React.FC = () => {
 
             <div>
               <label className="block font-semibold mb-1 text-gray-800 dark:text-gray-200">
-                যোগাযোগের মাধ্যম
+                Contact
               </label>
               <Input
                 size="md"
