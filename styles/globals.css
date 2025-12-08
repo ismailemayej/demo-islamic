@@ -1,19 +1,35 @@
 @import "tailwindcss";
 @config "../tailwind.config.js";
+
+/* FontAwesome with font-display: swap (Fixes FCP warning) */
+@font-face {
+  font-family: "Font Awesome 6 Free";
+  src: url("/fonts/fa-solid-900.woff2") format("woff2");
+  font-weight: 900;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Font Awesome 6 Brands";
+  src: url("/fonts/fa-brands-400.woff2") format("woff2");
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
 @import "@fortawesome/fontawesome-free/css/all.min.css";
 
 /* ------------------------------------------------------------------
-   1. Scrollbar Hiding (Clean & Standardized)
+   1. Scrollbar Hiding
 ------------------------------------------------------------------ */
 
-/* Chrome, Edge, Safari, Opera */
 ::-webkit-scrollbar {
   width: 0px;
   height: 0px;
   background: transparent;
 }
 
-/* Firefox */
 html {
   scrollbar-width: none;
 }
@@ -24,28 +40,23 @@ html {
 
 html,
 body {
-  /* FONT FIX: Variables defined in layout & tailwind.config */
   font-family: var(--font-poppins), sans-serif;
 
-  /* Light & Dark mode background/text */
   @apply bg-white dark:bg-gray-950 text-gray-900 dark:text-gray-50;
 
-  /* Only horizontal scroll hidden */
   overflow-x: hidden;
   min-height: 100vh;
 }
 
 /* ------------------------------------------------------------------
-   3. Bengali Font Scoping (Tiro Bangla)
+   3. Bengali Font Scope
 ------------------------------------------------------------------ */
 
 .bangla {
-  /* Bengali font first → fallback to English font */
   font-family: var(--font-tirobangla), var(--font-poppins), sans-serif;
   font-weight: 400;
 }
 
-/* Ensure children inherit Bengali font */
 .bangla span,
 .bangla * {
   font-family: inherit;
@@ -55,31 +66,25 @@ body {
    4. Animations & Loader
 ------------------------------------------------------------------ */
 
-/* Fast rotation */
 @keyframes spin {
   to {
     transform: rotate(360deg);
   }
 }
 
-/* Slow rotation */
 @keyframes spin-slow {
   to {
     transform: rotate(360deg);
   }
 }
 
-/* Loader Ring */
 .loader-ring {
   position: absolute;
   width: 60px;
   height: 60px;
   border: 4px solid transparent;
-
-  /* Better: Use tailwind theme() linking */
   border-top-color: theme("colors.emerald.500");
   border-right-color: theme("colors.cyan.400");
-
   border-radius: 50%;
   animation: spin 0.9s linear infinite;
 }

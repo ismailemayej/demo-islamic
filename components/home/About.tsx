@@ -8,6 +8,7 @@ import Background from "../background";
 import { Button } from "@heroui/button";
 import Link from "next/link";
 import { Spinner } from "@heroui/spinner";
+import Image from "next/image";
 
 type AboutProps = {
   section?: {
@@ -39,18 +40,24 @@ export const AboutSection: React.FC<AboutProps> = ({ section }) => {
         style={{ perspective: "1000px" }}
       >
         {/* Left Side: 3D Profile Image */}
+        import Image from "next/image";
         <motion.div className="w-full lg:w-1/3 flex justify-center lg:justify-start">
           <div className="relative group shadow-2xl rounded-3xl overflow-hidden w-64 sm:w-72 md:w-80 border border-gray-200 dark:border-gray-700 transition-all duration-500">
-            <motion.img
-              src={section?.data?.image || profile.src}
-              alt={section?.data?.title || "Profile Image"}
-              className="w-full h-auto object-cover rounded-3xl group-hover:scale-110 transition-transform duration-700"
-            />
+            {/* Optimized Next.js Image */}
+            <motion.div className="w-full h-auto">
+              <Image
+                src={section?.data?.image || profile.src}
+                alt={section?.data?.title || "Profile Image"}
+                width={400} // Required for next/image
+                height={400} // Required for next/image
+                className="w-full h-auto object-cover rounded-3xl group-hover:scale-110 transition-transform duration-700"
+              />
+            </motion.div>
+
             {/* Glow Effect */}
             <motion.div className="absolute inset-0 rounded-3xl bg-gradient-to-t from-emerald-500/30 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-700" />
           </div>
         </motion.div>
-
         {/* Right Side: 3D Content with Icons */}
         <motion.div className="w-full lg:w-2/3 space-y-6">
           {/* Title with 3D Icon */}

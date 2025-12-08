@@ -384,7 +384,7 @@ export default function SiteInfo() {
                 ) : (
                   <div className="border-2 border-dashed border-gray-400 rounded-xl p-6 text-center hover:border-indigo-600 transition duration-300 bg-gray-50 dark:bg-gray-700">
                     <label className="block text-lg font-medium text-gray-700 dark:text-gray-200 mb-2">
-                      Upload New Profile Image
+                      Upload New Profile icon image
                     </label>
                     <Input
                       size="lg"
@@ -395,7 +395,7 @@ export default function SiteInfo() {
                       className="cursor-pointer"
                     />
                     <p className="text-gray-500 mt-2 text-sm">
-                      PNG, JPG, or GIF (Max 5MB). Click to browse.
+                      PNG, JPG, or GIF (Max 5MB). Better upload icon format.
                     </p>
                   </div>
                 )}

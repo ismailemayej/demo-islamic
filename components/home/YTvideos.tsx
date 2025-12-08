@@ -77,8 +77,9 @@ export const YouTubeVideosSection: React.FC<YouTubeVideosSectionProps> = ({
         style={{ perspective: "1000px" }}
       >
         {displayVideos
-          ?.slice(0, 8)
+          ?.slice()
           ?.reverse()
+          ?.slice(0, 8)
           ?.map((video: VideoItem, index: number) => {
             const videoId = video.url.split("v=")[1];
             const thumbnail = `https://img.youtube.com/vi/${videoId}/0.jpg`;

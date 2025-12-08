@@ -17,6 +17,7 @@ export const HeroSection: React.FC<HeroProps> = ({ section }) => {
       </div>
     );
   }
+  const subTitle = section?.subTitle ?? "Hero Subtitle";
 
   return (
     <HeroBackground>
@@ -52,7 +53,7 @@ export const HeroSection: React.FC<HeroProps> = ({ section }) => {
               {/* Main Heading with Gradient */}
               <h1 className="text-left font-sans line-clamp-2 text-4xl sm:text-5xl lg:text-6xl font-extrabold leading-tight tracking-tight text-gray-900 dark:text-white">
                 <span className="bg-gradient-to-r from-emerald-600 via-teal-500 to-cyan-500 bg-clip-text text-transparent">
-                  {section?.subTitle || "Hero Subtitle"}
+                  {subTitle}
                 </span>
               </h1>
             </div>

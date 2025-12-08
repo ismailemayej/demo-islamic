@@ -13,6 +13,7 @@ const API_KEYS = [
   process.env.GEMINI_API_KEY10,
   process.env.GEMINI_API_KEY11,
 ].filter(Boolean);
+const name = process.env.NEXT_PUBLIC_OWNER_NAME || "AI Chatbot";
 
 if (API_KEYS.length === 0)
   throw new Error("At least one GEMINI_API_KEY is required.");
