@@ -19,7 +19,6 @@ interface Organization {
   name: string;
   possition: string;
   address: string;
-  director: string;
   img: string;
   details: string;
 }
@@ -83,7 +82,6 @@ export const OrganizationSectionDashboard = () => {
       name: "",
       possition: "",
       address: "",
-      director: "",
       img: "",
       details: "",
     };
@@ -109,8 +107,6 @@ export const OrganizationSectionDashboard = () => {
       return toast.error("Position is required!");
     if (!editOrgModal.address.trim())
       return toast.error("Address is required!");
-    if (!editOrgModal.director.trim())
-      return toast.error("Director is required!");
 
     const exists = formData.data.some((o) => o.id === editOrgModal.id);
     const updatedData = exists
@@ -233,7 +229,7 @@ export const OrganizationSectionDashboard = () => {
                   </h4>
                   <p>পজিশন: {org.possition}</p>
                   <p>ঠিকানা: {org.address}</p>
-                  <p>ডিরেক্টর: {org.director}</p>
+
                   <div className="flex justify-center gap-3 mt-3">
                     <button onClick={() => setEditOrgModal(org)}>
                       <FaRegEdit className="text-yellow-500 w-6 h-6" />
@@ -280,13 +276,7 @@ export const OrganizationSectionDashboard = () => {
                   setEditOrgModal({ ...editOrgModal, address: e.target.value })
                 }
               />
-              <Input
-                label="Director"
-                value={editOrgModal.director}
-                onChange={(e) =>
-                  setEditOrgModal({ ...editOrgModal, director: e.target.value })
-                }
-              />
+
               <div>
                 <label className="font-semibold block mb-1">Image</label>
                 {editOrgModal.img && (

@@ -1,7 +1,7 @@
 "use client";
 import { Heading } from "@/components/Heading";
 import { motion } from "framer-motion";
-import { GraduationCap, Save, XCircle } from "lucide-react";
+import { GraduationCap, XCircle } from "lucide-react";
 import { useGetSection } from "../Hook/GetData";
 import { useState, useEffect } from "react";
 import toast from "react-hot-toast";
@@ -9,11 +9,11 @@ import { FaRegEdit } from "react-icons/fa";
 import { BsTrash3Fill } from "react-icons/bs";
 import { Input } from "@heroui/input";
 import { IoAddCircleSharp } from "react-icons/io5";
-
 import { Button } from "@nextui-org/react";
 import { OpenModal } from "@/components/Modal";
 
 interface Education {
+  id: number; // সব আইটেমে থাকা আবশ্যক
   examName: string;
   institution: string;
   board: string;
@@ -35,124 +35,89 @@ export const EducationSectionDashboard: React.FC = () => {
     data: [],
   });
 
-  const [editingSection, setEditingSection] = useState(false);
-  const [isAddModal, setIsAddModal] = useState(false);
-  const [isEditModal, setIsEditModal] = useState(false);
-  const [editIndex, setEditIndex] = useState<number | null>(null);
-
-  const [tempEducation, setTempEducation] = useState<Education>({
-    examName: "",
-    institution: "",
-    board: "",
-    year: "",
-    result: "",
-    duration: "",
-  });
-
+  const [editingHeading, setEditingHeading] = useState(false);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [selectedItem, setSelectedItem] = useState<Education | null>(null);
   const [saving, setSaving] = useState(false);
-  const [hasUnsavedChanges, setHasUnsavedChanges] = useState(false);
 
+  // ✅ Initial Data Load
   useEffect(() => {
     if (section) {
+      // যদি কোনো আইটেমে id না থাকে, generate করা হচ্ছে
+      const dataWithId = (section.data || []).map((item: any, idx: number) => ({
+        ...item,
+        id: item.id || Date.now() + idx,
+      }));
+
       setFormData({
-        heading: {
-          title: section.heading?.title || "",
-          subTitle: section.heading?.subTitle || "",
-        },
-        data: section.data || [],
+        heading: section.heading || { title: "", subTitle: "" },
+        data: dataWithId,
       });
     }
   }, [section]);
 
-  // -------------------- Heading change handler ----------------
-  const handleHeadingChange = (field: "title" | "subTitle", value: string) => {
-    setFormData((prev) => ({
-      ...prev,
-      heading: { ...prev.heading, [field]: value },
-    }));
-    setHasUnsavedChanges(true);
-  };
-
-  // -------------------- ADD NEW -----------------------
-  const openAddModal = () => {
-    setTempEducation({
-      examName: "",
-      institution: "",
-      board: "",
-      year: "",
-      result: "",
-      duration: "",
-    });
-    setIsAddModal(true);
-  };
-
-  const handleAdd = () => {
-    setFormData((prev) => ({
-      ...prev,
-      data: [...prev.data, tempEducation],
-    }));
-    setIsAddModal(false);
-    setHasUnsavedChanges(true);
-    toast.success("Added new education item (local).");
-  };
-
-  // -------------------- EDIT --------------------------
-  const openEditModal = (index: number) => {
-    setEditIndex(index);
-    setTempEducation({ ...formData.data[index] });
-    setIsEditModal(true);
-  };
-
-  const handleEditSave = () => {
-    if (editIndex === null) return;
-
-    const newData = [...formData.data];
-    newData[editIndex] = tempEducation;
-
-    setFormData((prev) => ({ ...prev, data: newData }));
-    setIsEditModal(false);
-    setEditIndex(null);
-    setHasUnsavedChanges(true);
-    toast.success("Edited item (local).");
-  };
-
-  // -------------------- DELETE -------------------------
-  const handleDelete = (index: number) => {
-    const newData = [...formData.data];
-    newData.splice(index, 1);
-    setFormData((prev) => ({ ...prev, data: newData }));
-    setHasUnsavedChanges(true);
-    toast.success("Item removed (local).");
-  };
-
-  // -------------------- SAVE TO BACKEND ----------------
-  const handleSave = async () => {
+  // ✅ Save to DB (Full update)
+  const handleSave = async (updatedData = formData) => {
     setSaving(true);
-    toast.loading("Saving data...", { id: "save" });
-
+    toast.loading("Saving...", { id: "save" });
     try {
       const res = await fetch("/api/all-data/educationsection/update", {
         method: "PATCH",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(formData),
+        body: JSON.stringify(updatedData),
       });
-
       const json = await res.json();
       if (!json.success) throw new Error(json.error || "Save failed");
-
       toast.dismiss("save");
-      toast.success("✅ Saved successfully!");
-      setEditingSection(false);
-      setHasUnsavedChanges(false);
+      toast.success("✅ Updated Successfully!");
+      setSelectedItem(null);
+      setEditingHeading(false);
     } catch (err: any) {
       toast.dismiss("save");
-      toast.error(err.message || "Save failed");
+      toast.error(err.message || "Failed to save");
     } finally {
       setSaving(false);
     }
   };
 
-  if (loading) return <p className="text-center py-20">Loading...</p>;
+  // ✅ Modal Save (Add/Edit)
+  const handleModalSave = () => {
+    if (!selectedItem) return;
+
+    let updatedData: Education[];
+    if (formData.data.some((a) => a.id === selectedItem.id)) {
+      // Update existing item
+      updatedData = formData.data.map((a) =>
+        a.id === selectedItem.id ? selectedItem : a
+      );
+    } else {
+      // Add new item
+      updatedData = [...formData.data, { ...selectedItem, id: Date.now() }];
+    }
+
+    const updated = { ...formData, data: updatedData };
+    setFormData(updated);
+    handleSave(updated);
+    setSelectedItem(null);
+    setIsModalOpen(false);
+  };
+
+  // ✅ Delete
+  const handleDelete = (id: number) => {
+    const updated = {
+      ...formData,
+      data: formData.data.filter((a) => a.id !== id),
+    };
+    setFormData(updated);
+    handleSave(updated);
+    toast.success("🗑️ Deleted successfully");
+  };
+
+  if (loading)
+    return (
+      <div className="flex justify-center items-center py-20">Loading...</div>
+    );
+
   if (error) return <p className="text-red-500 text-center py-10">{error}</p>;
 
   return (
@@ -168,16 +133,30 @@ export const EducationSectionDashboard: React.FC = () => {
         </div>
 
         <span className="flex gap-2 items-center">
-          <button onClick={openAddModal} title="Add new">
+          <button
+            onClick={() => {
+              setSelectedItem({
+                id: Date.now(),
+                examName: "",
+                institution: "",
+                board: "",
+                year: "",
+                result: "",
+                duration: "",
+              });
+              setIsModalOpen(true);
+            }}
+            title="Add new"
+          >
             <IoAddCircleSharp className="text-green-500 cursor-pointer w-7 h-7" />
           </button>
 
           <button
-            onClick={() => setEditingSection(!editingSection)}
+            onClick={() => setEditingHeading(!editingHeading)}
             className="transition"
-            title={editingSection ? "Close heading editor" : "Edit heading"}
+            title={editingHeading ? "Close heading editor" : "Edit heading"}
           >
-            {editingSection ? (
+            {editingHeading ? (
               <XCircle size={25} className="text-yellow-500" />
             ) : (
               <FaRegEdit className="text-yellow-500 cursor-pointer w-7 h-6" />
@@ -187,175 +166,136 @@ export const EducationSectionDashboard: React.FC = () => {
       </div>
 
       {/* Edit Heading */}
-      {editingSection && (
+      {editingHeading && (
         <div className="bg-white dark:bg-gray-800 p-6 rounded-xl shadow-lg my-6">
           <div className="grid sm:grid-cols-2 gap-4 mb-5">
             <Input
               size="md"
               type="text"
               value={formData.heading.title}
-              onChange={(e) => handleHeadingChange("title", e.target.value)}
+              onChange={(e) =>
+                setFormData((prev) => ({
+                  ...prev,
+                  heading: { ...prev.heading, title: e.target.value },
+                }))
+              }
               label="Title"
-              className="w-full border rounded-lg p-2 bg-gray-50 dark:bg-gray-700 dark:text-white focus:ring-2 focus:ring-amber-400"
             />
             <Input
               size="md"
               type="text"
               value={formData.heading.subTitle}
-              onChange={(e) => handleHeadingChange("subTitle", e.target.value)}
+              onChange={(e) =>
+                setFormData((prev) => ({
+                  ...prev,
+                  heading: { ...prev.heading, subTitle: e.target.value },
+                }))
+              }
               label="Subtitle"
-              className="w-full border rounded-lg p-2 bg-gray-50 dark:bg-gray-700 dark:text-white focus:ring-2 focus:ring-amber-400"
             />
           </div>
-
           <div className="flex justify-end gap-3">
-            <button
-              onClick={() => setEditingSection(false)}
-              className="px-4 py-2 rounded-md border"
-            >
-              Cancel
-            </button>
-            <button
-              onClick={handleSave}
+            <Button
+              color="primary"
+              onPress={() => handleSave(formData)}
               disabled={saving}
-              className="px-4 py-2 rounded-md bg-amber-500 text-white"
             >
-              {saving ? "Saving..." : "Save Heading & All"}
-            </button>
+              Save Heading & All
+            </Button>
           </div>
         </div>
       )}
 
       {/* Education Cards */}
       <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
-        {formData.data?.reverse()?.map((edu, index) => (
-          <motion.div
-            key={index}
-            initial={{ opacity: 0, y: 30 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8, delay: index * 0.05 }}
-            className="relative p-6 bg-white dark:bg-gray-800 shadow-md rounded-2xl border border-amber-100 dark:border-gray-700 hover:shadow-xl transition-all duration-300"
-          >
-            <div className="absolute top-2 right-3 flex gap-2">
-              <button
-                onClick={() => openEditModal(index)}
-                className="text-blue-500 hover:text-blue-700 transition"
-                title="Edit item"
-              >
-                <FaRegEdit className="text-yellow-500 cursor-pointer w-5 h-5" />
-              </button>
-              <button
-                onClick={() => handleDelete(index)}
-                className="text-red-500 hover:text-red-700 transition"
-                title="Delete item"
-              >
-                <BsTrash3Fill className="text-rose-500 cursor-pointer w-5 h-5" />
-              </button>
-            </div>
+        {formData.data
+          .slice()
+          .reverse()
+          .map((edu) => (
+            <motion.div
+              key={edu.id}
+              initial={{ opacity: 0, y: 30 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.8 }}
+              className="relative p-6 bg-white dark:bg-gray-800 shadow-md rounded-2xl border border-amber-100 dark:border-gray-700 hover:shadow-xl transition-all duration-300"
+            >
+              <div className="absolute top-2 right-3 flex gap-2">
+                <button
+                  onClick={() => {
+                    setSelectedItem({ ...edu });
+                    setIsModalOpen(true);
+                  }}
+                  className="text-blue-500 hover:text-blue-700 transition"
+                >
+                  <FaRegEdit className="text-yellow-500 cursor-pointer w-5 h-5" />
+                </button>
+                <button
+                  onClick={() => handleDelete(edu.id)}
+                  className="text-red-500 hover:text-red-700 transition"
+                >
+                  <BsTrash3Fill className="text-rose-500 cursor-pointer w-5 h-5" />
+                </button>
+              </div>
 
-            <div className="flex items-center gap-3 mb-4">
-              <GraduationCap className="text-amber-600 dark:text-amber-400 w-6 h-6" />
-              <h3 className="bangla text-lg font-semibold text-amber-800 dark:text-amber-400">
-                {edu.examName || "—"}
-              </h3>
-            </div>
+              <div className="flex items-center gap-3 mb-4">
+                <GraduationCap className="text-amber-600 dark:text-amber-400 w-6 h-6" />
+                <h3 className="bangla text-lg font-semibold text-amber-800 dark:text-amber-400">
+                  {edu.examName || "—"}
+                </h3>
+              </div>
 
-            <div className="space-y-2 text-gray-700 dark:text-gray-300 bangla">
-              <div>
-                <span className="text-amber-700 dark:text-amber-500 font-semibold">
-                  Accademy::
-                </span>{" "}
-                {edu.institution || "—"}
+              <div className="space-y-2 text-gray-700 dark:text-gray-300 bangla">
+                <div>
+                  <span className="font-semibold">Accademy:</span>{" "}
+                  {edu.institution}
+                </div>
+                <div>
+                  <span className="font-semibold">Board:</span> {edu.board}
+                </div>
+                <div>
+                  <span className="font-semibold">Year:</span> {edu.year}
+                </div>
+                <div>
+                  <span className="font-semibold">Result:</span> {edu.result}
+                </div>
+                <div>
+                  <span className="font-semibold">Duration:</span>{" "}
+                  {edu.duration}
+                </div>
               </div>
-              <div>
-                <span className="text-amber-700 dark:text-amber-500 font-semibold">
-                  Board::
-                </span>{" "}
-                {edu.board || "—"}
-              </div>
-              <div>
-                <span className="text-amber-700 dark:text-amber-500 font-semibold">
-                  Year:
-                </span>{" "}
-                {edu.year || "—"}
-              </div>
-              <div>
-                <span className="text-amber-700 dark:text-amber-500 font-semibold">
-                  Result:
-                </span>{" "}
-                {edu.result || "—"}
-              </div>
-              <div>
-                <span className="text-amber-700 dark:text-amber-500 font-semibold">
-                  সময়:
-                </span>{" "}
-                {edu.duration || "—"}
-              </div>
-            </div>
-          </motion.div>
-        ))}
+            </motion.div>
+          ))}
       </div>
 
-      {/* Save Button (shown only when unsaved changes exist) */}
-      {hasUnsavedChanges && (
-        <div className="flex justify-center mt-8">
-          <button
-            onClick={handleSave}
-            disabled={saving}
-            className="flex items-center gap-2 bg-amber-500 text-white px-6 py-3 rounded-lg hover:bg-amber-600 shadow-md hover:shadow-lg transition"
-          >
-            <Save size={18} />
-            {saving ? "Saving..." : "Save Changes"}
-          </button>
-        </div>
-      )}
-
-      {/* ---------------- Add Modal ----------------- */}
+      {/* Modal */}
       <OpenModal
-        title="নতুন শিক্ষা তথ্য যোগ করুন"
-        isOpen={isAddModal}
-        onClose={() => setIsAddModal(false)}
+        title={
+          selectedItem
+            ? selectedItem.id
+              ? "Update Education"
+              : "Add Education"
+            : ""
+        }
+        isOpen={isModalOpen}
+        onClose={() => setIsModalOpen(false)}
         size="lg"
       >
-        <ModalForm
-          tempEducation={tempEducation}
-          setTempEducation={setTempEducation}
-        />
+        {selectedItem && (
+          <ModalForm
+            tempEducation={selectedItem}
+            setTempEducation={setSelectedItem}
+          />
+        )}
         <div className="flex justify-end gap-3 mt-4">
           <Button
             color="primary"
-            onPress={() => setIsAddModal(false)}
+            onPress={() => setIsModalOpen(false)}
             variant="ghost"
           >
             Close
           </Button>
-          <Button color="success" onPress={handleAdd}>
-            Add
-          </Button>
-        </div>
-      </OpenModal>
-
-      {/* ---------------- Edit Modal ---------------- */}
-      <OpenModal
-        title="শিক্ষা তথ্য সম্পাদনা"
-        isOpen={isEditModal}
-        onClose={() => setIsEditModal(false)}
-        size="lg"
-      >
-        <ModalForm
-          tempEducation={tempEducation}
-          setTempEducation={setTempEducation}
-        />
-        <div className="flex justify-end gap-3 mt-4">
-          <Button
-            color="primary"
-            onPress={() => setIsEditModal(false)}
-            variant="ghost"
-          >
-            Close
-          </Button>
-          <Button color="warning" onPress={handleEditSave}>
-            Update
+          <Button color="success" onPress={handleModalSave}>
+            {selectedItem?.id ? "Update" : "Add"}
           </Button>
         </div>
       </OpenModal>
@@ -380,7 +320,7 @@ const ModalForm = ({
       }
     />
     <Input
-      label="Accademy:"
+      label="Accademy"
       value={tempEducation.institution}
       onChange={(e) =>
         setTempEducation((prev: any) => ({
@@ -390,7 +330,7 @@ const ModalForm = ({
       }
     />
     <Input
-      label=" Board:"
+      label="Board"
       value={tempEducation.board}
       onChange={(e) =>
         setTempEducation((prev: any) => ({ ...prev, board: e.target.value }))
@@ -411,7 +351,7 @@ const ModalForm = ({
       }
     />
     <Input
-      label="সময়"
+      label="Duration"
       value={tempEducation.duration}
       onChange={(e) =>
         setTempEducation((prev: any) => ({ ...prev, duration: e.target.value }))

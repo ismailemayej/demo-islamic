@@ -257,7 +257,7 @@ export const GallerySectionDashboard: React.FC = () => {
 
             {/* Gallery Items */}
             <div className="space-y-4 grid grid-cols-1 lg:grid-cols-4 gap-4">
-              {formData.data?.reverse()?.map((item, i) => (
+              {formData.data?.map((item, i) => (
                 <motion.div
                   key={item.id}
                   whileHover={{ scale: 1.01 }}

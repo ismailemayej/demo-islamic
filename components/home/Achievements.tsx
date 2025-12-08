@@ -21,7 +21,7 @@ export const AchievementsSection: React.FC<AchievementProps> = ({
   const ACHIEVEMENTS = section?.data || [];
 
   return (
-    <Background id="achievenents">
+    <Background id="achievements">
       <Heading
         title={section?.heading?.title || "সকল অর্জনসমূহ"}
         subTitle={section?.heading?.subTitle || " আমার উল্লেখযোগ্য অর্জনসমূহ "}
