@@ -126,7 +126,7 @@ export const Navbar: React.FC = () => {
                   href={link.url}
                   onClick={() => setIsOpen(false)}
                   whileHover={{ x: 5 }}
-                  className="block px-5 py-1 text-lg font-bold
+                  className="block px-5 py-1 text-lg
                              text-gray-700 dark:text-gray-300
                              hover:bg-amber-50/70 dark:hover:bg-gray-700/70
                              hover:text-amber-600 dark:hover:text-amber-400

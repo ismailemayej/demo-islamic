@@ -1,19 +1,42 @@
 import { GoogleGenerativeAI } from "@google/generative-ai";
 import { NextResponse } from "next/server";
+const API_KEYS = [
+  process.env.GEMINI_API_KEY1,
+  process.env.GEMINI_API_KEY2,
+  process.env.GEMINI_API_KEY3,
+  process.env.GEMINI_API_KEY4,
+  process.env.GEMINI_API_KEY5,
+  process.env.GEMINI_API_KEY6,
+  process.env.GEMINI_API_KEY7,
+  process.env.GEMINI_API_KEY8,
+  process.env.GEMINI_API_KEY9,
+  process.env.GEMINI_API_KEY10,
+  process.env.GEMINI_API_KEY11,
+].filter(Boolean);
 
-const apiKey = process.env.GEMINI_API_KEY;
-if (!apiKey) throw new Error("GEMINI_API_KEY environment variable is not set.");
+if (API_KEYS.length === 0)
+  throw new Error("At least one GEMINI_API_KEY is required.");
 
-const genAI = new GoogleGenerativeAI(apiKey);
-const name = process.env.NEXT_PUBLIC_OWNER_NAME || "AI Assistant";
-if (!name)
-  throw new Error("NEXT_PUBLIC_OWNER_NAME environment variable is not set.");
+export async function POST(req: Request) {
+  try {
+    const { message } = await req.json();
 
-// Model setup
-const model = genAI.getGenerativeModel({
-  model: "gemini-2.5-flash",
-  systemInstruction: `
-You are ${name}, a friendly chat assistant.  
+    if (!message) {
+      return NextResponse.json(
+        { status: "error", message: "Message is required!" },
+        { status: 400 }
+      );
+    }
+
+    let responseText = "";
+
+    // Loop over API keys
+    for (const apiKey of API_KEYS) {
+      try {
+        const genAI = new GoogleGenerativeAI(apiKey as string);
+        const model = genAI.getGenerativeModel({
+          model: "gemini-2.5-flash",
+          systemInstruction: `You are ${name}, a friendly chat assistant.  
 You must always reply in the same language the user uses.  
 Maintain a kind, polite, and helpful tone at all times.
 
@@ -39,38 +62,37 @@ Additional Rules:
 - Maintain a natural, supportive conversation tone.
 - Never invent new details if they do not exist in the JSON.
 `,
-});
+        });
+        const chat = model.startChat({ history: [] });
+        // Send user message
+        const result = await chat.sendMessage(message);
 
-// Start chat session
-const chat = model.startChat({ history: [] });
+        responseText =
+          result?.response?.candidates?.[0]?.content?.parts?.[0]?.text ||
+          "দুঃখিত, কোনো উত্তর পাওয়া যায়নি।";
 
-// POST API
-export async function POST(req: Request) {
-  try {
-    const { message } = await req.json();
-
-    if (!message) {
-      return NextResponse.json(
-        { status: "error", message: "Message is required!" },
-        { status: 400 }
-      );
+        // যদি সফল হয়, loop বন্ধ
+        break;
+      } catch (err: any) {
+        if (err?.status !== 429) break;
+      }
     }
 
-    const result = await chat.sendMessage(message);
-
-    const text =
-      result?.response?.candidates?.[0]?.content?.parts?.[0]?.text ||
-      "Sorry, I couldn't generate a response.";
+    if (!responseText) {
+      return NextResponse.json(
+        { status: "error", message: "Internal Server Error" },
+        { status: 500 }
+      );
+    }
 
     return NextResponse.json({
       status: "success",
       source: "ai",
-      message: text,
+      message: responseText,
     });
   } catch (error) {
-    console.error("Chat API Error:", error);
     return NextResponse.json(
-      { status: "error", message: "Internal Server Error" },
+      { status: "error", message: `${error} Internal Server Error` },
       { status: 500 }
     );
   }
