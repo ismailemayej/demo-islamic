@@ -274,7 +274,7 @@ export const ArticlesSectionDashboard: React.FC = () => {
               >
                 {/* Title: Clickable to open Preview Modal */}
                 <h3
-                  className="text-2xl font-bold mb-3 text-emerald-700 dark:text-emerald-400 cursor-pointer hover:underline transition-colors leading-snug"
+                  className="tex-lg font-bold mb-3 text-emerald-700 dark:text-emerald-400 cursor-pointer hover:underline transition-colors line-clamp-2 leading-snug "
                   onClick={() => {
                     setActiveArticle(article);
                     setPreviewModalOpen(true);
@@ -285,7 +285,7 @@ export const ArticlesSectionDashboard: React.FC = () => {
 
                 {/* Description Snippet */}
                 <p
-                  className="text-gray-700 dark:text-gray-300 mb-4 line-clamp-3 text-base leading-relaxed"
+                  className="text-gray-700 dark:text-gray-300 mb-4 line-clamp-2 text-base leading-relaxed"
                   dangerouslySetInnerHTML={{
                     __html:
                       article.blogdescription ||

@@ -28,8 +28,9 @@ export const ArticlesSection: React.FC<ArticleProps> = ({ section }) => {
       />
 
       <div className="mt-12 grid gap-4 md:grid-cols-4">
-        {MOCK_ARTICLES?.slice(0, 4)
-          ?.reverse()
+        {MOCK_ARTICLES?.slice() // মূল array পরিবর্তন না করে copy নিচ্ছে
+          ?.reverse() // পুরো array reverse, ফলে সর্বশেষ পোস্ট সামনে আসবে
+          ?.slice(0, 4) // এখান থেকে প্রথম ৪টি পোস্ট নেবে (মানে সর্বশেষ ৪টি)
           ?.map((article: ArticleItem, index: number) => (
             <motion.div
               key={article.id}

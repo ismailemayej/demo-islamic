@@ -20,12 +20,10 @@ interface TeamMember {
   imageurl: string;
   number?: string;
 }
-
 interface TeamSection {
   heading: { title: string; subTitle: string };
   data: TeamMember[];
 }
-
 export const TeamSectionDashboard = () => {
   const { section, loading, error } = useGetSection("teamsection");
 
@@ -33,29 +31,24 @@ export const TeamSectionDashboard = () => {
     heading: { title: "", subTitle: "" },
     data: [],
   });
-
   const [selectedMember, setSelectedMember] = useState<TeamMember | null>(null);
   const [modalOpen, setModalOpen] = useState(false);
   const [headingEditOpen, setHeadingEditOpen] = useState(false);
   const [saving, setSaving] = useState(false);
   const [uploading, setUploading] = useState(false);
-
   useEffect(() => {
     if (section) setFormData(section);
   }, [section]);
-
   const handleHeadingChange = (field: "title" | "subTitle", value: string) => {
     setFormData((prev) => ({
       ...prev,
       heading: { ...prev.heading, [field]: value },
     }));
   };
-
   const handleMemberChange = (field: keyof TeamMember, value: string) => {
     if (!selectedMember) return;
     setSelectedMember({ ...selectedMember, [field]: value });
   };
-
   // 🔹 Add New Member and Open Modal
   const handleAddMember = () => {
     const newMember: TeamMember = {
@@ -68,10 +61,8 @@ export const TeamSectionDashboard = () => {
     setSelectedMember(newMember);
     setModalOpen(true);
   };
-
   const handleModalSave = async () => {
     if (!selectedMember) return;
-
     // 🔹 Validation
     if (!selectedMember.name.trim()) {
       toast.error("Name is required!");
@@ -82,9 +73,7 @@ export const TeamSectionDashboard = () => {
       toast.error("Position is required!");
       return;
     }
-
     const exists = formData.data.some((m) => m.id === selectedMember.id);
-
     const updatedData = exists
       ? formData.data.map((m) =>
           m.id === selectedMember.id ? selectedMember : m
@@ -103,10 +92,8 @@ export const TeamSectionDashboard = () => {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(updated),
       });
-
       const json = await res.json();
       if (!json.success) throw new Error("Save failed");
-
       toast.dismiss("save");
       toast.success("Saved successfully!");
       setModalOpen(false);
@@ -118,28 +105,22 @@ export const TeamSectionDashboard = () => {
       setSaving(false);
     }
   };
-
   const handleDeleteMember = async (id: string) => {
     const updated = {
       ...formData,
       data: formData.data.filter((m) => m.id !== id),
     };
-
     setFormData(updated);
-
     setSaving(true);
     toast.loading("Deleting...", { id: "delete" });
-
     try {
       const res = await fetch("/api/all-data/teamsection/update", {
         method: "PATCH",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(updated),
       });
-
       const json = await res.json();
       if (!json.success) throw new Error("Delete failed");
-
       toast.dismiss("delete");
       toast.success("Deleted successfully!");
     } catch (err: any) {
@@ -149,7 +130,6 @@ export const TeamSectionDashboard = () => {
       setSaving(false);
     }
   };
-
   const handleImageUpload = async (e: any) => {
     if (!selectedMember) return;
     const file = e.target.files?.[0];
@@ -188,7 +168,7 @@ export const TeamSectionDashboard = () => {
   if (error) return <p className="text-center py-10 text-red-500">{error}</p>;
 
   return (
-    <Background id="team">
+    <Background id="#team">
       <div className="container mx-auto">
         <div className="flex justify-between items-center mx-auto gap-7 mb-6">
           <div className="flex-1 text-center">

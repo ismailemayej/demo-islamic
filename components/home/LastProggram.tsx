@@ -71,9 +71,10 @@ export const RecentProgramsSection: React.FC<RecentProgramsProps> = ({
       </div>
 
       <div className="w-full grid gap-3 md:grid-cols-3 lg:grid-cols-5 mt-10">
-        {MOCK_PROGRAMS.slice(0, 5)
-          .reverse()
-          .map((program: RecentProgramItem, index: number) => {
+        {MOCK_PROGRAMS?.slice()
+          ?.reverse()
+          ?.slice(0, 5)
+          ?.map((program: RecentProgramItem, index: number) => {
             const programDate = new Date(program.date);
             const remainingDays = calculateRemainingDays(programDate);
             const isUpcoming = programDate >= today;
@@ -83,31 +84,29 @@ export const RecentProgramsSection: React.FC<RecentProgramsProps> = ({
                 key={program.id || index}
                 className="relative bg-white/50 dark:bg-gray-800/40 backdrop-blur-lg rounded-3xl p-6 shadow-xl flex flex-col justify-between cursor-pointer border border-emerald-100 dark:border-gray-700 hover:shadow-2xl hover:-translate-y-1 transition-all duration-500"
               >
-                {/* Top Icons & Program Name */}
                 <div className="flex items-center gap-3 mb-4">
-                  <h3 className="text-xl  font-bold text-emerald-700 dark:text-emerald-400">
+                  <h3 className="text-xl font-bold text-emerald-700 dark:text-emerald-400">
                     {program.programName}
                   </h3>
                 </div>
 
-                {/* Program Details with Icons */}
                 <div className="flex flex-col gap-2 flex-1">
                   <p className="flex items-center text-gray-700 dark:text-gray-200 gap-2">
                     <MapPin className="w-4 h-4 text-amber-500" />
-
                     {program.location}
                   </p>
+
                   <p className="flex items-center text-gray-700 dark:text-gray-200 gap-2">
                     <Calendar className="w-4 h-4 text-blue-500" />
                     {program.date}
                   </p>
+
                   <p className="flex items-center text-gray-700 dark:text-gray-200 gap-2">
                     <Clock className="w-4 h-4 text-emerald-500" />
                     {program.day}
                   </p>
                 </div>
 
-                {/* Status Badge */}
                 <motion.div
                   className={`mt-4 w-full py-2 rounded-lg flex items-center justify-center gap-2 font-semibold text-sm ${
                     isUpcoming
@@ -133,6 +132,7 @@ export const RecentProgramsSection: React.FC<RecentProgramsProps> = ({
             );
           })}
       </div>
+
       <span className="flex justify-end  lg:hidden mt-1">
         <Link
           href="/all-programs"

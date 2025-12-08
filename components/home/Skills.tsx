@@ -22,7 +22,7 @@ type SkillsSectionProps = {
 
 const SkillsSection: React.FC<SkillsSectionProps> = ({ section }) => {
   return (
-    <Background id="skills">
+    <Background id="skillsection">
       <Heading
         title={section?.heading?.title}
         subTitle={section?.heading?.subTitle}

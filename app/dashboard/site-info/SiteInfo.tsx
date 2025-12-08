@@ -31,6 +31,7 @@ const MASTER_NAV_LINKS = [
   { id: 15, name: "Team", href: "#teams" },
   { id: 16, name: "Appoinment", href: "#booking" },
   { id: 17, name: "Services", href: "#services" },
+  { id: 18, name: "Skills", href: "#skillsection" },
 ];
 
 interface NavLink {

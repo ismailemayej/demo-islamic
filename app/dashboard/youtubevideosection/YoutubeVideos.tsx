@@ -13,7 +13,7 @@ import { OpenModal } from "@/components/Modal";
 
 interface VideoItem {
   id: string;
-  title: string;
+  title?: string;
   url: string;
 }
 
@@ -100,11 +100,6 @@ export const YouTubeVideosSectionDashboard: React.FC = () => {
   const handleUpdateVideo = async () => {
     if (!activeVideo) return;
 
-    // Validation
-    if (!activeVideo.title.trim()) {
-      toast.error("Video title is required!");
-      return;
-    }
     if (!activeVideo.url.trim()) {
       toast.error("Video URL is required!");
       return;
@@ -189,7 +184,7 @@ export const YouTubeVideosSectionDashboard: React.FC = () => {
 
         {/* Video Grid */}
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
-          {formData.data?.reverse()?.map((video) => {
+          {formData.data?.map((video) => {
             const vid = video.url.split("v=")[1];
             const thumb = vid ? `https://img.youtube.com/vi/${vid}/0.jpg` : "";
 
