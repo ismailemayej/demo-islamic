@@ -1,10 +1,10 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   reactStrictMode: true,
-  swcMinify: true, // Next.js SWC compiler দিয়ে দ্রুত minification
+  swcMinify: true,
   experimental: {
-    optimizeCss: true, // Tailwind + CSS optimization
-    esmExternals: true, // Modern ES6 modules
+    optimizeCss: true,
+    esmExternals: true,
   },
   images: {
     remotePatterns: [
@@ -19,10 +19,10 @@ const nextConfig = {
         pathname: "/**",
       },
     ],
-    // unoptimized: true, // Production এ অফ রাখুন, optimized images ব্যবহার করুন
+    // unoptimized: true,
   },
   future: {
-    webpack5: true, // Next.js 13+ Modern Webpack
+    webpack5: true,
   },
 };
 
