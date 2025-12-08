@@ -40,7 +40,7 @@ export const AboutSection: React.FC<AboutProps> = ({ section }) => {
         style={{ perspective: "1000px" }}
       >
         {/* Left Side: 3D Profile Image */}
-        import Image from "next/image";
+
         <motion.div className="w-full lg:w-1/3 flex justify-center lg:justify-start">
           <div className="relative group shadow-2xl rounded-3xl overflow-hidden w-64 sm:w-72 md:w-80 border border-gray-200 dark:border-gray-700 transition-all duration-500">
             {/* Optimized Next.js Image */}

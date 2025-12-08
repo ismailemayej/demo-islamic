@@ -2,25 +2,25 @@
 
 import { useEffect, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
+import Image from "next/image";
 import { Heading } from "../Heading";
 import Background from "../background";
 import { TPhotoSection } from "@/types/all-types";
 import { Spinner } from "@heroui/spinner";
+
 type GallerySectionProps = {
   section: TPhotoSection | null | undefined;
 };
+
 export const GallerySection: React.FC<GallerySectionProps> = ({ section }) => {
   if (!section) {
     return <Spinner size="lg" />;
   }
-  const [selectedImage, setSelectedImage] = useState<string | null>(null);
-  useEffect(() => {
-    if (selectedImage) {
-      document.body.style.overflow = "hidden"; // স্ক্রল বন্ধ
-    } else {
-      document.body.style.overflow = "auto"; // স্ক্রল চালু
-    }
 
+  const [selectedImage, setSelectedImage] = useState<string | null>(null);
+
+  useEffect(() => {
+    document.body.style.overflow = selectedImage ? "hidden" : "auto";
     return () => {
       document.body.style.overflow = "auto";
     };
@@ -29,27 +29,31 @@ export const GallerySection: React.FC<GallerySectionProps> = ({ section }) => {
   return (
     <Background id="gallery">
       <Heading
-        title={section?.heading?.title || " Accademy"}
+        title={section?.heading?.title || "Accademy"}
         subTitle={
           section?.heading?.subTitle || "Accademy Gallery Showcase Your Work"
         }
       />
+
       <div className="grid gap-2 mt-6 lg:grid-cols-6 md:grid-cols-3 sm:grid-cols-2 grid-cols-1 auto-rows-[200px] lg:auto-rows-[300px]">
         {section?.data
           ?.slice(0, 6)
           ?.reverse()
           ?.map((item: any, i: number) => (
             <motion.div
-              key={i}
-              className={`relative overflow-hidden rounded-xl group shadow-md dark:shadow-gray-700 border border-gray-200 dark:border-gray-700 ${
-                i === 0 || i === 1 || i === 5 || i === 2 ? "lg:col-span-2" : ""
-              } ${i === 2 ? "lg:row-span-2" : ""}`}
+              key={item.id || i}
+              className={`relative overflow-hidden rounded-xl group shadow-md dark:shadow-gray-700 border border-gray-200 dark:border-gray-700 
+              ${i === 0 || i === 1 || i === 5 || i === 2 ? "lg:col-span-2" : ""}
+              ${i === 2 ? "lg:row-span-2" : ""}`}
               onClick={() => setSelectedImage(item.image)}
             >
-              <img
+              <Image
                 src={item.image}
                 alt={item.title || "Gallery Image"}
-                className="w-full h-full object-cover transform duration-300 group-hover:scale-105 cursor-pointer"
+                fill
+                className="object-cover transform duration-300 group-hover:scale-105 cursor-pointer"
+                sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
+                priority={i < 2} // প্রথম 2 image fast load
               />
 
               {item.title && (
@@ -64,22 +68,26 @@ export const GallerySection: React.FC<GallerySectionProps> = ({ section }) => {
       <AnimatePresence>
         {selectedImage && (
           <motion.div
-            className="fixed inset-0 z-50 flex items-center justify-center 
-                 bg-black/80 backdrop-blur-sm p-4"
+            className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 backdrop-blur-sm p-4"
             onClick={() => setSelectedImage(null)}
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
           >
-            <motion.img
-              src={selectedImage}
-              alt="Zoomed Image"
+            <motion.div
               initial={{ scale: 0.8 }}
               animate={{ scale: 1 }}
               exit={{ scale: 0.8 }}
-              className="max-h-[90vh] max-w-[90vw] object-contain rounded-xl shadow-xl"
+              className="relative max-h-[90vh] max-w-[90vw]"
               onClick={(e) => e.stopPropagation()}
-            />
+            >
+              <Image
+                src={selectedImage}
+                alt="Zoomed Image"
+                fill
+                className="object-contain rounded-xl shadow-xl"
+              />
+            </motion.div>
           </motion.div>
         )}
       </AnimatePresence>

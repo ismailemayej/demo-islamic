@@ -2,53 +2,58 @@
 
 import { useState } from "react";
 import { motion } from "framer-motion";
-import {
-  Card,
-  Image as HeroImage,
-  Button,
-  Skeleton,
-  Spinner,
-} from "@heroui/react";
+import { Card, Image as HeroImage, Button, Spinner } from "@heroui/react";
 import { useGetSection } from "@/app/dashboard/Hook/GetData";
 import { Heading } from "../Heading";
 import Background from "../background";
 import { OpenModal } from "../Modal";
-import Loader from "../loader";
 import { TBookSection } from "@/types/all-types";
 
 type BookSectionProps = {
   section: TBookSection | undefined;
 };
+
 export const BookSection: React.FC<BookSectionProps> = ({ section }) => {
   const { section: contactSection } = useGetSection("contactsection");
   const [selectedBook, setSelectedBook] = useState<any>(null);
+
   if (!section) {
-    return <Spinner size="lg" />;
+    return (
+      <div className="flex h-[50vh] items-center justify-center">
+        <Spinner size="lg" />
+      </div>
+    );
   }
+
   const heading = section?.heading || {
     title: "Our Books",
     subTitle: "Explore our collection of Islamic and modern books",
   };
+
   const books = section?.data || [];
   const phone = contactSection?.data?.phone;
 
   return (
     <Background id="books">
       <Heading title={heading.title} subTitle={heading.subTitle} />
+
       {/* 🔹 Books Grid */}
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-6 w-full">
         {books.length > 0 ? (
           books
-            ?.slice(0, 5)
-            ?.reverse()
-            ?.map((book: any) => (
+            .slice(0, 5)
+            .reverse()
+            .map((book: any) => (
               <motion.div
                 key={book._id || book.id}
                 className="flex justify-center"
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.5 }}
               >
                 <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-lg overflow-hidden flex flex-col items-center w-[200px]">
                   <div className="w-full h-[250px] relative">
-                    <img
+                    <HeroImage
                       src={book.bookimage}
                       alt={book.bookname}
                       className="w-full h-full object-cover rounded-lg"

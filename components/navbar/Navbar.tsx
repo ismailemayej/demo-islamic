@@ -1,4 +1,5 @@
 "use client";
+
 import { Menu, X } from "lucide-react";
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
@@ -7,26 +8,32 @@ import { Container } from "../container";
 import Link from "next/link";
 import { useGetSection } from "@/app/dashboard/Hook/GetData";
 
-import Loader from "../loader";
 export type NavLink = {
   name: string;
   url: string;
   id: number;
-  // children?: NavLink[];
 };
 
 export const Navbar: React.FC = () => {
   const { section, loading } = useGetSection("websitesection");
   const [isOpen, setIsOpen] = useState(false);
-  const NAV_LINKS: NavLink[] = section?.data?.NavLinks;
-  if (loading) return <Loader />;
+  const NAV_LINKS: NavLink[] = section?.data?.NavLinks ?? [];
+
+  if (loading) {
+    return (
+      <div className="flex h-[80vh] w-full items-center justify-center">
+        {/* Lightweight Tailwind Spinner */}
+        <div className="w-8 h-8 border-4 border-emerald-500 border-t-transparent rounded-full animate-spin mx-auto my-20"></div>
+      </div>
+    );
+  }
 
   return (
     <header
       className="sticky top-0 left-0 right-0 z-50
                  bg-white/70 dark:bg-gray-900/60
-                 backdrop-blur-md shadow-sm border-b border-gray-200 dark:border-gray-700
-                 transition-all duration-500 lg:px-0 px-2"
+                 backdrop-blur-sm shadow-sm border-b border-gray-200 dark:border-gray-700
+                 transition-colors duration-500 px-2 lg:px-0"
     >
       <Container>
         <nav className="container mx-auto py-3 flex justify-between items-center">
@@ -55,7 +62,11 @@ export const Navbar: React.FC = () => {
                   duration: 5,
                   ease: "linear",
                 }}
-                style={{ backgroundSize: "200% auto", display: "inline-block" }}
+                style={{
+                  backgroundSize: "200% auto",
+                  display: "inline-block",
+                  willChange: "background-position",
+                }}
               >
                 {section?.data?.sitetitle}
               </motion.span>
@@ -66,14 +77,13 @@ export const Navbar: React.FC = () => {
           <div className="hidden lg:flex items-center space-x-8">
             {NAV_LINKS.map((link: NavLink) => (
               <motion.a
-                key={link.name}
+                key={link.id}
                 href={link.url}
-                className="relative text-[17px] font-semibold text-gray-700 dark:text-gray-300 transition-all duration-300 flex items-center gap-1"
-                whileHover={{ scale: 1.05, y: -2 }}
+                className="relative text-[17px] font-semibold text-gray-700 dark:text-gray-300 transition-colors duration-300 flex items-center gap-1"
+                whileHover={{ scale: 1.05 }}
               >
-                {/* Text with underline hover */}
                 <span className="relative group cursor-pointer">
-                  <span className="transition-all duration-300 group-hover:text-amber-600 dark:group-hover:text-amber-400">
+                  <span className="transition-colors duration-300 group-hover:text-amber-600 dark:group-hover:text-amber-400">
                     {link.name}
                   </span>
                   <span
@@ -89,13 +99,13 @@ export const Navbar: React.FC = () => {
 
           {/* 🔹 Right Section */}
           <div className="flex items-center space-x-4">
-            <div className="hidden lg:flex items-center justify-center"></div>
             <ThemeSwitch />
 
             {/* 🔹 Mobile Menu Button */}
             <button
               className="lg:hidden text-gray-700 dark:text-gray-300 focus:outline-none"
               onClick={() => setIsOpen(!isOpen)}
+              aria-label="Toggle Menu"
             >
               {isOpen ? (
                 <X className="w-6 h-6 text-amber-600 dark:text-amber-400" />
@@ -106,6 +116,7 @@ export const Navbar: React.FC = () => {
           </div>
         </nav>
       </Container>
+
       {/* 🔹 Mobile Menu */}
       <AnimatePresence>
         {isOpen && (
@@ -114,15 +125,15 @@ export const Navbar: React.FC = () => {
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -20 }}
             transition={{ duration: 0.3 }}
-            className="lg:hidden absolute w-full
+            className="lg:hidden fixed top-0 left-0 w-full
                        bg-white/90 dark:bg-gray-800/90
-                       backdrop-blur-md border-t border-gray-200 dark:border-gray-700
-                       shadow-md transition-all duration-500"
+                       backdrop-blur-sm border-t border-gray-200 dark:border-gray-700
+                       shadow-md z-40"
           >
             <div className="flex flex-col py-4">
               {NAV_LINKS.map((link: NavLink) => (
                 <motion.a
-                  key={link.name}
+                  key={link.id}
                   href={link.url}
                   onClick={() => setIsOpen(false)}
                   whileHover={{ x: 5 }}
@@ -130,7 +141,7 @@ export const Navbar: React.FC = () => {
                              text-gray-700 dark:text-gray-300
                              hover:bg-amber-50/70 dark:hover:bg-gray-700/70
                              hover:text-amber-600 dark:hover:text-amber-400
-                             rounded-lg mx-3 transition-all duration-200"
+                             rounded-lg mx-3 transition-colors duration-200"
                 >
                   {link.name}
                 </motion.a>
