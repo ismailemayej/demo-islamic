@@ -1,8 +1,7 @@
-export const dynamic = "force-dynamic";
 import React from "react";
 import { AboutMe } from "./AboutMe";
 
-const AboutMePage = () => {
+const AboutPage = () => {
   return (
     <div>
       <AboutMe />
@@ -10,4 +9,4 @@ const AboutMePage = () => {
   );
 };
 
-export default AboutMePage;
+export default AboutPage;

@@ -14,7 +14,6 @@ export const HeroSection: React.FC<HeroProps> = ({ section }) => {
   if (!section) {
     return (
       <div className="flex h-[80vh] w-full items-center justify-center">
-        {/* Simple lightweight Tailwind loader */}
         <div className="w-12 h-12 border-4 border-emerald-500 border-t-transparent rounded-full animate-spin"></div>
       </div>
     );
@@ -24,7 +23,7 @@ export const HeroSection: React.FC<HeroProps> = ({ section }) => {
 
   return (
     <HeroBackground>
-      {/* Optimized Background Decorative Elements */}
+      {/* Background Decorations */}
       <div className="absolute top-0 left-0 w-full h-full overflow-hidden pointer-events-none z-0">
         <div className="absolute -top-24 -left-24 w-96 h-96 bg-emerald-500/20 rounded-full blur-60 mix-blend-screen" />
         <div className="absolute -bottom-24 -right-24 w-96 h-96 bg-blue-500/10 rounded-full blur-60 mix-blend-screen" />
@@ -32,7 +31,7 @@ export const HeroSection: React.FC<HeroProps> = ({ section }) => {
 
       <div className="container relative z-10 mx-auto px-6 lg:px-12 py-12 lg:py-20">
         <div className="flex flex-col-reverse lg:flex-row items-center justify-between gap-12 lg:gap-20">
-          {/* Left: Text Content */}
+          {/* Left Text Content */}
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
@@ -41,7 +40,6 @@ export const HeroSection: React.FC<HeroProps> = ({ section }) => {
             className="w-full lg:w-1/2 space-y-8 text-left"
           >
             <div className="space-y-4">
-              {/* Badge / Title */}
               <motion.div
                 initial={{ opacity: 0, x: -20 }}
                 whileInView={{ opacity: 1, x: 0 }}
@@ -53,7 +51,6 @@ export const HeroSection: React.FC<HeroProps> = ({ section }) => {
                 </h2>
               </motion.div>
 
-              {/* Main Heading with Gradient */}
               <h1 className="text-left font-sans line-clamp-2 text-4xl sm:text-5xl lg:text-6xl font-extrabold leading-tight tracking-tight text-gray-900 dark:text-white">
                 <span className="bg-gradient-to-r from-emerald-600 via-teal-500 to-cyan-500 bg-clip-text text-transparent">
                   {subTitle}
@@ -61,13 +58,11 @@ export const HeroSection: React.FC<HeroProps> = ({ section }) => {
               </h1>
             </div>
 
-            {/* Description */}
             <p className="text-left text-lg text-gray-600 dark:text-gray-300 leading-relaxed max-w-2xl mx-auto lg:mx-0 line-clamp-4">
               {section?.description ||
                 "This is the hero section description placeholder. Providing distinct, readable text helps the user engage immediately."}
             </p>
 
-            {/* Button Group */}
             <motion.div
               initial={{ opacity: 0, y: 10 }}
               whileInView={{ opacity: 1, y: 0 }}
@@ -81,17 +76,20 @@ export const HeroSection: React.FC<HeroProps> = ({ section }) => {
                   className="justify-start group relative px-8 py-3.5 bg-gradient-to-r from-emerald-600 to-teal-700 text-white font-bold rounded-full shadow-lg overflow-hidden transition-all hover:shadow-xl"
                 >
                   <span className="relative z-10 text-left">Our Books</span>
-                  {/* Button Shine Effect - hover only */}
+
                   <div className="absolute top-0 left-[-100%] h-full w-full bg-gradient-to-r from-transparent via-white/20 to-transparent group-hover:animate-[shine_1s_ease-in-out] pointer-events-none" />
                 </motion.button>
               </a>
             </motion.div>
           </motion.div>
 
-          {/* Right: Image Content */}
-          <div className="w-full lg:w-1/2 flex justify-center lg:justify-end relative">
-            {/* Decorative Background Blob behind image */}
-            <div className="absolute inset-0 bg-gradient-to-tr from-emerald-500/20 to-blue-500/20 rounded-full blur-2xl transform scale-90 lg:translate-x-10" />
+          {/* Right Image Content */}
+          <div className="w-full lg:w-1/2 flex justify-center lg:justify-end relative mt-10 lg:mt-0">
+            {/* Enlarged Background Glow */}
+            <div
+              className="absolute inset-0 bg-gradient-to-tr from-emerald-500/25 to-blue-500/25 
+              rounded-full blur-[90px] scale-110 lg:scale-125 lg:translate-x-10"
+            />
 
             <motion.div
               initial={{ opacity: 0, scale: 0.95, rotate: -1 }}
@@ -99,14 +97,16 @@ export const HeroSection: React.FC<HeroProps> = ({ section }) => {
               transition={{ duration: 0.8, type: "spring", bounce: 0.3 }}
               className="relative z-10"
             >
-              <div className="relative p-2 bg-white/10 backdrop-blur-sm border border-white/20 rounded-2xl shadow-2xl dark:bg-black/10">
+              <div className="relative backdrop-blur-sm border-white/20 rounded-2xl">
+                {/* Bigger Image */}
                 <Image
                   src={section?.image || profile}
                   alt={section?.title || "Hero Image"}
-                  width={500}
-                  height={500}
-                  className="w-full max-w-sm lg:max-w-md h-auto object-cover rounded-xl shadow-lg"
-                  priority // ensures this image is LCP
+                  width={1100}
+                  height={1100}
+                  className="w-full max-w-[650px] sm:max-w-[750px] lg:max-w-[900px] 
+                             h-auto object-cover rounded-2xl shadow-xl"
+                  priority
                 />
               </div>
             </motion.div>

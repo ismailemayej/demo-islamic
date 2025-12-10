@@ -37,7 +37,7 @@ export const TeamSection: React.FC<TeamSectionProps> = ({ section }) => {
         {teamMembers
           ?.slice()
           ?.reverse()
-          ?.slice(0, 6)
+          ?.slice(0, 6) // সর্বশেষ ৫ জন সদস্য
           ?.map((member: any) => (
             <motion.div key={member.id} className="w-full">
               <Card

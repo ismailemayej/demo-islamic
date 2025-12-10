@@ -3,7 +3,7 @@
 import { motion } from "framer-motion";
 import { Heading } from "../Heading";
 import Background from "../background";
-import Loader from "../loader";
+
 import { TestimonialItem, TTestimonialsSection } from "@/types/all-types";
 import { Spinner } from "@heroui/spinner";
 

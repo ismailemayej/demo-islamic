@@ -17,6 +17,7 @@ interface ReusableModalProps {
   onClose: () => void;
   children: React.ReactNode;
   size?: "sm" | "md" | "lg" | "xl";
+  footerButtons?: React.ReactNode; // Optional custom footer buttons
 }
 
 export const OpenModal: React.FC<ReusableModalProps> = ({
@@ -25,6 +26,7 @@ export const OpenModal: React.FC<ReusableModalProps> = ({
   onClose,
   children,
   size = "md",
+  footerButtons,
 }) => {
   return (
     <Modal
@@ -32,34 +34,35 @@ export const OpenModal: React.FC<ReusableModalProps> = ({
       onOpenChange={onClose}
       size={size}
       scrollBehavior="inside"
-      classNames={{
-        base: "max-h-[92vh]",
-      }}
+      classNames={{ base: "max-h-[92vh]" }}
     >
-      <ModalContent
-        className="bg-gradient-to-br 
-          from-blue-50 via-cyan-50 to-blue-100
-          dark:from-slate-900 dark:via-slate-800 dark:to-slate-900"
-      >
+      <ModalContent className="bg-gradient-to-br from-blue-50 via-cyan-50 to-blue-100 dark:from-slate-900 dark:via-slate-800 dark:to-slate-900">
         {() => (
           <>
-            {/* Header - সবসময় পুরো দেখা যাবে */}
+            {/* Header */}
             <ModalHeader className="px-4 pt-4 pb-2">
               <h3 className="text-xl font-bold bangla dark:text-white whitespace-normal">
                 {title}
               </h3>
             </ModalHeader>
 
-            {/* ScrollArea শুধুমাত্র Body অংশ */}
+            {/* Body with Scroll */}
             <ModalBody className="px-2">
-              <ScrollShadow hideScrollBar={false} className="max-h-[65vh] pr-1">
+              <ScrollShadow
+                hideScrollBar={false}
+                className="max-h-[65vh] pr-1 sm:max-h-[70vh] md:max-h-[75vh]"
+              >
                 {children}
               </ScrollShadow>
             </ModalBody>
 
             {/* Footer */}
-            <ModalFooter className="px-4">
-              <button onClick={onClose}>Close</button>
+            <ModalFooter className="px-4 flex justify-end gap-2">
+              {footerButtons || (
+                <Button color="primary" onClick={onClose}>
+                  Close
+                </Button>
+              )}
             </ModalFooter>
           </>
         )}

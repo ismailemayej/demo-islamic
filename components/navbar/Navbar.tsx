@@ -7,6 +7,7 @@ import { ThemeSwitch } from "../theme-switch";
 import { Container } from "../container";
 import Link from "next/link";
 import { useGetSection } from "@/app/dashboard/Hook/GetData";
+import { Skeleton2 } from "../NavbarSkeliter";
 
 export type NavLink = {
   name: string;
@@ -20,12 +21,7 @@ export const Navbar: React.FC = () => {
   const NAV_LINKS: NavLink[] = section?.data?.NavLinks ?? [];
 
   if (loading) {
-    return (
-      <div className="flex h-[80vh] w-full items-center justify-center">
-        {/* Lightweight Tailwind Spinner */}
-        <div className="w-8 h-8 border-4 border-emerald-500 border-t-transparent rounded-full animate-spin mx-auto my-20"></div>
-      </div>
-    );
+    return <Skeleton2 />;
   }
 
   return (

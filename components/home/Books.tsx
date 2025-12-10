@@ -14,7 +14,6 @@ type BookSectionProps = {
 };
 
 export const BookSection: React.FC<BookSectionProps> = ({ section }) => {
-  const { section: contactSection } = useGetSection("contactsection");
   const [selectedBook, setSelectedBook] = useState<any>(null);
 
   if (!section) {
@@ -31,7 +30,6 @@ export const BookSection: React.FC<BookSectionProps> = ({ section }) => {
   };
 
   const books = section?.data || [];
-  const phone = contactSection?.data?.phone;
 
   return (
     <Background id="books">
@@ -113,18 +111,6 @@ export const BookSection: React.FC<BookSectionProps> = ({ section }) => {
                     "I am a passionate <strong>Islamic scholar</strong> dedicated to spreading the message of Islam with wisdom and understanding.",
                 }}
               ></p>
-              {phone && (
-                <Button
-                  as="a"
-                  href={`https://wa.me/${phone}`}
-                  target="_blank"
-                  color="success"
-                  variant="solid"
-                  fullWidth
-                >
-                  WhatsApp এ যোগাযোগ করুন
-                </Button>
-              )}
             </div>
           </div>
         </OpenModal>
