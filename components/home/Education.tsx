@@ -32,7 +32,7 @@ export const EducationSection: React.FC<EducationProps> = ({ section }) => {
           ?.map((edu: EducationItem, index: number) => (
             <motion.div
               key={index}
-              className="relative p-6 bg-white dark:bg-gray-800 shadow-md dark:shadow-gray-700 hover:shadow-lg rounded-2xl border border-amber-100 dark:border-gray-700 transition-colors duration-500"
+              className="relative p-6 bg-white dark:bg-gray-800 shadow-md dark:shadow-gray-700 hover:shadow-lg rounded-2xl border border-amber-100 dark:border-gray-700"
             >
               <h3 className="bangla lg:text-xl text-md font-semibold text-amber-800 dark:text-amber-400">
                 {edu?.examName}

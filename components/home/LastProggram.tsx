@@ -113,8 +113,6 @@ export const RecentProgramsSection: React.FC<RecentProgramsProps> = ({
                       ? "bg-emerald-600 text-white dark:bg-emerald-500"
                       : "bg-gray-400 text-white dark:bg-gray-600"
                   }`}
-                  whileHover={{ scale: 1.05 }}
-                  transition={{ type: "spring", stiffness: 200 }}
                 >
                   {isUpcoming ? (
                     <>

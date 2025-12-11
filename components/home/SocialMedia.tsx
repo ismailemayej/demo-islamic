@@ -27,8 +27,6 @@ const ThreeDCard: React.FC<React.PropsWithChildren<{ href: string }>> = ({
     href={href}
     target="_blank"
     rel="noopener noreferrer"
-    whileHover={{ scale: 1.07, rotateX: -5, rotateY: 5 }}
-    whileTap={{ scale: 0.95, rotateX: 0, rotateY: 0 }}
     className="flex flex-col items-center justify-center p-6 rounded-3xl bg-white/70 dark:bg-gray-800/50
       backdrop-blur-md shadow-lg hover:shadow-2xl transition-transform duration-300 perspective-1000"
   >

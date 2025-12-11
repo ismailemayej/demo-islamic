@@ -42,7 +42,7 @@ export const AboutSection: React.FC<AboutProps> = ({ section }) => {
         {/* Left Side: 3D Profile Image */}
 
         <motion.div className="w-full lg:w-1/3 flex justify-center lg:justify-start">
-          <div className="relative group  overflow-hidden w-80 sm:w-72 md:w-80  transition-all duration-500">
+          <div className="relative group  overflow-hidden w-80 sm:w-72 md:w-80  ">
             {/* Optimized Next.js Image */}
             <motion.div className="w-full h-auto">
               <Image
@@ -50,12 +50,12 @@ export const AboutSection: React.FC<AboutProps> = ({ section }) => {
                 alt={section?.data?.title || "Profile Image"}
                 width={400}
                 height={400}
-                className="w-full h-auto object-cover group-hover:scale-110 transition-transform duration-700"
+                className="w-full h-auto object-cover group-hover:scale-110 "
               />
             </motion.div>
 
             {/* Glow Effect */}
-            <motion.div className="absolute inset-0 rounded-3xl bg-gradient-to-t from-emerald-500/30 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-700" />
+            <motion.div className="absolute inset-0 rounded-3xl bg-gradient-to-t from-emerald-500/30 to-transparent opacity-0 group-hover:opacity-100 " />
           </div>
         </motion.div>
         {/* Right Side: 3D Content with Icons */}

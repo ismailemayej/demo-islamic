@@ -29,20 +29,9 @@ export const HeroSection: React.FC<HeroProps> = ({ section }) => {
       <div className="container relative z-10 mx-auto px-6 lg:px-12 py-12 lg:py-20">
         <div className="flex flex-col-reverse lg:flex-row items-center justify-between gap-12 lg:gap-20">
           {/* Left Text Content */}
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.8, ease: "easeOut" }}
-            className="w-full lg:w-1/2 space-y-8 text-left"
-          >
+          <motion.div className="w-full lg:w-1/2 space-y-8 text-left">
             <div className="space-y-4">
-              <motion.div
-                initial={{ opacity: 0, x: -20 }}
-                whileInView={{ opacity: 1, x: 0 }}
-                transition={{ delay: 0.2, duration: 0.6 }}
-                className="font-sans inline-block px-4 py-1.5 rounded-full border border-emerald-500/30 bg-emerald-500/10 backdrop-blur-md"
-              >
+              <motion.div className="font-sans inline-block px-4 py-1.5 rounded-full border border-emerald-500/30 bg-emerald-500/10 backdrop-blur-md">
                 <h2 className="text-sm font-bold tracking-widest text-emerald-700 dark:text-emerald-400 uppercase">
                   {section?.title || "Hero Title"}
                 </h2>
@@ -60,18 +49,9 @@ export const HeroSection: React.FC<HeroProps> = ({ section }) => {
                 "This is the hero section description placeholder. Providing distinct, readable text helps the user engage immediately."}
             </p>
 
-            <motion.div
-              initial={{ opacity: 0, y: 10 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.4, duration: 0.6 }}
-              className="pt-2"
-            >
+            <motion.div className="pt-2">
               <a href="#books">
-                <motion.button
-                  whileHover={{ scale: 1.05 }}
-                  whileTap={{ scale: 0.95 }}
-                  className="justify-start group relative px-8 py-3.5 bg-gradient-to-r from-emerald-600 to-teal-700 text-white font-bold rounded-full shadow-lg overflow-hidden transition-all hover:shadow-xl"
-                >
+                <motion.button className="justify-start group relative px-8 py-3.5 bg-gradient-to-r from-emerald-600 to-teal-700 text-white font-bold rounded-full shadow-lg overflow-hidden hover:shadow-xl">
                   <span className="relative z-10 text-left">Our Books</span>
 
                   <div className="absolute top-0 left-[-100%] h-full w-full bg-gradient-to-r from-transparent via-white/20 to-transparent group-hover:animate-[shine_1s_ease-in-out] pointer-events-none" />
@@ -88,12 +68,7 @@ export const HeroSection: React.FC<HeroProps> = ({ section }) => {
               rounded-full blur-[90px] scale-110 lg:scale-125 lg:translate-x-10"
             />
 
-            <motion.div
-              initial={{ opacity: 0, scale: 0.95, rotate: -1 }}
-              whileInView={{ opacity: 1, scale: 1, rotate: 0 }}
-              transition={{ duration: 0.8, type: "spring", bounce: 0.3 }}
-              className="relative z-10"
-            >
+            <motion.div className="relative z-10">
               <div className="relative backdrop-blur-sm items-center border-white/20 rounded-2xl">
                 {/* Bigger Image */}
                 <Image

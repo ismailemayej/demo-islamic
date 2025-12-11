@@ -41,8 +41,6 @@ export const TeamSection: React.FC<TeamSectionProps> = ({ section }) => {
           ?.map((member: any) => (
             <motion.div key={member.id} className="w-full">
               <Card
-                isHoverable
-                isPressable
                 className="flex flex-col items-center shadow-xl 
             bg-white/80 dark:bg-gray-800/50 border border-amber-100 dark:border-gray-700 
             backdrop-blur-lg rounded-2xl transition-all duration-300 w-full"

@@ -38,13 +38,13 @@ export const AchievementsSection: React.FC<AchievementProps> = ({
             .map((achievement: AchievementItem) => (
               <motion.div
                 key={achievement.id}
-                className="bg-white dark:bg-gray-800 rounded-3xl shadow-xl p-6 flex flex-col items-center justify-center hover:shadow-2xl transition-shadow duration-300"
+                className="bg-white dark:bg-gray-800 rounded-3xl shadow-xl p-6 flex flex-col items-center justify-center hover:shadow-2xl "
               >
                 <div className="text-5xl mb-4">{achievement.icon}</div>
-                <h3 className="text-3xl font-bold text-emerald-700 dark:text-emerald-400 mb-2 transition-colors duration-500">
+                <h3 className="text-3xl font-bold text-emerald-700 dark:text-emerald-400 mb-2">
                   {achievement.count}+
                 </h3>
-                <p className="line-clamp-2 text-gray-700 dark:text-gray-300 text-center transition-colors duration-500">
+                <p className="line-clamp-2 text-gray-700 dark:text-gray-300 text-center ">
                   {achievement.title}
                 </p>
               </motion.div>

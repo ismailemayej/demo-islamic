@@ -91,7 +91,6 @@ export const YouTubeVideosSection: React.FC<YouTubeVideosSectionProps> = ({
               key={video.url + index} // unique key
               className="relative cursor-pointer bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-2xl shadow-xl overflow-hidden transition-transform duration-300"
               onClick={() => setActiveVideo(video)}
-              whileHover={{ scale: 1.03 }}
             >
               {/* Thumbnail */}
               <div className="relative w-full h-44 overflow-hidden rounded-2xl">
@@ -99,8 +98,6 @@ export const YouTubeVideosSection: React.FC<YouTubeVideosSectionProps> = ({
                   src={thumbnail}
                   alt={video.title}
                   className="w-full h-full object-cover"
-                  whileHover={{ scale: 1.1 }}
-                  transition={{ duration: 0.4 }}
                   loading="lazy" // lazy load for optimization
                 />
                 <div className="absolute inset-0 bg-black/30 flex items-center justify-center opacity-0 hover:opacity-100 transition-opacity duration-300">
@@ -144,18 +141,8 @@ export const YouTubeVideosSection: React.FC<YouTubeVideosSectionProps> = ({
       {/* Video Modal */}
       <AnimatePresence>
         {activeVideo && (
-          <motion.div
-            className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 p-4"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-          >
-            <motion.div
-              initial={{ scale: 0.6, rotateX: -10 }}
-              animate={{ scale: 1, rotateX: 0 }}
-              transition={{ duration: 0.5, type: "spring" }}
-              className="relative w-full max-w-4xl rounded-2xl overflow-hidden shadow-2xl"
-            >
+          <motion.div className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 p-4">
+            <motion.div className="relative w-full max-w-4xl rounded-2xl overflow-hidden shadow-2xl">
               <button
                 className="absolute top-2 right-3 z-50 text-white text-3xl hover:scale-110 transition-transform"
                 onClick={() => setActiveVideo(null)}

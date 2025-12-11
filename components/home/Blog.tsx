@@ -34,11 +34,11 @@ export const ArticlesSection: React.FC<ArticleProps> = ({ section }) => {
           ?.map((article: ArticleItem, index: number) => (
             <motion.div
               key={article.id}
-              className="bg-white dark:bg-gray-800 rounded-3xl shadow-xl p-6 hover:shadow-2xl transition-shadow duration-300 flex flex-col justify-between cursor-pointer"
+              className="bg-white dark:bg-gray-800 rounded-3xl shadow-xl p-6 hover:shadow-2xl flex flex-col justify-between cursor-pointer"
               onClick={() => setActiveArticle(article)}
             >
               <div className="mb-4">
-                <h3 className="bangla lg:text-2xl text-lg font-bold text-emerald-700 dark:text-emerald-400 mb-2 transition-colors duration-500">
+                <h3 className="bangla lg:text-2xl text-lg font-bold text-emerald-700 dark:text-emerald-400 mb-2">
                   {article.blogtitle}
                 </h3>
                 <p className="bangla text-gray-600 dark:text-gray-300 text-sm">
@@ -48,7 +48,7 @@ export const ArticlesSection: React.FC<ArticleProps> = ({ section }) => {
                   {article.blogwriter}
                 </p>
                 <p
-                  className="bnagla line-clamp-3 text-gray-700 dark:text-gray-300 transition-colors duration-500"
+                  className="bnagla line-clamp-3 text-gray-700 dark:text-gray-300 "
                   dangerouslySetInnerHTML={{
                     __html:
                       article.blogdescription ||
@@ -56,7 +56,7 @@ export const ArticlesSection: React.FC<ArticleProps> = ({ section }) => {
                   }}
                 ></p>
               </div>
-              <p className="text-gray-500 dark:text-gray-400 text-sm transition-colors duration-500">
+              <p className="text-gray-500 dark:text-gray-400 text-sm ">
                 {article.date}
               </p>
             </motion.div>

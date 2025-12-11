@@ -33,7 +33,7 @@ export const CertificateSection: React.FC<CertificateProps> = ({ section }) => {
           ?.map((cert: CertificateItem, index: number) => (
             <motion.div
               key={index} // index fallback
-              className="bg-emerald-50 dark:bg-gray-800 rounded-3xl shadow-lg hover:shadow-2xl transition-shadow duration-300 p-6 relative overflow-hidden"
+              className="bg-emerald-50 dark:bg-gray-800 rounded-3xl shadow-lg hover:shadow-2xl p-6 relative overflow-hidden"
             >
               {/* Degree */}
               {cert.degree && (
