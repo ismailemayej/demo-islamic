@@ -2,8 +2,8 @@
 
 import { useState } from "react";
 import { motion } from "framer-motion";
-import { Card, Image as HeroImage, Button, Spinner } from "@heroui/react";
-import { useGetSection } from "@/app/dashboard/Hook/GetData";
+import { Image as HeroImage, Spinner } from "@heroui/react";
+
 import { Heading } from "../Heading";
 import Background from "../background";
 import { OpenModal } from "../Modal";
@@ -44,17 +44,14 @@ export const BookSection: React.FC<BookSectionProps> = ({ section }) => {
             .map((book: any) => (
               <motion.div
                 key={book._id || book.id}
-                className="flex justify-center"
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.5 }}
+                className="flex justify-center pt-0"
               >
-                <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-lg overflow-hidden flex flex-col items-center w-[200px]">
+                <div className="bg-white dark:bg-gray-900 rounded-2xl shadow-lg overflow-hidden flex flex-col items-center w-[200px]">
                   <div className="w-full h-[250px] relative">
                     <HeroImage
                       src={book.bookimage}
                       alt={book.bookname}
-                      className="w-full h-full object-cover rounded-lg"
+                      className="w-[220px] h-[250px] object-cover rounded-xl mx-auto "
                     />
                   </div>
                   <div className="p-4 flex flex-col items-center text-center">

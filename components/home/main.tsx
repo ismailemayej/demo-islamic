@@ -1,9 +1,7 @@
 "use client";
-
 import dynamic from "next/dynamic";
 import { WebsiteData } from "@/types/allData";
 import Loader from "../loader";
-
 // Dynamic imports for sections
 const HeroSection = dynamic(
   () => import("./HeroSection").then((mod) => mod.HeroSection),

@@ -40,6 +40,7 @@ export const OrganizationSectionDashboard = () => {
   const [isEditingHeading, setIsEditingHeading] = useState(false);
   const [saving, setSaving] = useState(false);
   const [uploading, setUploading] = useState(false);
+  const [selectedOrg, setSelectedOrg] = useState<any>(null);
 
   useEffect(() => {
     if (section) {
@@ -206,12 +207,7 @@ export const OrganizationSectionDashboard = () => {
 
         <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
           {formData.data.map((org, i) => (
-            <motion.div
-              key={org.id}
-              initial={{ opacity: 0, y: 30 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6, delay: i * 0.1 }}
-            >
+            <motion.div key={org.id}>
               <Card className="relative shadow-lg bg-white dark:bg-gray-800">
                 <div className="absolute top-3 left-3 bg-amber-100 p-2 rounded-full">
                   <Building2 className="text-amber-600" size={22} />
@@ -224,9 +220,11 @@ export const OrganizationSectionDashboard = () => {
                   />
                 )}
                 <CardBody className="text-center py-4">
-                  <h4 className="text-lg font-semibold">
-                    {org.name || "Untitled"}
-                  </h4>
+                  <button onClick={() => setSelectedOrg(org)}>
+                    <h4 className="text-lg font-semibold">
+                      {org.name || "Untitled"}
+                    </h4>
+                  </button>
                   <p>পজিশন: {org.possition}</p>
                   <p>ঠিকানা: {org.address}</p>
 
@@ -243,6 +241,33 @@ export const OrganizationSectionDashboard = () => {
             </motion.div>
           ))}
         </div>
+        {/* preview Modal */}
+        {selectedOrg && (
+          <OpenModal
+            title={selectedOrg.name}
+            isOpen={!!selectedOrg}
+            onClose={() => setSelectedOrg(null)}
+          >
+            <motion.div key={selectedOrg.id}>
+              <Card className="relative shadow-lg bg-white dark:bg-gray-800">
+                <div className="absolute top-3 left-3 bg-amber-100 p-2 rounded-full">
+                  <Building2 className="text-amber-600" size={22} />
+                </div>
+                {selectedOrg.img && (
+                  <img
+                    src={selectedOrg.img}
+                    alt={selectedOrg.name}
+                    className="w-full h-40 object-cover rounded-t-2xl cursor-pointer"
+                  />
+                )}
+                <CardBody className="text-center py-4">
+                  <p>পজিশন: {selectedOrg.possition}</p>
+                  <p>ঠিকানা: {selectedOrg.address}</p>
+                </CardBody>
+              </Card>
+            </motion.div>
+          </OpenModal>
+        )}
 
         {editOrgModal && (
           <OpenModal

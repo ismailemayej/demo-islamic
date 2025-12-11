@@ -61,11 +61,7 @@ export const AboutSection: React.FC<AboutProps> = ({ section }) => {
         {/* Right Side: 3D Content with Icons */}
         <motion.div className="w-full lg:w-2/3 space-y-6 px-2">
           {/* Title with 3D Icon */}
-          <motion.div
-            className="flex items-center gap-3"
-            whileHover={{ x: 5 }}
-            transition={{ type: "spring", stiffness: 200 }}
-          >
+          <motion.div className="flex items-center gap-3">
             <User2 className="w-10 h-10 lg:block hidden text-emerald-600 dark:text-emerald-400 drop-shadow-lg" />
             <h1 className="text-3xl font-bold text-gray-800 dark:text-gray-200 leading-relaxed">
               {section?.data?.title || "আমার সম্পর্কে"}
@@ -73,11 +69,7 @@ export const AboutSection: React.FC<AboutProps> = ({ section }) => {
           </motion.div>
 
           {/* Description with File Icon */}
-          <motion.div
-            className="flex items-start gap-3"
-            whileHover={{ x: 5 }}
-            transition={{ type: "spring", stiffness: 200 }}
-          >
+          <motion.div className="flex items-start gap-3">
             <FileText className="w-9 h-9 lg:block hidden text-amber-500 drop-shadow-md mt-1" />
             <p
               className="text-lg text-gray-700 dark:text-gray-300 leading-relaxed  line-clamp-5"
@@ -90,11 +82,7 @@ export const AboutSection: React.FC<AboutProps> = ({ section }) => {
           </motion.div>
 
           {/* More Info Button with 3D Hover */}
-          <motion.div
-            whileHover={{ scale: 1.05, rotateX: 8 }}
-            whileTap={{ scale: 0.95 }}
-            transition={{ type: "spring", stiffness: 150 }}
-          >
+          <motion.div whileTap={{ scale: 0.95 }}>
             <Link href="/about-me">
               <Button
                 size="lg"

@@ -51,6 +51,7 @@ export const ServiceSectionDashboard: React.FC = () => {
   const [iconQuery, setIconQuery] = useState("");
   const [showSuggestions, setShowSuggestions] = useState(false);
   const [isEditingHeading, setIsEditingHeading] = useState(false);
+  const [service, setService] = useState<any>(null);
 
   useEffect(() => {
     if (section) {
@@ -224,9 +225,6 @@ export const ServiceSectionDashboard: React.FC = () => {
         {formData.data?.reverse()?.map((service: ServiceItem) => (
           <motion.div
             key={service.id}
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6 }}
             className="bg-white dark:bg-gray-800 rounded-3xl shadow-lg p-6 hover:shadow-2xl transition-all duration-300 flex flex-col justify-between relative"
           >
             <div className="flex flex-col items-center text-center space-y-4">
@@ -236,7 +234,7 @@ export const ServiceSectionDashboard: React.FC = () => {
 
               <h3
                 className="text-xl font-semibold cursor-pointer hover:text-emerald-500 transition"
-                onClick={() => openDetailsModal(service)}
+                onClick={() => setService(service)}
               >
                 {service.title}
               </h3>
@@ -263,7 +261,37 @@ export const ServiceSectionDashboard: React.FC = () => {
           </motion.div>
         ))}
       </div>
+      {/* preview Modal */}
+      {service && (
+        <OpenModal
+          title={service.title}
+          isOpen={!!service}
+          onClose={() => setService(null)}
+          size="lg"
+        >
+          <motion.div
+            key={service.id}
+            className="bg-white dark:bg-gray-800 rounded-3xl shadow-lg p-6 hover:shadow-2xl transition-all duration-300 flex flex-col justify-between relative"
+          >
+            <div className="flex flex-col items-center text-center space-y-4">
+              <div className="text-5xl text-emerald-600 dark:text-emerald-400 mb-2">
+                <i className={`fas ${service.icon}`}></i>
+              </div>
 
+              <h3
+                className="text-xl font-semibold cursor-pointer hover:text-emerald-500 transition"
+                onClick={() => openDetailsModal(service)}
+              >
+                {service.title}
+              </h3>
+
+              <p className="text-gray-600 dark:text-gray-300 text-sm">
+                {service.shortDescription}
+              </p>
+            </div>
+          </motion.div>
+        </OpenModal>
+      )}
       {selectedService && (
         <OpenModal
           title={selectedService.title}

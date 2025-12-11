@@ -39,10 +39,6 @@ export const AchievementsSection: React.FC<AchievementProps> = ({
               <motion.div
                 key={achievement.id}
                 className="bg-white dark:bg-gray-800 rounded-3xl shadow-xl p-6 flex flex-col items-center justify-center hover:shadow-2xl transition-shadow duration-300"
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                exit={{ opacity: 0, y: 20 }}
-                transition={{ duration: 0.5, ease: "easeOut" }}
               >
                 <div className="text-5xl mb-4">{achievement.icon}</div>
                 <h3 className="text-3xl font-bold text-emerald-700 dark:text-emerald-400 mb-2 transition-colors duration-500">
