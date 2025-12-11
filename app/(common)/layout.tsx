@@ -1,6 +1,6 @@
 import { Navbar } from "@/components/navbar/Navbar";
 import { Container } from "@/components/container";
-import TopAdBanner from "@/components/advesment";
+
 import { Footer } from "@/components/footer/Footer";
 
 export default function HomeLayout({
@@ -10,7 +10,6 @@ export default function HomeLayout({
 }) {
   return (
     <div className="relative flex flex-col h-screen overflow-x-hidden font-sans">
-      <TopAdBanner />
       <Navbar />
       <Container>{children}</Container>
       <Footer />

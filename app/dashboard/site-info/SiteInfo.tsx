@@ -255,234 +255,230 @@ export default function SiteInfo() {
         </div>
 
         {/* Content Area */}
-        <div className="p-4 sm:p-6">
-          {/* Preview Mode */}
-          {!isEditing && (
-            <div className="space-y-8">
-              {/* Owner/Profile Info */}
-              <div className="flex flex-col lg:flex-row items-start gap-8 p-6 bg-indigo-50 dark:bg-gray-700 rounded-xl shadow-inner">
-                {/* Image */}
-                <div className="flex-shrink-0">
-                  {formData.profileImage ? (
-                    <Image
-                      src={formData.profileImage}
-                      alt="Profile"
-                      width={160}
-                      height={160}
-                      className="rounded-full object-cover shadow-xl border-4 border-indigo-500 p-1"
-                    />
-                  ) : (
-                    <div className="w-40 h-40 bg-gray-200 dark:bg-gray-600 rounded-full flex items-center justify-center text-gray-500 text-sm font-medium">
-                      No Image
-                    </div>
-                  )}
-                </div>
 
-                {/* Text Info */}
-                <div className="space-y-2">
-                  <h3 className="bangla text-4xl font-bold text-gray-800 dark:text-white">
-                    {formData.ownerName || "Website Owner Name"}
-                  </h3>
-                  <p className="bangla text-lg text-gray-600 dark:text-gray-300 max-w-2xl">
-                    {formData.description ||
-                      "Website description will appear here."}
-                  </p>
-                  <p className="text-md text-gray-500 dark:text-gray-400">
-                    Keywords: {formData.keywords || "No keywords set."}
-                  </p>
-                </div>
-              </div>
-
-              {/* Menu Links Preview */}
-              <div className="border-t pt-6 dark:border-gray-700">
-                <h4 className="text-xl font-semibold text-gray-700 dark:text-gray-200 mb-3">
-                  Navigation Menu Links ({formData.NavLinks.length})
-                </h4>
-                <div className="flex flex-wrap gap-3">
-                  {formData.NavLinks.map((link) => (
-                    <span
-                      key={link.id}
-                      className="bg-indigo-600 text-white px-4 py-2 rounded-full font-medium text-sm transition-transform hover:scale-[1.02]"
-                      title={`URL: ${link.url}`}
-                    >
-                      {link.name}
-                    </span>
-                  ))}
-                </div>
-              </div>
-            </div>
-          )}
-
-          {/* Edit Mode */}
-          {isEditing && (
-            <div className="space-y-8">
-              {/* General Info Card */}
-              <div className="p-6 bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700 shadow-md">
-                <h3 className="text-2xl font-semibold mb-4 text-indigo-700 dark:text-indigo-400">
-                  General Website Information
-                </h3>
-                <div className="space-y-4">
-                  <Input
-                    size="md"
-                    label="Website Title"
-                    value={formData.sitetitle}
-                    onChange={(e) => handleChange("sitetitle", e.target.value)}
-                    placeholder="Enter the main title for the website"
-                  />
-                  <Input
-                    size="md"
-                    label="Website Owner Name"
-                    value={formData.ownerName}
-                    onChange={(e) => handleChange("ownerName", e.target.value)}
-                    placeholder="e.g., Mizanur Rahman Azhari"
-                  />
-                  <Textarea
-                    label="Website Description (Meta Description)"
-                    value={formData.description}
-                    onChange={(e) =>
-                      handleChange("description", e.target.value)
-                    }
-                    minRows={4}
-                    placeholder="A concise summary of the website content for search engines."
-                  />
-                  <Textarea
-                    label="Website Keywords (SEO)"
-                    value={formData.keywords}
-                    onChange={(e) => handleChange("keywords", e.target.value)}
-                    minRows={1}
-                    placeholder="Comma separated list of keywords (e.g., islam, lecture, bangla)"
-                  />
-                </div>
-              </div>
-
-              {/* Profile Image Card */}
-              <div className="p-6 bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700 shadow-md">
-                <h3 className="text-2xl font-semibold mb-4 text-indigo-700 dark:text-indigo-400">
-                  Profile Image Upload
-                </h3>
-
+        {!isEditing && (
+          <div className="space-y-8 lg:p-4">
+            {/* Owner/Profile Info */}
+            <div className="flex flex-col lg:flex-row items-start gap-8 p-2   shadow-inner">
+              {/* Image */}
+              <div className="flex-shrink-0">
                 {formData.profileImage ? (
-                  <div className="flex items-center space-x-4">
-                    <div className="relative w-32 h-32 rounded-full overflow-hidden border-4 border-indigo-500 shadow-xl flex-shrink-0">
-                      <Image
-                        src={formData.profileImage}
-                        alt="Profile"
-                        layout="fill"
-                        objectFit="cover"
-                      />
-                    </div>
-                    <Button
-                      onClick={handleImageDelete}
-                      color="danger"
-                      isLoading={uploading}
-                      className="font-semibold"
-                    >
-                      <BsTrash3Fill className="w-4 h-4 mr-1" /> Delete Current
-                      Image
-                    </Button>
-                  </div>
+                  <Image
+                    src={formData.profileImage}
+                    alt="Profile"
+                    width={160}
+                    height={160}
+                    className="rounded-full object-cover text-center shadow-xl border-4 border-indigo-500 p-1"
+                  />
                 ) : (
-                  <div className="border-2 border-dashed border-gray-400 rounded-xl p-6 text-center hover:border-indigo-600 transition duration-300 bg-gray-50 dark:bg-gray-700">
-                    <label className="block text-lg font-medium text-gray-700 dark:text-gray-200 mb-2">
-                      Upload New Profile icon image
-                    </label>
-                    <Input
-                      size="lg"
-                      type="file"
-                      accept="image/*"
-                      onChange={handleImageUpload}
-                      disabled={uploading}
-                      className="cursor-pointer"
-                    />
-                    <p className="text-gray-500 mt-2 text-sm">
-                      PNG, JPG, or GIF (Max 5MB). Better upload icon format.
-                    </p>
+                  <div className="w-40 h-40 bg-gray-200 dark:bg-gray-600 rounded-full flex items-center justify-center text-gray-500 text-sm font-medium">
+                    No Image
                   </div>
                 )}
               </div>
 
-              {/* Menu Links Editor Card */}
-              <div className="p-6 bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700 shadow-md">
-                <div className="flex items-center justify-between mb-4">
-                  <h3 className="text-2xl font-semibold text-indigo-700 dark:text-indigo-400">
-                    Navigation Menu Links Editor
-                  </h3>
+              {/* Text Info */}
+              <div className="space-y-2">
+                <h3 className="bangla text-3xl font-bold text-gray-800 dark:text-white">
+                  {formData.ownerName || "Website Owner Name"}
+                </h3>
+                <p className="bangla text-lg text-gray-600 dark:text-gray-300 max-w-2xl">
+                  {formData.description ||
+                    "Website description will appear here."}
+                </p>
+                <p className="text-md text-gray-500 dark:text-gray-400">
+                  Keywords: {formData.keywords || "No keywords set."}
+                </p>
+              </div>
+            </div>
+
+            {/* Menu Links Preview */}
+            <div className="border-t p-3 dark:border-gray-700">
+              <h4 className="text-xl font-semibold text-gray-700 dark:text-gray-200 mb-3">
+                Navigation Menu Links ({formData.NavLinks.length})
+              </h4>
+              <div className="flex flex-wrap gap-3">
+                {formData.NavLinks.map((link) => (
+                  <span
+                    key={link.id}
+                    className="bg-indigo-600 text-white px-4 py-2 rounded-full font-medium text-sm transition-transform hover:scale-[1.02]"
+                    title={`URL: ${link.url}`}
+                  >
+                    {link.name}
+                  </span>
+                ))}
+              </div>
+            </div>
+          </div>
+        )}
+
+        {/* Edit Mode */}
+        {isEditing && (
+          <div className="space-y-8">
+            {/* General Info Card */}
+            <div className="p-6 bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700 shadow-md">
+              <h3 className="text-2xl font-semibold mb-4 text-indigo-700 dark:text-indigo-400">
+                General Website Information
+              </h3>
+              <div className="space-y-4">
+                <Input
+                  size="md"
+                  label="Website Title"
+                  value={formData.sitetitle}
+                  onChange={(e) => handleChange("sitetitle", e.target.value)}
+                  placeholder="Enter the main title for the website"
+                />
+                <Input
+                  size="md"
+                  label="Website Owner Name"
+                  value={formData.ownerName}
+                  onChange={(e) => handleChange("ownerName", e.target.value)}
+                  placeholder="e.g., Mizanur Rahman Azhari"
+                />
+                <Textarea
+                  label="Website Description (Meta Description)"
+                  value={formData.description}
+                  onChange={(e) => handleChange("description", e.target.value)}
+                  minRows={4}
+                  placeholder="A concise summary of the website content for search engines."
+                />
+                <Textarea
+                  label="Website Keywords (SEO)"
+                  value={formData.keywords}
+                  onChange={(e) => handleChange("keywords", e.target.value)}
+                  minRows={1}
+                  placeholder="Comma separated list of keywords (e.g., islam, lecture, bangla)"
+                />
+              </div>
+            </div>
+
+            {/* Profile Image Card */}
+            <div className="p-2 bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700 shadow-md">
+              <h3 className="text-2xl font-semibold mb-4 text-indigo-700 dark:text-indigo-400">
+                Profile Image Upload
+              </h3>
+
+              {formData.profileImage ? (
+                <div className="flex items-center space-x-4">
+                  <div className="relative w-32 h-32 rounded-full overflow-hidden border-4 border-indigo-500 shadow-xl flex-shrink-0">
+                    <Image
+                      src={formData.profileImage}
+                      alt="Profile"
+                      layout="fill"
+                      objectFit="cover"
+                    />
+                  </div>
                   <Button
-                    onClick={handleAddNavLink}
-                    color="success"
-                    variant="flat"
-                    size="sm"
+                    onClick={handleImageDelete}
+                    color="danger"
+                    isLoading={uploading}
                     className="font-semibold"
                   >
-                    <FaPlus className="mr-1" /> Add New Link
+                    <BsTrash3Fill className="w-4 h-4 mr-1" /> Delete Current
+                    Image
                   </Button>
                 </div>
-
-                <div className="space-y-4">
-                  {formData.NavLinks.map((link, index) => (
-                    <div
-                      key={link.id}
-                      className="flex flex-wrap items-center gap-3 p-3 border rounded-lg bg-gray-50 dark:bg-gray-700 shadow-sm"
-                    >
-                      {/* Select Nav Link Name */}
-                      <select
-                        className="border rounded-lg p-2 w-full sm:w-48 dark:bg-gray-900 dark:text-gray-200 dark:border-gray-600"
-                        value={link.name}
-                        onChange={(e) =>
-                          handleNavLinkChange(index, "name", e.target.value)
-                        }
-                      >
-                        <option className="dark:bg-gray-900" value="">
-                          Select Menu Section
-                        </option>
-                        {MASTER_NAV_LINKS.map((item) => (
-                          <option
-                            className="dark:bg-gray-900"
-                            key={item.id}
-                            value={item.name}
-                          >
-                            {item.name}
-                          </option>
-                        ))}
-                      </select>
-
-                      {/* URL (Disabled) */}
-                      <Input
-                        className="w-full sm:flex-1 dark:bg-gray-900 dark:border-gray-600"
-                        placeholder="URL (Automatic Hash Link)"
-                        value={link.url}
-                        disabled
-                      />
-
-                      {/* Delete Button */}
-                      <Button
-                        color="danger"
-                        variant="ghost"
-                        onClick={() => handleDeleteNavLink(link.id)}
-                        size="sm"
-                        className="flex-shrink-0"
-                      >
-                        <BsTrash3Fill className="w-4 h-4" />
-                      </Button>
-                    </div>
-                  ))}
+              ) : (
+                <div className="border-2 border-dashed border-gray-400 rounded-xl p-6 text-center hover:border-indigo-600 transition duration-300 bg-gray-50 dark:bg-gray-700">
+                  <label className="block text-lg font-medium text-gray-700 dark:text-gray-200 mb-2">
+                    Upload New Profile icon image
+                  </label>
+                  <Input
+                    size="lg"
+                    type="file"
+                    accept="image/*"
+                    onChange={handleImageUpload}
+                    disabled={uploading}
+                    className="cursor-pointer"
+                  />
+                  <p className="text-gray-500 mt-2 text-sm">
+                    PNG, JPG, or GIF (Max 5MB). Better upload icon format.
+                  </p>
                 </div>
+              )}
+            </div>
+
+            {/* Menu Links Editor Card */}
+            <div className="p-2 bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700 shadow-md">
+              <div className="flex items-center justify-between mb-4">
+                <h3 className="text-2xl font-semibold text-indigo-700 dark:text-indigo-400">
+                  Navigation Menu Links Editor
+                </h3>
+                <Button
+                  onClick={handleAddNavLink}
+                  color="success"
+                  variant="flat"
+                  size="sm"
+                  className="font-semibold"
+                >
+                  <FaPlus className="mr-1" /> Add New Link
+                </Button>
               </div>
 
-              {/* Save Button */}
-              <Button
-                color="success"
-                onClick={handleSave}
-                isLoading={saving}
-                size="lg"
-                className="w-full font-extrabold tracking-wide"
-                disabled={saving || uploading}
-              >
-                💾 Save All Changes
-              </Button>
+              <div className="space-y-4">
+                {formData.NavLinks.map((link, index) => (
+                  <div
+                    key={link.id}
+                    className="flex flex-wrap items-center gap-3 p-3 border rounded-lg bg-gray-50 dark:bg-gray-700 shadow-sm"
+                  >
+                    {/* Select Nav Link Name */}
+                    <select
+                      className="border rounded-lg p-2 w-full sm:w-48 dark:bg-gray-900 dark:text-gray-200 dark:border-gray-600"
+                      value={link.name}
+                      onChange={(e) =>
+                        handleNavLinkChange(index, "name", e.target.value)
+                      }
+                    >
+                      <option className="dark:bg-gray-900" value="">
+                        Select Menu Section
+                      </option>
+                      {MASTER_NAV_LINKS.map((item) => (
+                        <option
+                          className="dark:bg-gray-900"
+                          key={item.id}
+                          value={item.name}
+                        >
+                          {item.name}
+                        </option>
+                      ))}
+                    </select>
+
+                    {/* URL (Disabled) */}
+                    <Input
+                      className="w-full sm:flex-1 dark:bg-gray-900 dark:border-gray-600"
+                      placeholder="URL (Automatic Hash Link)"
+                      value={link.url}
+                      disabled
+                    />
+
+                    {/* Delete Button */}
+                    <Button
+                      color="danger"
+                      variant="ghost"
+                      onClick={() => handleDeleteNavLink(link.id)}
+                      size="sm"
+                      className="flex-shrink-0"
+                    >
+                      <BsTrash3Fill className="w-4 h-4" />
+                    </Button>
+                  </div>
+                ))}
+              </div>
             </div>
-          )}
-        </div>
+
+            {/* Save Button */}
+            <Button
+              color="success"
+              onClick={handleSave}
+              isLoading={saving}
+              size="lg"
+              className="w-full font-extrabold tracking-wide"
+              disabled={saving || uploading}
+            >
+              💾 Save All Changes
+            </Button>
+          </div>
+        )}
       </Card>
     </section>
   );

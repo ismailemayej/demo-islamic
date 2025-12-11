@@ -238,10 +238,10 @@ export default function DashboardHome() {
 
   return (
     <Background id="">
-      <div className="p-4 sm:p-8 space-y-10 min-h-screen">
+      <div className="p-2 sm:p-2 space-y-10 min-h-screen">
         {/* Header Section */}
         <Card className="shadow-2xl bg-content1 border-t-6 border-primary/80">
-          <CardBody className="py-6 px-6 sm:px-8 dark:bg-gray-800 dark:shadow-gray-700">
+          <CardBody className="py-6 px-2 sm:px-2 dark:bg-gray-800 dark:shadow-gray-700">
             <div className="flex justify-between items-start">
               <div>
                 <h1 className="text-xl lg:text-4xl font-extrabold text-primary flex items-center gap-3">

@@ -42,15 +42,15 @@ export const AboutSection: React.FC<AboutProps> = ({ section }) => {
         {/* Left Side: 3D Profile Image */}
 
         <motion.div className="w-full lg:w-1/3 flex justify-center lg:justify-start">
-          <div className="relative group shadow-2xl rounded-3xl overflow-hidden w-64 sm:w-72 md:w-80 border border-gray-200 dark:border-gray-700 transition-all duration-500">
+          <div className="relative group  overflow-hidden w-80 sm:w-72 md:w-80  transition-all duration-500">
             {/* Optimized Next.js Image */}
             <motion.div className="w-full h-auto">
               <Image
                 src={section?.data?.image || profile.src}
                 alt={section?.data?.title || "Profile Image"}
-                width={400} // Required for next/image
-                height={400} // Required for next/image
-                className="w-full h-auto object-cover rounded-3xl group-hover:scale-110 transition-transform duration-700"
+                width={400}
+                height={400}
+                className="w-full h-auto object-cover group-hover:scale-110 transition-transform duration-700"
               />
             </motion.div>
 
@@ -59,7 +59,7 @@ export const AboutSection: React.FC<AboutProps> = ({ section }) => {
           </div>
         </motion.div>
         {/* Right Side: 3D Content with Icons */}
-        <motion.div className="w-full lg:w-2/3 space-y-6">
+        <motion.div className="w-full lg:w-2/3 space-y-6 px-2">
           {/* Title with 3D Icon */}
           <motion.div
             className="flex items-center gap-3"
@@ -67,7 +67,7 @@ export const AboutSection: React.FC<AboutProps> = ({ section }) => {
             transition={{ type: "spring", stiffness: 200 }}
           >
             <User2 className="w-10 h-10 lg:block hidden text-emerald-600 dark:text-emerald-400 drop-shadow-lg" />
-            <h1 className="text-3xl font-bold text-gray-800 dark:text-gray-200 leading-relaxed bangla">
+            <h1 className="text-3xl font-bold text-gray-800 dark:text-gray-200 leading-relaxed">
               {section?.data?.title || "আমার সম্পর্কে"}
             </h1>
           </motion.div>
@@ -80,7 +80,7 @@ export const AboutSection: React.FC<AboutProps> = ({ section }) => {
           >
             <FileText className="w-9 h-9 lg:block hidden text-amber-500 drop-shadow-md mt-1" />
             <p
-              className="text-lg text-gray-700 dark:text-gray-300 leading-relaxed bangla line-clamp-5"
+              className="text-lg text-gray-700 dark:text-gray-300 leading-relaxed  line-clamp-5"
               dangerouslySetInnerHTML={{
                 __html:
                   section?.data?.description ||
@@ -99,7 +99,7 @@ export const AboutSection: React.FC<AboutProps> = ({ section }) => {
               <Button
                 size="lg"
                 className="bg-gradient-to-r from-emerald-500 to-amber-500 hover:from-emerald-600 hover:to-amber-600 
-                text-white rounded-full shadow-xl bangla flex items-center gap-2 px-6"
+                text-white rounded-full shadow-xl flex items-center gap-2 px-6"
               >
                 <Info className="w-5 h-5" />
                 See Details

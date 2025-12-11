@@ -25,7 +25,7 @@ const Background: React.FC<BackgroundProps> = ({ children, id }) => {
       />
 
       {/* Content Box */}
-      <div className="relative z-10 font-sans backdrop-blur-lg border border-white/20 dark:border-white/5 shadow-xl rounded-2xl p-6">
+      <div className="relative z-10 font-sans backdrop-blur-lg border border-white/20 dark:border-white/5 shadow-xl rounded-2xl p-2 sm:p-3 lg:p-4">
         {children}
       </div>
     </section>

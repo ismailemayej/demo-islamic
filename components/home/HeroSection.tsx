@@ -1,15 +1,12 @@
 "use client";
-
 import { motion } from "framer-motion";
 import Image from "next/image";
 import profile from "@/public/images/profile.png";
 import type { THeroSection } from "@/types/all-types";
 import HeroBackground from "../HeroBackground";
-
 interface HeroProps {
   section?: THeroSection;
 }
-
 export const HeroSection: React.FC<HeroProps> = ({ section }) => {
   if (!section) {
     return (
@@ -97,15 +94,15 @@ export const HeroSection: React.FC<HeroProps> = ({ section }) => {
               transition={{ duration: 0.8, type: "spring", bounce: 0.3 }}
               className="relative z-10"
             >
-              <div className="relative backdrop-blur-sm border-white/20 rounded-2xl">
+              <div className="relative backdrop-blur-sm items-center border-white/20 rounded-2xl">
                 {/* Bigger Image */}
                 <Image
                   src={section?.image || profile}
                   alt={section?.title || "Hero Image"}
                   width={1100}
                   height={1100}
-                  className="w-full max-w-[650px] sm:max-w-[750px] lg:max-w-[900px] 
-                             h-auto object-cover rounded-2xl shadow-xl"
+                  className="w-full max-w-[150vh] sm:max-w-[850px] lg:max-w-[900px] 
+                             h-auto object-cover"
                   priority
                 />
               </div>
