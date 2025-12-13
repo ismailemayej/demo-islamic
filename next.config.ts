@@ -1,11 +1,16 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   reactStrictMode: true,
-  swcMinify: true,
+
+  // SWC minify default হিসেবে active, explicit key আর দরকার নেই
+  // swcMinify: true, // Removed
+
   experimental: {
+    appDir: true, // App Router enabled
     optimizeCss: true,
     esmExternals: true,
   },
+
   images: {
     remotePatterns: [
       {
@@ -19,11 +24,13 @@ const nextConfig = {
         pathname: "/**",
       },
     ],
-    // unoptimized: true,
+    // unoptimized: true, // optional
   },
-  future: {
-    webpack5: true,
-  },
+
+  // future key obsolete, সরিয়ে দিলাম
+  // future: {
+  //   webpack5: true,
+  // },
 };
 
 module.exports = nextConfig;
