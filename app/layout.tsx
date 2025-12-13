@@ -57,7 +57,6 @@ async function getWebsiteSection(): Promise<WebsiteSection | null> {
 
 export async function generateMetadata(): Promise<Metadata> {
   const section = await getWebsiteSection();
-  console.log("Website Section Data:", section.keywords);
 
   const title =
     section?.ownerName || "Md Ismail Hossain | MERN Stack Developer";
