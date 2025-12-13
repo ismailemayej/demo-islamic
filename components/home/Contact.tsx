@@ -20,12 +20,6 @@ interface ContactItemProps {
 
 const ContactCard: React.FC<ContactItemProps> = ({ icon, title, value }) => (
   <motion.div
-    whileHover={{
-      scale: 1.05,
-      rotateX: 5,
-      rotateY: -5,
-      transition: { type: "spring", stiffness: 300, damping: 20 },
-    }}
     style={{ perspective: 1000 }}
     className="flex flex-col items-center text-center bg-white dark:bg-gray-800 p-6 rounded-2xl shadow-lg border border-gray-200 dark:border-gray-700"
   >

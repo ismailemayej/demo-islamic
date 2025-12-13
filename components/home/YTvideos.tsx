@@ -150,7 +150,6 @@ export const YouTubeVideosSection: React.FC<YouTubeVideosSectionProps> = ({
               >
                 <X />
               </button>
-
               <iframe
                 src={getEmbedUrl(activeVideo.url)}
                 title={activeVideo.title}

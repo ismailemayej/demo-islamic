@@ -3,7 +3,6 @@ import { SVGProps } from "react";
 export type IconSvgProps = SVGProps<SVGSVGElement> & {
   size?: number;
 };
-// 📁 src/types/section.ts
 
 export interface Heading {
   title: string;
